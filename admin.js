@@ -31,6 +31,10 @@ function closeAdminAlert(){
     document.getElementById("adminCustomAlert")?.classList.remove("show");
 }
 
+function logoutToShop(){
+    window.location.replace("index.html");
+}
+
 function saveWelcomePopupData(){
     try {
         const popupImg = document.getElementById("adminWelcomePopupImg")?.value.trim() || "";
@@ -141,7 +145,12 @@ function deleteProduct(id){
 function openEditModal(id){
     const p = products.find(x => String(x.id) === String(id));
     if(!p) return;
+    
     document.getElementById("editProductId").value = p.id;
+    
+    const idField = document.getElementById("displayEditProductId");
+    if(idField) idField.value = p.id;
+
     document.getElementById("editProductName").value = p.name;
     document.getElementById("editProductPrice").value = p.price;
     document.getElementById("editProductDiscountPrice").value = p.discountPrice !== null ? p.discountPrice : "";
