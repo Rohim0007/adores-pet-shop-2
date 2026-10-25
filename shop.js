@@ -11,6 +11,7 @@ let vacationMode = JSON.parse(localStorage.getItem("adoresVacationMode")) || fal
 let currentAdminPassword = localStorage.getItem("adoresAdminPass") || "DJ778899";
 let currentCategory = "";
 let activeSelectedProductId = null;
+let popupTargetProductId = "";
 
 function saveProducts(){
     try { localStorage.setItem("adoresProducts", JSON.stringify(products)); } 
@@ -50,9 +51,11 @@ function renderAnnouncement(){
     if(annBox && annTxt){
         if(noticeText !== "" || ytLink !== ""){
             let htmlContent = "";
+            
             if(noticeText !== ""){
                 htmlContent += `<div>${escapeHTML(noticeText)}</div>`;
             }
+            
             if(ytLink !== ""){
                 htmlContent += `
                     <div style="margin-top:${noticeText !== '' ? '6px' : '0'};">
@@ -62,6 +65,7 @@ function renderAnnouncement(){
                     </div>
                 `;
             }
+            
             annTxt.innerHTML = htmlContent;
             annBox.style.display = "flex";
         } else {
@@ -72,19 +76,16 @@ function renderAnnouncement(){
 
 function checkWelcomePopup(){
     const popupImg = localStorage.getItem("adoresWelcomePopupImg") || "";
+    popupTargetProductId = localStorage.getItem("adoresWelcomePopupLink") || "";
     const modal = document.getElementById("welcomePopupModal");
     const imgEl = document.getElementById("welcomePopupImg");
+
     const alreadyShown = sessionStorage.getItem("welcomePopupClosed");
 
     if(modal && imgEl && popupImg.trim() !== "" && !alreadyShown){
         imgEl.src = popupImg;
         modal.classList.add("show");
     }
-}
-
-let popupTargetProductId = "";
-function checkWelcomePopupData(){
-    popupTargetProductId = localStorage.getItem("adoresWelcomePopupLink") || "";
 }
 
 function handlePopupImageClick(){
@@ -110,12 +111,14 @@ function showCustomAlert(msg){
     
     if(alertMsg && alertModal){
         alertMsg.innerText = msg;
+        
         if(alertIconBox) {
             alertIconBox.style.background = "#e6f4ea";
             alertIconBox.style.color = "#10b981";
             alertIconBox.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
         }
         if(alertTitle) alertTitle.innerText = "সফল!";
+        
         alertModal.classList.add("show");
     }
 }
@@ -428,7 +431,7 @@ function closeAdminLoginModal(){ document.getElementById("adminLoginModal")?.cla
 function submitAdminLogin(){
     const pass = document.getElementById("modalAdminPassword")?.value;
     if(pass === currentAdminPassword){
-        window.location.replace("admin.html");
+        window.location.href = "admin.html";
     } else { showCustomAlert("ভুল পাসওয়ার্ড!"); }
 }
 
@@ -441,5 +444,4 @@ updateCartBadge();
 renderProducts();
 checkVacationStatus();
 renderAnnouncement();
-checkWelcomePopupData();
 checkWelcomePopup();
