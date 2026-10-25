@@ -70,7 +70,7 @@ body{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:v
 
 .thankyou-card{ background: white; padding: 20px 22px 25px; border-top-left-radius: 24px; border-top-right-radius: 24px; text-align: center; width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto; box-shadow: 0 -10px 25px rgba(0,0,0,0.15); }
 
-/* APP STYLE SUCCESS POPUP CENTER OVERLAY */
+/* APP STYLE SUCCESS POPUP */
 .app-success-overlay {
     align-items: center !important;
     padding: 20px;
@@ -107,6 +107,28 @@ body{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:v
 
 .order-card{ background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-bottom: 12px; text-align: left; }
 .order-card-header{ display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--teal); border-bottom: 1px dashed #cbd5e1; padding-bottom: 6px; margin-bottom: 8px; }
+
+/* BOX BY BOX CHECKOUT STYLES */
+.checkout-section-box {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+}
+
+.checkout-box-title {
+    font-size: 13.5px;
+    font-weight: 800;
+    color: var(--teal);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 6px;
+}
 
 .voucher-modal{ display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); z-index: 30000; align-items: center; justify-content: center; padding: 15px; }
 .voucher-modal.show{ display: flex !important; }
