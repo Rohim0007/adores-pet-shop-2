@@ -192,15 +192,18 @@
     </div>
 </div>
 
-<!-- STEP 3: SUCCESS MODAL -->
-<div id="thankyouModal" class="thankyou-overlay">
-    <div class="thankyou-card">
-        <div class="thankyou-icon"><i class="fa-solid fa-circle-check"></i></div>
-        <h2 style="font-size:20px; color:var(--text-dark); margin-bottom:6px;">অর্ডার সফল হয়েছে! 🎉</h2>
-        <p id="successPopupText" style="font-size:13.5px; color:#64748b; line-height:1.5; margin-bottom:16px;">
-            আপনার অর্ডারটি সফলভাবে আমাদের কাছে পৌঁছেছে। ধন্যবাদ!
+<!-- STEP 3: APP STYLE SUCCESS POPUP (Center App Look) -->
+<div id="thankyouModal" class="thankyou-overlay app-success-overlay">
+    <div class="thankyou-card app-success-card">
+        <div class="app-success-icon-box">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <h2 style="font-size:20px; font-weight:900; color:#1e293b; margin-bottom:6px;">Order Successfully Placed!</h2>
+        <p id="successPopupText" style="font-size:13.5px; color:#64748b; line-height:1.5; margin-bottom:20px;">
+            আপনার অর্ডারটি সফলভাবে সম্পন্ন হয়েছে! 🎉
         </p>
-        <button onclick="closeThankYouModal()" class="thankyou-btn">ঠিক আছে</button>
+        <button onclick="closeThankYouModal()" class="thankyou-btn" style="margin-bottom:10px;"><i class="fa-solid fa-box"></i> Track My Order</button>
+        <button onclick="closeThankYouModal(); goHome();" class="thankyou-btn" style="background:#e2e8f0; color:#334155;">Go Back / হোম পেজ</button>
     </div>
 </div>
 
@@ -246,7 +249,7 @@
 
 <!-- CUSTOM ALERT MODAL -->
 <div id="customAlertModal" class="thankyou-overlay">
-    <div class="thankyou-card">
+    <div class="thankyou-card" style="max-width:380px; margin:auto;">
         <div class="thankyou-icon" style="background:#fef3c7; color:#d97706;"><i class="fa-solid fa-triangle-exclamation"></i></div>
         <h2>সতর্কতা</h2>
         <p id="customAlertMessage">একটি ত্রুটি ঘটেছে।</p>
@@ -256,7 +259,7 @@
 
 <!-- ADMIN LOGIN MODAL -->
 <div id="adminLoginModal" class="thankyou-overlay">
-    <div class="thankyou-card">
+    <div class="thankyou-card" style="max-width:380px; margin:auto;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
             <h2 style="font-size:18px; color:var(--teal);">Admin Login</h2>
             <button onclick="closeAdminLoginModal()" style="background:#e2e8f0; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer;">✕</button>
@@ -269,7 +272,6 @@
     </div>
 </div>
 
-<!-- SCRIPTS (Root path) -->
 <script src="data.js"></script>
 <script src="shop.js"></script>
 <script src="checkout.js"></script>
