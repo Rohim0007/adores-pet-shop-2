@@ -19,6 +19,14 @@
         <a href="index.html" style="background:#ef4444; color:#fff; text-decoration:none; padding:8px 14px; border-radius:10px; font-weight:700; font-size:13px;"><i class="fa-solid fa-store"></i> শপে যান</a>
     </div>
 
+    <!-- ANNOUNCEMENT BANNER CONTROL -->
+    <div class="admin-card">
+        <h2 style="margin-bottom:12px; font-size:18px; color:#00897b;"><i class="fa-solid fa-bullhorn"></i> Announcement / Notice Bar</h2>
+        <label style="font-size:12px; font-weight:700; color:#475569;">হোমপেজে প্রদর্শনের জন্য নোটিশ বা ভিডিও লিংক লিখুন</label>
+        <textarea id="adminAnnouncementInput" placeholder="যেমন: আজ সকল পণ্যে ১০% ডিসকাউন্ট! অথবা নতুন ভিডিও লিংক..." class="form-input" style="height:60px;"></textarea>
+        <button onclick="saveAnnouncementText()" class="admin-submit-btn" style="padding:10px; font-size:13px;">নোটিশ আপডেট করুন</button>
+    </div>
+
     <!-- VACATION MODE TOGGLE -->
     <div class="admin-card">
         <h2 style="margin-bottom:12px; font-size:18px; color:#00897b;">Shop Mode / Vacation Setting</h2>
@@ -61,11 +69,11 @@
 
         <div style="display:flex; gap:10px;">
             <div style="flex:1;">
-                <label style="font-size:13px; font-weight:700; color:#475569;">Regular Price (৳)</label>
+                <label style="font-size:13.5px; font-weight:700; color:#475569;">Regular Price (৳)</label>
                 <input id="productPrice" type="number" placeholder="1000" class="form-input">
             </div>
             <div style="flex:1;">
-                <label style="font-size:13px; font-weight:700; color:#ef4444;">Discount Price (৳)</label>
+                <label style="font-size:13.5px; font-weight:700; color:#ef4444;">Discount Price (৳)</label>
                 <input id="productDiscountPrice" type="number" placeholder="850" class="form-input">
             </div>
         </div>
@@ -76,12 +84,18 @@
                 <input id="productStock" type="number" placeholder="10" class="form-input">
             </div>
             <div style="flex:1;">
-                <label style="font-size:13px; font-weight:700; color:#0284c7;">Age / বয়স (Option)</label>
-                <input id="productAge" placeholder="e.g. 2 Months" class="form-input">
+                <label style="font-size:13px; font-weight:700; color:#0284c7;">Age / বয়স (সংখ্যা ও ইউনিট)</label>
+                <div style="display:flex; gap:6px;">
+                    <input id="productAgeNum" type="number" placeholder="যেমন: 2" class="form-input" style="flex:1; margin-bottom:0;">
+                    <select id="productAgeUnit" class="form-input" style="flex:1; margin-bottom:0;">
+                        <option value="Months">মাস (Months)</option>
+                        <option value="Years">বছর (Years)</option>
+                    </select>
+                </div>
             </div>
         </div>
 
-        <div style="display:flex; gap:10px;">
+        <div style="display:flex; gap:10px; margin-top:10px;">
             <div style="flex:1;">
                 <label style="font-size:13px; font-weight:700; color:#475569;">Color (Option)</label>
                 <input id="productColor" placeholder="e.g. White" class="form-input">
@@ -141,7 +155,7 @@
         
         <!-- Product Image Preview -->
         <div style="text-align:center; margin-bottom:12px;">
-            <img id="editProductPreviewImg" src="" style="width:80px; height:80px; object-fit:cover; border-radius:14px; border:2px solid #00897b; background:#f8fafc;" alt="Product Preview">
+            <img id="editProductPreviewImg" src="" style="width:85px; height:85px; object-fit:cover; border-radius:14px; border:2px solid #00897b; background:#f8fafc;" alt="Product Preview">
         </div>
 
         <input type="hidden" id="editProductId">
@@ -153,13 +167,22 @@
         </div>
         <div style="display:flex; gap:10px;">
             <div style="flex:1;"><label style="font-size:12px; font-weight:700;">Stock</label><input id="editProductStock" type="number" class="form-input"></div>
-            <div style="flex:1;"><label style="font-size:12px; font-weight:700;">Age</label><input id="editProductAge" class="form-input"></div>
+            <div style="flex:1;">
+                <label style="font-size:12px; font-weight:700;">Age (সংখ্যা ও ইউনিট)</label>
+                <div style="display:flex; gap:6px;">
+                    <input id="editProductAgeNum" type="number" class="form-input" style="flex:1; margin-bottom:0;">
+                    <select id="editProductAgeUnit" class="form-input" style="flex:1; margin-bottom:0;">
+                        <option value="Months">Months</option>
+                        <option value="Years">Years</option>
+                    </select>
+                </div>
+            </div>
         </div>
-        <label style="font-size:12px; font-weight:700;">Image URL</label>
+        <label style="font-size:12px; font-weight:700; margin-top:10px; display:block;">Image URL</label>
         <input id="editProductImgUrl" class="form-input">
         <label style="font-size:12px; font-weight:700; color:#dc2626;">Video URL</label>
         <input id="editProductVideoUrl" class="form-input">
-        <div style="display:flex; gap:10px;">
+        <div style="display:flex; gap:10px; margin-top:10px;">
             <button onclick="saveEditProduct()" class="thankyou-btn" style="margin:0; flex:1;">Save Changes</button>
             <button onclick="closeEditModal()" class="thankyou-btn" style="margin:0; flex:1; background:#64748b;">Cancel</button>
         </div>
