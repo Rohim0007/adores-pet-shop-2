@@ -17,7 +17,7 @@ body{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:v
 .notif-badge-pill{ background: #ef4444; color: white; font-size: 11px; font-weight: 900; padding: 3px 10px; border-radius: 20px; }
 .form-label { display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 4px; text-align: left; }
 .form-input { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13.5px; outline: none; margin-bottom: 10px; background: #fff; }
-.thankyou-overlay{ display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); z-index: 25000; align-items: flex-end; justify-content: center; }
-.thankyou-overlay.show{ display: flex; }
+.thankyou-overlay{ display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); z-index: 25000; align-items: flex-end; justify-content: center; }
+.thankyou-overlay.show{ display: flex !important; }
 .thankyou-card{ background: white; padding: 20px 22px 25px; border-top-left-radius: 24px; border-top-right-radius: 24px; text-align: center; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
 .thankyou-btn{ width: 100%; padding: 14px; border: none; border-radius: 12px; background: var(--teal); color: white; font-weight: 800; cursor: pointer; }
