@@ -75,24 +75,25 @@ function renderAnnouncement(){
 
 function checkWelcomePopup(){
     const popupImg = localStorage.getItem("adoresWelcomePopupImg") || "";
-    const popupLink = localStorage.getItem("adoresWelcomePopupLink") || "";
     const modal = document.getElementById("welcomePopupModal");
     const imgEl = document.getElementById("welcomePopupImg");
-    const cardWrapper = document.getElementById("welcomePopupCardWrapper");
-
     const alreadyShown = sessionStorage.getItem("welcomePopupClosed");
 
     if(modal && imgEl && popupImg.trim() !== "" && !alreadyShown){
         imgEl.src = popupImg;
-        if(cardWrapper){
-            cardWrapper.onclick = function(){
-                if(popupLink.trim() !== ""){
-                    window.open(popupLink, '_blank');
-                }
-                closeWelcomePopup();
-            };
-        }
         modal.classList.add("show");
+    }
+}
+
+let popupTargetProductId = "";
+function checkWelcomePopupData(){
+    popupTargetProductId = localStorage.getItem("adoresWelcomePopupLink") || "";
+}
+
+function handlePopupImageClick(){
+    closeWelcomePopup();
+    if(popupTargetProductId.trim() !== ""){
+        openProductModal(popupTargetProductId.trim());
     }
 }
 
@@ -432,7 +433,7 @@ function closeAdminLoginModal(){ document.getElementById("adminLoginModal")?.cla
 function submitAdminLogin(){
     const pass = document.getElementById("modalAdminPassword")?.value;
     if(pass === currentAdminPassword){
-        window.location.href = "admin.html";
+        window.location.replace("admin.html");
     } else { showCustomAlert("ভুল পাসওয়ার্ড!"); }
 }
 
@@ -445,4 +446,5 @@ updateCartBadge();
 renderProducts();
 checkVacationStatus();
 renderAnnouncement();
+checkWelcomePopupData();
 checkWelcomePopup();
