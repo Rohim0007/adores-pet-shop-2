@@ -27,10 +27,24 @@ function closeAdminAlert(){
     document.getElementById("adminCustomAlert")?.classList.remove("show");
 }
 
-function saveAnnouncementText(){
-    const annInput = document.getElementById("adminAnnouncementInput")?.value.trim() || "";
-    localStorage.setItem("adoresAnnouncement", annInput);
-    showAdminAlert("অ্যানাউন্সমেন্ট নোটিশ সফলভাবে আপডেট করা হয়েছে! 📢");
+function saveWelcomePopupData(){
+    const popupImg = document.getElementById("adminWelcomePopupImg")?.value.trim() || "";
+    const popupLink = document.getElementById("adminWelcomePopupLink")?.value.trim() || "";
+    
+    localStorage.setItem("adoresWelcomePopupImg", popupImg);
+    localStorage.setItem("adoresWelcomePopupLink", popupLink);
+    
+    showAdminAlert("ওয়েলকাম পপআপ ব্যানার সফলভাবে সেভ করা হয়েছে! 🖼️");
+}
+
+function saveAnnouncementData(){
+    const noticeText = document.getElementById("adminNoticeInput")?.value.trim() || "";
+    const ytLink = document.getElementById("adminYoutubeInput")?.value.trim() || "";
+    
+    localStorage.setItem("adoresNoticeText", noticeText);
+    localStorage.setItem("adoresYoutubeLink", ytLink);
+    
+    showAdminAlert("নোটিশ এবং ইউটিউব লিংক সফলভাবে আপডেট করা হয়েছে! 📢");
 }
 
 function toggleVacationMode(){
@@ -121,7 +135,6 @@ function openEditModal(id){
     document.getElementById("editProductDiscountPrice").value = p.discountPrice !== null ? p.discountPrice : "";
     document.getElementById("editProductStock").value = p.stock;
     
-    // Parse age string into number and unit if exists
     if(p.age){
         let parts = p.age.split(" ");
         document.getElementById("editProductAgeNum").value = parts[0] || "";
@@ -130,7 +143,6 @@ function openEditModal(id){
         document.getElementById("editProductAgeNum").value = "";
     }
     
-    // Set Product Image Preview in Edit Modal
     const prevImg = document.getElementById("editProductPreviewImg");
     if(prevImg) prevImg.src = p.images?.[0] || 'https://i.postimg.cc/CdyZqRY5/file-000000006ecc71f899e85a5cc31b0405.png';
 
@@ -230,6 +242,9 @@ function updateOrderStatus(orderId, newStatus){
     let order = myOrders.find(o => o.id === orderId);
     if(order){
         order.status = newStatus;
+        if(newStatus === 'cancelled'){
+            order.cancelledByAdmin = true;
+        }
         localStorage.setItem("adoresMyOrders", JSON.stringify(myOrders));
         updateOrderCounts();
         openOrderModal(newStatus);
@@ -245,5 +260,13 @@ renderAdminProducts();
 updateOrderCounts();
 const cb = document.getElementById("adminVacationCheckbox");
 if(cb) cb.checked = vacationMode;
-const savedAnn = localStorage.getItem("adoresAnnouncement") || "";
-if(document.getElementById("adminAnnouncementInput")) document.getElementById("adminAnnouncementInput").value = savedAnn;
+
+const savedNotice = localStorage.getItem("adoresNoticeText") || "";
+const savedYt = localStorage.getItem("adoresYoutubeLink") || "";
+if(document.getElementById("adminNoticeInput")) document.getElementById("adminNoticeInput").value = savedNotice;
+if(document.getElementById("adminYoutubeInput")) document.getElementById("adminYoutubeInput").value = savedYt;
+
+const savedPopupImg = localStorage.getItem("adoresWelcomePopupImg") || "";
+const savedPopupLink = localStorage.getItem("adoresWelcomePopupLink") || "";
+if(document.getElementById("adminWelcomePopupImg")) document.getElementById("adminWelcomePopupImg").value = savedPopupImg;
+if(document.getElementById("adminWelcomePopupLink")) document.getElementById("adminWelcomePopupLink").value = savedPopupLink;
