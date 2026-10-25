@@ -19,9 +19,9 @@
         <a href="index.html" style="background:#ef4444; color:#fff; text-decoration:none; padding:8px 14px; border-radius:10px; font-weight:700; font-size:13px;"><i class="fa-solid fa-store"></i> শপে যান</a>
     </div>
 
-    <!-- WELCOME POPUP BANNER CONTROL -->
+    <!-- WELCOME POPUP BANNER CONTROL (DARAZ STYLE) -->
     <div class="admin-card">
-        <h2 style="margin-bottom:12px; font-size:18px; color:#00897b;"><i class="fa-solid fa-image"></i> Welcome Popup Banner</h2>
+        <h2 style="margin-bottom:12px; font-size:18px; color:#00897b;"><i class="fa-solid fa-image"></i> Welcome Popup Banner (Daraz Style)</h2>
         <label style="font-size:12px; font-weight:700; color:#475569;">পপআপ ছবির লিংক (Image URL)</label>
         <input id="adminWelcomePopupImg" placeholder="https://..." class="form-input" style="margin-bottom:8px;">
         <label style="font-size:12px; font-weight:700; color:#475569;">পপআপে ক্লিক করলে কোথায় যাবে (Link URL - অপশনাল)</label>
@@ -37,7 +37,7 @@
         <textarea id="adminNoticeInput" placeholder="যেমন: আজ সকল পণ্যে ১০% ডিসকাউন্ট চলছে!" class="form-input" style="height:55px;"></textarea>
 
         <label style="font-size:12px; font-weight:700; color:#dc2626; margin-top:8px; display:block;">২. ইউটিউব ভিডিওর লিংক (ঐচ্ছিক)</label>
-        <input id="adminYoutubeInput" type="text" placeholder="যেমন: https://youtu.be/..." class="form-input" style="margin-bottom:12px; border-color:#fca5a5;">
+        <input id="adminYoutubeInput" type="text" placeholder="https://youtu.be/..." class="form-input" style="margin-bottom:12px;">
 
         <button onclick="saveAnnouncementData()" class="admin-submit-btn" style="padding:10px; font-size:13px;">নোটিশ ও ভিডিও আপডেট করুন</button>
     </div>
@@ -168,6 +168,7 @@
     <div class="thankyou-card" style="text-align:left;">
         <h2 style="font-size:18px; margin-bottom:10px; color:#00897b; text-align:center;"><i class="fa-solid fa-pen-to-square"></i> Edit Product</h2>
         
+        <!-- Product Image Preview -->
         <div style="text-align:center; margin-bottom:12px;">
             <img id="editProductPreviewImg" src="" style="width:85px; height:85px; object-fit:cover; border-radius:14px; border:2px solid #00897b; background:#f8fafc;" alt="Product Preview">
         </div>
