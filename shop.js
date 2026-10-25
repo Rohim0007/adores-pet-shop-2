@@ -43,14 +43,64 @@ function checkVacationStatus(){
 function renderAnnouncement(){
     const annBox = document.getElementById("announcementBannerBox");
     const annTxt = document.getElementById("announcementText");
-    const savedAnn = localStorage.getItem("adoresAnnouncement") || "";
+    
+    const noticeText = localStorage.getItem("adoresNoticeText") || "";
+    const ytLink = localStorage.getItem("adoresYoutubeLink") || "";
+    
     if(annBox && annTxt){
-        if(savedAnn.trim() !== ""){
-            annTxt.innerHTML = savedAnn;
+        if(noticeText !== "" || ytLink !== ""){
+            let htmlContent = "";
+            
+            if(noticeText !== ""){
+                htmlContent += `<div>${escapeHTML(noticeText)}</div>`;
+            }
+            
+            if(ytLink !== ""){
+                htmlContent += `
+                    <div style="margin-top:${noticeText !== '' ? '6px' : '0'};">
+                        <a href="${escapeHTML(ytLink)}" target="_blank" style="display:inline-flex; align-items:center; gap:6px; background:#ffffff; color:#dc2626; padding:6px 12px; border-radius:8px; font-size:12.5px; font-weight:800; text-decoration:none; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                            <i class="fa-solid fa-circle-play" style="font-size:15px;"></i> 🔥 Watch New Video On YouTube
+                        </a>
+                    </div>
+                `;
+            }
+            
+            annTxt.innerHTML = htmlContent;
             annBox.style.display = "flex";
         } else {
             annBox.style.display = "none";
         }
+    }
+}
+
+function checkWelcomePopup(){
+    const popupImg = localStorage.getItem("adoresWelcomePopupImg") || "";
+    const popupLink = localStorage.getItem("adoresWelcomePopupLink") || "";
+    const modal = document.getElementById("welcomePopupModal");
+    const imgEl = document.getElementById("welcomePopupImg");
+    const cardWrapper = document.getElementById("welcomePopupCardWrapper");
+
+    const alreadyShown = sessionStorage.getItem("welcomePopupClosed");
+
+    if(modal && imgEl && popupImg.trim() !== "" && !alreadyShown){
+        imgEl.src = popupImg;
+        if(cardWrapper){
+            cardWrapper.onclick = function(){
+                if(popupLink.trim() !== ""){
+                    window.open(popupLink, '_blank');
+                }
+                closeWelcomePopup();
+            };
+        }
+        modal.classList.add("show");
+    }
+}
+
+function closeWelcomePopup(){
+    const modal = document.getElementById("welcomePopupModal");
+    if(modal){
+        modal.classList.remove("show");
+        sessionStorage.setItem("welcomePopupClosed", "true");
     }
 }
 
@@ -220,7 +270,6 @@ function addToCart(id){
     saveCart();
     updateCartBadge();
     
-    // কার্টে যোগ করলে এখন শুধু সাধারণ অ্যালার্ট দেখাবে, অর্ডার সাকসেস পপআপ নয়
     showCustomAlert("পণ্যটি সফলভাবে কার্টে যোগ করা হয়েছে! 🛒");
 }
 
@@ -289,30 +338,54 @@ function removeFromCart(id){
 function openOrdersModal(){
     const container = document.getElementById("userOrdersList");
     if(!container) return;
+
+    let hasAdminCancelled = false;
+
     if(myOrders.length === 0){
         container.innerHTML = `<p style="text-align:center; color:#64748b;">কোনো অর্ডার নেই।</p>`;
     } else {
         container.innerHTML = myOrders.map((o, idx) => {
             const isPending = !o.status || o.status === 'pending';
+            const isCancelled = o.status === 'cancelled';
+
+            if(isCancelled && o.cancelledByAdmin){
+                hasAdminCancelled = true;
+            }
+
             return `
-                <div class="order-card">
+                <div class="order-card" style="${isCancelled ? 'border-color:#fca5a5; background:#fff5f5;' : ''}">
                     <div class="order-card-header"><span>${o.id}</span><span>৳${o.total}</span></div>
                     <div style="font-size:12px; margin-bottom:8px;">${o.itemsText.replace(/\n/g, '<br>')}</div>
-                    <div style="display:flex; gap:8px;">
+                    
+                    ${isCancelled && o.cancelledByAdmin ? `
+                        <div style="background:#fef2f2; border:1px dashed #f87171; color:#991b1b; padding:8px 10px; border-radius:8px; font-size:11.5px; font-weight:700; margin-bottom:10px; line-height:1.4;">
+                            ⚠️ দুঃখিত! প্রোডাক্টটি স্টকে না থাকায় অর্ডারটি বাতিল করা হয়েছে।
+                        </div>
+                    ` : ''}
+
+                    <div style="display:flex; gap:8px; align-items:center;">
                         <button onclick="openVoucher(${idx})" style="background:var(--teal); color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px; flex:1;">ভাউচার দেখুন</button>
-                        ${isPending ? `<button onclick="cancelMyOrder('${o.id}')" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px;">অর্ডার বাতিল করুন</button>` : `<span style="font-size:11px; font-weight:700; color:${o.status==='completed'?'#10b981':'#ef4444'}; align-self:center;">${o.status.toUpperCase()}</span>`}
+                        ${isPending ? `<button onclick="cancelMyOrder('${o.id}')" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px;">অর্ডার বাতিল করুন</button>` : `<span style="font-size:11px; font-weight:800; color:${o.status==='completed'?'#10b981':'#ef4444'};">${o.status.toUpperCase()}</span>`}
                     </div>
                 </div>
             `;
         }).join("");
     }
+
     document.getElementById("ordersModal")?.classList.add("show");
+
+    if(hasAdminCancelled){
+        setTimeout(() => {
+            showCustomAlert("আপনার অর্ডারকৃত পণ্যটি বর্তমানে স্টকে না থাকায় বাতিল করা হয়েছে। অনিচ্ছাকৃত ভুলের জন্য আমরা আন্তরিকভাবে দুঃখিত! 😔");
+        }, 300);
+    }
 }
 
 function cancelMyOrder(orderId){
     let idx = myOrders.findIndex(o => o.id === orderId);
     if(idx !== -1){
         myOrders[idx].status = 'cancelled';
+        myOrders[idx].cancelledByAdmin = false;
         saveMyOrders();
         openOrdersModal();
         showCustomAlert("আপনার অর্ডারটি সফলভাবে বাতিল করা হয়েছে।");
@@ -361,3 +434,4 @@ updateCartBadge();
 renderProducts();
 checkVacationStatus();
 renderAnnouncement();
+checkWelcomePopup();
