@@ -40,6 +40,20 @@ function checkVacationStatus(){
     }
 }
 
+function renderAnnouncement(){
+    const annBox = document.getElementById("announcementBannerBox");
+    const annTxt = document.getElementById("announcementText");
+    const savedAnn = localStorage.getItem("adoresAnnouncement") || "";
+    if(annBox && annTxt){
+        if(savedAnn.trim() !== ""){
+            annTxt.innerHTML = savedAnn;
+            annBox.style.display = "flex";
+        } else {
+            annBox.style.display = "none";
+        }
+    }
+}
+
 function showCustomAlert(msg){
     const alertMsg = document.getElementById("customAlertMessage");
     const alertModal = document.getElementById("customAlertModal");
@@ -276,16 +290,33 @@ function openOrdersModal(){
     if(myOrders.length === 0){
         container.innerHTML = `<p style="text-align:center; color:#64748b;">কোনো অর্ডার নেই।</p>`;
     } else {
-        container.innerHTML = myOrders.map((o, idx) => `
-            <div class="order-card">
-                <div class="order-card-header"><span>${o.id}</span><span>৳${o.total}</span></div>
-                <div style="font-size:12px; margin-bottom:6px;">${o.itemsText.replace(/\n/g, '<br>')}</div>
-                <button onclick="openVoucher(${idx})" style="background:var(--teal); color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px;">ভাউচার দেখুন</button>
-            </div>
-        `).join("");
+        container.innerHTML = myOrders.map((o, idx) => {
+            const isPending = !o.status || o.status === 'pending';
+            return `
+                <div class="order-card">
+                    <div class="order-card-header"><span>${o.id}</span><span>৳${o.total}</span></div>
+                    <div style="font-size:12px; margin-bottom:8px;">${o.itemsText.replace(/\n/g, '<br>')}</div>
+                    <div style="display:flex; gap:8px;">
+                        <button onclick="openVoucher(${idx})" style="background:var(--teal); color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px; flex:1;">ভাউচার দেখুন</button>
+                        ${isPending ? `<button onclick="cancelMyOrder('${o.id}')" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px;">অর্ডার বাতিল করুন</button>` : `<span style="font-size:11px; font-weight:700; color:${o.status==='completed'?'#10b981':'#ef4444'}; align-self:center;">${o.status.toUpperCase()}</span>`}
+                    </div>
+                </div>
+            `;
+        }).join("");
     }
     document.getElementById("ordersModal")?.classList.add("show");
 }
+
+function cancelMyOrder(orderId){
+    let idx = myOrders.findIndex(o => o.id === orderId);
+    if(idx !== -1){
+        myOrders[idx].status = 'cancelled';
+        saveMyOrders();
+        openOrdersModal();
+        showCustomAlert("আপনার অর্ডারটি সফলভাবে বাতিল করা হয়েছে।");
+    }
+}
+
 function closeOrdersModal(){ document.getElementById("ordersModal")?.classList.remove("show"); }
 
 function openVoucher(idx){
@@ -327,3 +358,4 @@ function escapeHTML(str){
 updateCartBadge();
 renderProducts();
 checkVacationStatus();
+renderAnnouncement();
