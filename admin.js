@@ -87,7 +87,7 @@ function renderAdminProducts(){
                 <img src="${p.images?.[0] || 'https://i.postimg.cc/CdyZqRY5/file-000000006ecc71f899e85a5cc31b0405.png'}" alt="">
                 <div style="min-width:0;">
                     <div style="font-weight:800; font-size:13.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHTML(p.name)}</div>
-                    <div style="font-size:11.5px; color:#64748b;">৳${p.price} | ID: <b style="color:var(--teal);">${p.id}</b></div>
+                    <div style="font-size:11.5px; color:#64748b;">৳${p.price} | Stock: ${p.stock}</div>
                 </div>
             </div>
             <div class="admin-product-actions">
@@ -142,10 +142,6 @@ function openEditModal(id){
     const p = products.find(x => String(x.id) === String(id));
     if(!p) return;
     document.getElementById("editProductId").value = p.id;
-    
-    const displayIdEl = document.getElementById("editProductDisplayId");
-    if(displayIdEl) displayIdEl.value = p.id;
-
     document.getElementById("editProductName").value = p.name;
     document.getElementById("editProductPrice").value = p.price;
     document.getElementById("editProductDiscountPrice").value = p.discountPrice !== null ? p.discountPrice : "";
