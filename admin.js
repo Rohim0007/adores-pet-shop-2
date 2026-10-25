@@ -1,5 +1,5 @@
 /* =====================================================
-   ADORE'S PET - ADMIN.JS (Custom Modal Alerts & Fixes)
+   ADORE'S PET - ADMIN.JS (Custom Modal Alerts & Management)
 ===================================================== */
 
 emailjs.init({ publicKey: "P7lqeBS7YKyU3Kpaq" });
@@ -111,6 +111,11 @@ function openEditModal(id){
     document.getElementById("editProductDiscountPrice").value = p.discountPrice !== null ? p.discountPrice : "";
     document.getElementById("editProductStock").value = p.stock;
     document.getElementById("editProductAge").value = p.age || "";
+    
+    // Set Product Image Preview in Edit Modal
+    const prevImg = document.getElementById("editProductPreviewImg");
+    if(prevImg) prevImg.src = p.images?.[0] || 'https://i.postimg.cc/CdyZqRY5/file-000000006ecc71f899e85a5cc31b0405.png';
+
     document.getElementById("editProductImgUrl").value = p.images?.[0] || "";
     document.getElementById("editProductVideoUrl").value = p.videoUrl || "";
     document.getElementById("editModal")?.classList.add("show");
