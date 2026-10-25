@@ -1,22 +1,182 @@
-:root {
-    --teal: #00897b;
-    --bg-light: #f8fafc;
-    --text-main: #1e293b;
+/* =====================================================
+   ADORE'S PET - ADMIN.CSS
+===================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-body { background: var(--bg-light); color: var(--text-main); padding: 16px; }
-.admin-card { background: white; border-radius: 16px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; }
-.form-input { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13px; outline: none; margin-bottom: 10px; }
-.form-input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(0,137,123,0.15); }
-.admin-submit-btn { width: 100%; background: var(--teal); color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 900; font-size: 13.5px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,137,123,0.25); }
-.admin-tabs-row { display: flex; gap: 8px; }
-.admin-tab-btn { flex: 1; padding: 10px; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 12px; font-weight: 800; cursor: pointer; color: var(--text-main); }
-.admin-tab-btn.active { background: var(--teal); color: white; border-color: var(--teal); }
-.admin-product-card { display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 8px 12px; margin-bottom: 8px; }
-.admin-product-info { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
-.admin-product-info img { width: 45px; height: 45px; object-fit: cover; border-radius: 8px; }
-.admin-product-actions { display: flex; gap: 6px; }
-.admin-product-actions button { border: none; width: 32px; height: 32px; border-radius: 8px; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.thankyou-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 40000; padding: 16px; }
-.thankyou-overlay.show { display: flex; }
-.thankyou-card { background: white; width: 100%; max-width: 400px; border-radius: 20px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+
+body {
+    background: #f1f5f9;
+    color: #1e293b;
+    padding: 15px;
+}
+
+.admin-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    border: 1px solid #e2e8f0;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font-size: 13.5px;
+    outline: none;
+    background: #f8fafc;
+    color: #0f172a;
+    margin-bottom: 12px;
+    transition: all 0.2s;
+}
+
+.form-input:focus {
+    border-color: #00897b;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(0,137,123,0.1);
+}
+
+.admin-submit-btn {
+    width: 100%;
+    background: #00897b;
+    color: #ffffff;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,137,123,0.25);
+    transition: opacity 0.2s;
+}
+
+.admin-submit-btn:hover {
+    opacity: 0.9;
+}
+
+.admin-tabs-row {
+    display: flex;
+    gap: 8px;
+}
+
+.admin-tab-btn {
+    flex: 1;
+    padding: 10px 6px;
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 12px;
+    color: #475569;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.admin-tab-btn.active {
+    background: #00897b;
+    color: #ffffff;
+    border-color: #00897b;
+    box-shadow: 0 4px 10px rgba(0,137,123,0.2);
+}
+
+.admin-product-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 10px 12px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+.admin-product-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.admin-product-info img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+}
+
+.admin-product-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.admin-product-actions button {
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+}
+
+/* Modals Overlay */
+.thankyou-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 40000;
+    padding: 16px;
+    backdrop-filter: blur(4px);
+}
+
+.thankyou-overlay.show {
+    display: flex;
+}
+
+.thankyou-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.thankyou-btn {
+    width: 100%;
+    background: #00897b;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
