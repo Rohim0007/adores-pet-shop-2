@@ -64,12 +64,38 @@ body{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:v
 .nav-cart-icon-wrap{ position: relative; }
 .nav-cart-badge{ position: absolute; top: -6px; right: -10px; background: #ef4444; color: white; font-size: 9px; font-weight: 900; width: 16px; height: 16px; border-radius: 50%; display: none; align-items: center; justify-content: center; }
 
-/* MODAL FIX: Hidden by default, shown with .show */
+/* MODAL FIX */
 .thankyou-overlay{ display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); z-index: 25000; align-items: flex-end; justify-content: center; }
 .thankyou-overlay.show{ display: flex !important; }
 
 .thankyou-card{ background: white; padding: 20px 22px 25px; border-top-left-radius: 24px; border-top-right-radius: 24px; text-align: center; width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto; box-shadow: 0 -10px 25px rgba(0,0,0,0.15); }
-.thankyou-icon{ width: 60px; height: 60px; background: #e6f4ea; color: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 15px; }
+
+/* APP STYLE SUCCESS POPUP CENTER OVERLAY */
+.app-success-overlay {
+    align-items: center !important;
+    padding: 20px;
+}
+.app-success-card {
+    border-radius: 24px !important;
+    max-width: 400px !important;
+    margin: auto;
+    padding: 30px 24px !important;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2) !important;
+}
+.app-success-icon-box {
+    width: 75px;
+    height: 75px;
+    background: #e6f4ea;
+    color: #10b981;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    margin: 0 auto 18px;
+    border: 3px solid #bbf7d0;
+}
+
 .thankyou-btn{ width: 100%; padding: 14px; border: none; border-radius: 12px; background: var(--teal); color: white; font-weight: 800; cursor: pointer; }
 
 .form-label { display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 4px; text-align: left; }
