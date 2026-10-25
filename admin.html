@@ -19,12 +19,27 @@
         <a href="index.html" style="background:#ef4444; color:#fff; text-decoration:none; padding:8px 14px; border-radius:10px; font-weight:700; font-size:13px;"><i class="fa-solid fa-store"></i> শপে যান</a>
     </div>
 
-    <!-- ANNOUNCEMENT BANNER CONTROL -->
+    <!-- WELCOME POPUP BANNER CONTROL (DARAZ STYLE) -->
     <div class="admin-card">
-        <h2 style="margin-bottom:12px; font-size:18px; color:#00897b;"><i class="fa-solid fa-bullhorn"></i> Announcement / Notice Bar</h2>
-        <label style="font-size:12px; font-weight:700; color:#475569;">হোমপেজে প্রদর্শনের জন্য নোটিশ বা ভিডিও লিংক লিখুন</label>
-        <textarea id="adminAnnouncementInput" placeholder="যেমন: আজ সকল পণ্যে ১০% ডিসকাউন্ট! অথবা নতুন ভিডিও লিংক..." class="form-input" style="height:60px;"></textarea>
-        <button onclick="saveAnnouncementText()" class="admin-submit-btn" style="padding:10px; font-size:13px;">নোটিশ আপডেট করুন</button>
+        <h2 style="margin-bottom:12px; font-size:18px; color:#00897b;"><i class="fa-solid fa-image"></i> Welcome Popup Banner (Daraz Style)</h2>
+        <label style="font-size:12px; font-weight:700; color:#475569;">পপআপ ছবির লিংক (Image URL)</label>
+        <input id="adminWelcomePopupImg" placeholder="https://..." class="form-input" style="margin-bottom:8px;">
+        <label style="font-size:12px; font-weight:700; color:#475569;">পপআপে ক্লিক করলে কোথায় যাবে (Link URL - অপশনাল)</label>
+        <input id="adminWelcomePopupLink" placeholder="https://..." class="form-input" style="margin-bottom:12px;">
+        <button onclick="saveWelcomePopupData()" class="admin-submit-btn" style="padding:10px; font-size:13px;">পপআপ ব্যানার সেভ করুন</button>
+    </div>
+
+    <!-- ANNOUNCEMENT & YOUTUBE NOTICE CONTROL -->
+    <div class="admin-card">
+        <h2 style="margin-bottom:12px; font-size:18px; color:#00897b;"><i class="fa-solid fa-bullhorn"></i> Announcement & YouTube Notice</h2>
+        
+        <label style="font-size:12px; font-weight:700; color:#475569;">১. সাধারণ নোটিশ / টেক্সট (ঐচ্ছিক)</label>
+        <textarea id="adminNoticeInput" placeholder="যেমন: আজ সকল পণ্যে ১০% ডিসকাউন্ট চলছে!" class="form-input" style="height:55px;"></textarea>
+
+        <label style="font-size:12px; font-weight:700; color:#dc2626; margin-top:8px; display:block;">২. ইউটিউব ভিডিওর লিংক (ঐচ্ছিক)</label>
+        <input id="adminYoutubeInput" type="text" placeholder="https://youtu.be/..." class="form-input" style="margin-bottom:12px;">
+
+        <button onclick="saveAnnouncementData()" class="admin-submit-btn" style="padding:10px; font-size:13px;">নোটিশ ও ভিডিও আপডেট করুন</button>
     </div>
 
     <!-- VACATION MODE TOGGLE -->
