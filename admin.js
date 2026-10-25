@@ -27,6 +27,12 @@ function closeAdminAlert(){
     document.getElementById("adminCustomAlert")?.classList.remove("show");
 }
 
+function saveAnnouncementText(){
+    const annInput = document.getElementById("adminAnnouncementInput")?.value.trim() || "";
+    localStorage.setItem("adoresAnnouncement", annInput);
+    showAdminAlert("অ্যানাউন্সমেন্ট নোটিশ সফলভাবে আপডেট করা হয়েছে! 📢");
+}
+
 function toggleVacationMode(){
     const checkbox = document.getElementById("adminVacationCheckbox");
     if(checkbox){
@@ -71,7 +77,11 @@ function addProduct(){
     const price = Number(document.getElementById("productPrice")?.value);
     const disc = document.getElementById("productDiscountPrice")?.value.trim() ? Number(document.getElementById("productDiscountPrice")?.value) : null;
     const stock = Number(document.getElementById("productStock")?.value);
-    const age = document.getElementById("productAge")?.value.trim();
+    
+    const ageNum = document.getElementById("productAgeNum")?.value.trim();
+    const ageUnit = document.getElementById("productAgeUnit")?.value;
+    const age = ageNum ? `${ageNum} ${ageUnit}` : "";
+
     const color = document.getElementById("productColor")?.value.trim();
     const category = document.getElementById("productCategory")?.value;
     const rating = document.getElementById("productRating")?.value.trim() || "4.8";
@@ -110,7 +120,15 @@ function openEditModal(id){
     document.getElementById("editProductPrice").value = p.price;
     document.getElementById("editProductDiscountPrice").value = p.discountPrice !== null ? p.discountPrice : "";
     document.getElementById("editProductStock").value = p.stock;
-    document.getElementById("editProductAge").value = p.age || "";
+    
+    // Parse age string into number and unit if exists
+    if(p.age){
+        let parts = p.age.split(" ");
+        document.getElementById("editProductAgeNum").value = parts[0] || "";
+        if(parts[1]) document.getElementById("editProductAgeUnit").value = parts[1];
+    } else {
+        document.getElementById("editProductAgeNum").value = "";
+    }
     
     // Set Product Image Preview in Edit Modal
     const prevImg = document.getElementById("editProductPreviewImg");
@@ -131,7 +149,11 @@ function saveEditProduct(){
     p.price = Number(document.getElementById("editProductPrice")?.value);
     p.discountPrice = document.getElementById("editProductDiscountPrice")?.value.trim() ? Number(document.getElementById("editProductDiscountPrice")?.value) : null;
     p.stock = Number(document.getElementById("editProductStock")?.value);
-    p.age = document.getElementById("editProductAge")?.value.trim();
+    
+    const ageNum = document.getElementById("editProductAgeNum")?.value.trim();
+    const ageUnit = document.getElementById("editProductAgeUnit")?.value;
+    p.age = ageNum ? `${ageNum} ${ageUnit}` : "";
+
     const u = document.getElementById("editProductImgUrl")?.value.trim();
     if(u) p.images = [u];
     p.videoUrl = document.getElementById("editProductVideoUrl")?.value.trim();
@@ -223,3 +245,5 @@ renderAdminProducts();
 updateOrderCounts();
 const cb = document.getElementById("adminVacationCheckbox");
 if(cb) cb.checked = vacationMode;
+const savedAnn = localStorage.getItem("adoresAnnouncement") || "";
+if(document.getElementById("adminAnnouncementInput")) document.getElementById("adminAnnouncementInput").value = savedAnn;
