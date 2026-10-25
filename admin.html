@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard - ADORE'S PET</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body style="background:#f4f6f8; padding:20px 16px;">
+
+<div style="max-width:600px; margin:0 auto; padding-bottom:40px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; background:var(--teal); padding:16px 20px; border-radius:16px; color:white; margin-bottom:20px; box-shadow:0 4px 15px rgba(0,137,123,0.2);">
+        <div>
+            <h2 style="font-size:18px; font-weight:900;">Admin Dashboard</h2>
+            <span style="font-size:11px; color:#e0f2f1;">ADORE'S PET Control Panel</span>
+        </div>
+        <a href="index.html" style="background:#ef4444; color:#fff; text-decoration:none; padding:8px 14px; border-radius:10px; font-weight:700; font-size:13px;"><i class="fa-solid fa-store"></i> শপে যান</a>
+    </div>
+
+    <!-- VACATION MODE TOGGLE -->
+    <div class="admin-card">
+        <h2 style="margin-bottom:12px; font-size:18px; color:var(--teal);">Shop Mode / Vacation Setting</h2>
+        <div style="display:flex; align-items:center; justify-content:space-between; background:#f8fafc; padding:12px 16px; border-radius:12px; border:1px solid #e2e8f0;">
+            <div>
+                <div style="font-weight:800; font-size:14px; color:var(--text-dark);">সাময়িক বিরতি / ভ্যাকেশন মোড</div>
+                <div style="font-size:11px; color:#64748b;">চালু করলে হোমপেজে অর্ডারের বদলে বিরতির নোটিশ দেখাবে।</div>
+            </div>
+            <label style="cursor:pointer; display:flex; align-items:center; gap:8px;">
+                <input type="checkbox" id="adminVacationCheckbox" onchange="toggleVacationMode()" style="width:20px; height:20px; accent-color:var(--teal); cursor:pointer; margin:0;">
+                <span style="font-weight:800; font-size:13px; color:var(--teal);">অন / অফ</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- CHANGE PASSWORD -->
+    <div class="admin-card">
+        <h2 style="margin-bottom:12px; font-size:18px; color:var(--teal);">Change Admin Password</h2>
+        <label style="font-size:12px; font-weight:700;">New Password</label>
+        <input id="newAdminPasswordInput" type="password" placeholder="Enter new password">
+        <button onclick="changeAdminPassword()" class="admin-submit-btn" style="padding:10px; font-size:13px;">পাসওয়ার্ড আপডেট করুন</button>
+    </div>
+
+    <!-- ORDERS NOTIFICATION BOX -->
+    <div class="admin-notif-box">
+        <div class="admin-notif-header" onclick="toggleAdminOrderList()">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-bell" style="color:var(--teal); font-size:18px;"></i>
+                <span style="font-weight:800; font-size:15px; color:var(--text-dark);">নতুন অর্ডার নোটিফিকেশন</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <span class="notif-badge-pill" id="pendingNotifBadge">0 নতুন অর্ডার</span>
+                <i class="fa-solid fa-chevron-down" id="notifArrow" style="color:var(--text-muted); transition:transform 0.3s; transform: rotate(180deg);"></i>
+            </div>
+        </div>
+        <div id="collapsibleOrderPanel" style="display:block; margin-top:15px; border-top:1px dashed #cbd5e1; padding-top:12px;">
+            <div class="admin-order-tabs">
+                <button class="order-tab-btn active" id="tabPending" onclick="switchOrderTab('pending')">পেন্ডিং (<span id="countPending">0</span>)</button>
+                <button class="order-tab-btn" id="tabCompleted" onclick="switchOrderTab('completed')">কমপ্লিট (<span id="countCompleted">0</span>)</button>
+                <button class="order-tab-btn" id="tabCancelled" onclick="switchOrderTab('cancelled')">বাতিল (<span id="countCancelled">0</span>)</button>
+            </div>
+            <div id="adminOrdersListContainer" style="max-height:350px; overflow-y:auto;"></div>
+        </div>
+    </div>
+    
+    <!-- ADD NEW PRODUCT -->
+    <div class="admin-card">
+        <h2 style="margin-bottom:15px; font-size:18px; color:var(--teal);"><i class="fa-solid fa-circle-plus"></i> Add New Product</h2>
+        
+        <label style="font-size:13px; font-weight:700; color:#475569;">Product Name</label>
+        <input id="productName" placeholder="e.g. Dwarf Rabbit">
+
+        <div style="display:flex; gap:10px;">
+            <div style="flex:1;">
+                <label style="font-size:13px; font-weight:700; color:#475569;">Regular Price (৳)</label>
+                <input id="productPrice" type="number" placeholder="1000">
+            </div>
+            <div style="flex:1;">
+                <label style="font-size:13px; font-weight:700; color:#ef4444;">Discount Price (৳)</label>
+                <input id="productDiscountPrice" type="number" placeholder="850">
+            </div>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+            <div style="flex:1;">
+                <label style="font-size:13px; font-weight:700; color:#475569;">Stock Quantity</label>
+                <input id="productStock" type="number" placeholder="10">
+            </div>
+            <div style="flex:1;">
+                <label style="font-size:13px; font-weight:700; color:#0284c7;">Age / বয়স (Option)</label>
+                <input id="productAge" placeholder="e.g. 2 Months">
+            </div>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+            <div style="flex:1;">
+                <label style="font-size:13px; font-weight:700; color:#475569;">Color (Option)</label>
+                <input id="productColor" placeholder="e.g. White">
+            </div>
+            <div style="flex:1;">
+                <label style="font-size:13px; font-weight:700; color:#475569;">Category</label>
+                <select id="productCategory">
+                    <option>Rabbit</option>
+                    <option>Hamster</option>
+                    <option>Pet Food</option>
+                    <option>Accessories</option>
+                </select>
+            </div>
+        </div>
+
+        <label style="font-size:13px; font-weight:700; color:#475569;">Rating (e.g. 4.8)</label>
+        <input id="productRating" type="text" placeholder="4.8">
+
+        <label style="font-size:13px; font-weight:700; color:#475569;">Full Product Details</label>
+        <textarea id="productDesc" placeholder="Description..." style="height:80px; width:100%; padding:12px; border:1px solid #cbd5e1; border-radius:12px; outline:none; margin-bottom:14px;"></textarea>
+
+        <div style="background:#e0f2f1; padding:12px; border-radius:12px; border:1px solid var(--teal); margin-bottom:14px;">
+            <label style="font-size:13px; font-weight:800; color:var(--teal);">🔗 ছবির লিংক দিন (Image URL)</label>
+            <input id="imageUrl1" placeholder="Image 1 Link (https://...)" style="margin-bottom:6px;">
+            <input id="imageUrl2" placeholder="Image 2 Link (Optional)" style="margin-bottom:6px;">
+            <input id="imageUrl3" placeholder="Image 3 Link (Optional)" style="margin-bottom:10px;">
+
+            <label style="font-size:13px; font-weight:800; color:#dc2626;">🎥 ভিডিওর লিংক দিন (YouTube / FB Video URL)</label>
+            <input id="productVideoUrlInput" placeholder="https://youtube.com/..." style="margin-bottom:0;">
+        </div>
+
+        <button onclick="addProduct()" class="admin-submit-btn">Add Product</button>
+    </div>
+
+    <div class="admin-card">
+        <h2 style="margin-bottom:15px; font-size:18px; color:var(--teal);"><i class="fa-solid fa-boxes-stacked"></i> Manage Products</h2>
+        <div id="adminProducts"></div>
+    </div>
+</div>
+
+<!-- EDIT PRODUCT MODAL -->
+<div id="editModal" class="thankyou-overlay">
+    <div class="thankyou-card" style="text-align:left;">
+        <h2 style="font-size:18px; margin-bottom:10px; color:var(--teal); text-align:center;"><i class="fa-solid fa-pen-to-square"></i> Edit Product</h2>
+        <input type="hidden" id="editProductId">
+        <label style="font-size:12px; font-weight:700; color:#475569;">Product Name</label>
+        <input id="editProductName" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:10px; margin-top:4px; margin-bottom:10px; outline:none;">
+        <div style="display:flex; gap:10px;">
+            <div style="flex:1;"><label style="font-size:12px; font-weight:700;">Price (৳)</label><input id="editProductPrice" type="number" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:10px; margin-top:4px; margin-bottom:10px; outline:none;"></div>
+            <div style="flex:1;"><label style="font-size:12px; font-weight:700; color:#ef4444;">Discount (৳)</label><input id="editProductDiscountPrice" type="number" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:10px; margin-top:4px; margin-bottom:10px; outline:none;"></div>
+        </div>
+        <div style="display:flex; gap:10px;">
+            <div style="flex:1;"><label style="font-size:12px; font-weight:700;">Stock</label><input id="editProductStock" type="number" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:10px; margin-top:4px; margin-bottom:10px; outline:none;"></div>
+            <div style="flex:1;"><label style="font-size:12px; font-weight:700;">Age</label><input id="editProductAge" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:10px; margin-top:4px; margin-bottom:10px; outline:none;"></div>
+        </div>
+        <label style="font-size:12px; font-weight:700;">Image URL</label>
+        <input id="editProductImgUrl" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:10px; margin-top:4px; margin-bottom:10px; outline:none;">
+        <label style="font-size:12px; font-weight:700; color:#dc2626;">Video URL</label>
+        <input id="editProductVideoUrl" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:10px; margin-top:4px; margin-bottom:12px; outline:none;">
+        <div style="display:flex; gap:10px;">
+            <button onclick="saveEditProduct()" class="thankyou-btn" style="margin:0; flex:1;">Save Changes</button>
+            <button onclick="closeEditModal()" class="thankyou-btn" style="margin:0; flex:1; background:#64748b;">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
