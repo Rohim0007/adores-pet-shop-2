@@ -20,13 +20,13 @@
                 <p class="logo-sub">Loved by pets, trusted by owners</p>
             </div>
         </div>
-        <button class="live-badge" onclick="openSupportModal()"><i class="fa-solid fa-headset"></i> Support</button>
+        <button class="live-badge" onclick="openSupportModal()"><i class="fa-solid fa-headset"></i> Live Site</button>
     </div>
     
     <!-- SEARCH BAR -->
     <div class="search-box">
         <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input type="text" id="searchInput" placeholder="খাবারের নাম, খেলনা বা প্রোডাক্ট খুঁজুন..." oninput="searchProducts()">
+        <input type="text" id="searchInput" placeholder="Search food, toys, grooming..." oninput="searchProducts()">
     </div>
 </div>
 
@@ -38,17 +38,9 @@
 <!-- MAIN CONTAINER -->
 <div class="container">
 
-    <!-- HERO BANNER (Fixed with original shop.css class) -->
+    <!-- HERO BANNER -->
     <div class="hero-image-banner">
         <img src="https://i.postimg.cc/CdyZqRY5/file-000000006ecc71f899e85a5cc31b0405.png" alt="Banner">
-    </div>
-
-    <!-- TRUST BADGES -->
-    <div class="trust-badges-row" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px;">
-        <div style="background: #fff; padding: 10px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: #334155;"><i class="fa-solid fa-shield-cat" style="color: #00897b; font-size: 16px;"></i><span>খাঁটি খাবার ও এক্সেসরিজ</span></div>
-        <div style="background: #fff; padding: 10px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: #334155;"><i class="fa-solid fa-truck-fast" style="color: #00897b; font-size: 16px;"></i><span>সারাদেশে হোম ডেলিভারি</span></div>
-        <div style="background: #fff; padding: 10px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: #334155;"><i class="fa-solid fa-seedling" style="color: #00897b; font-size: 16px;"></i><span>নিরাপদ ও প্রাকৃতিক খামার</span></div>
-        <div style="background: #fff; padding: 10px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: #334155;"><i class="fa-solid fa-headset" style="color: #00897b; font-size: 16px;"></i><span>বিশ্বস্ত কাস্টমার সাপোর্ট</span></div>
     </div>
 
     <!-- VACATION MODE NOTICE BOX -->
@@ -60,11 +52,11 @@
 
     <!-- NORMAL SHOP CONTENT -->
     <div id="normalHomeContent">
-        <!-- CATEGORIES CHIPS -->
+        <!-- CATEGORIES SECTION -->
         <div class="category-section">
             <div class="category-header-row">
-                <h3>ক্যাটাগরি সমূহ</h3>
-                <span class="show-all" onclick="goHome()">সব দেখুন</span>
+                <h3>Categories</h3>
+                <span class="show-all" onclick="goHome()">Showing All</span>
             </div>
             <div class="category-chips">
                 <button class="chip-btn" onclick="selectCategory('Rabbit', this)"><i class="fa-solid fa-paw"></i> Rabbit</button>
@@ -75,8 +67,8 @@
         </div>
 
         <!-- PRODUCTS GRID -->
-        <div class="products-header-row" style="margin-top:20px;">
-            <h3 id="productsTitle">জনপ্রিয় প্রোডাক্ট সমূহ</h3>
+        <div class="products-header-row">
+            <h3 id="productsTitle">Popular Pet Supplies</h3>
         </div>
         <div class="products-grid" id="productsGrid"></div>
     </div>
