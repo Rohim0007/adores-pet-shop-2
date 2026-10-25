@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADORE'S PET</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+
+<header class="app-header">
+<div class="header-inner">
+    <div class="logo-area" onclick="goHome()">
+        <img src="https://i.postimg.cc/TyKwf7KS/20261008-191945.png" alt="Logo" class="brand-logo-img">
+        <div class="logo-text-box">
+            <span class="logo-text">ADORE'S PET</span>
+            <span class="logo-sub">Loved by pets, trusted by owners</span>
+        </div>
+    </div>
+    <span class="live-badge" onclick="handleSecretClick()"><span class="live-dot"></span> Live Site</span>
+</div>
+<div class="search-box">
+    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+    <input id="searchInput" type="text" placeholder="Search food, toys, grooming..." oninput="searchProducts()">
+</div>
+</header>
+
+<main class="container">
+<div id="vacationBoxContainer" style="display:none; background:white; border-radius:24px; padding:32px 24px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.08); margin-top:20px; border:2px dashed #ef4444;">
+    <div style="width:75px; height:75px; background:#fef2f2; color:#ef4444; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; margin:0 auto 18px;">
+        <i class="fa-solid fa-mug-hot"></i>
+    </div>
+    <h2 style="font-size:20px; font-weight:900; color:#1e293b; margin-bottom:8px;">সাময়িক বিরতিতে আছি! 🌴</h2>
+    <p style="font-size:13.5px; color:#64748b; line-height:1.6; margin-bottom:24px;">আমরা বর্তমানে কিছুদিনের জন্য বাইরে আছি। খুব শীঘ্রই ফিরে আসবো!</p>
+</div>
+
+<div id="normalHomeContent">
+    <div class="hero-image-banner">
+        <img src="https://i.postimg.cc/JzmwDZBp/file-000000004a4482438eebd37b7fd9db5f.png" alt="Banner">
+    </div>
+
+    <section class="category-section">
+        <div class="category-header-row">
+            <h3>Categories</h3>
+            <span class="show-all" onclick="goHome()">Showing All</span>
+        </div>
+        <div class="category-chips">
+            <button class="chip-btn" onclick="selectCategory('Rabbit',this)">Rabbit</button>
+            <button class="chip-btn" onclick="selectCategory('Hamster',this)">Hamster</button>
+            <button class="chip-btn" onclick="selectCategory('Pet Food',this)">Pet Food</button>
+            <button class="chip-btn" onclick="selectCategory('Accessories',this)">Accessories</button>
+        </div>
+    </section>
+
+    <section class="products-section">
+        <div class="products-header-row">
+            <h3 id="productsTitle">Popular Pet Supplies</h3>
+        </div>
+        <div id="productsGrid" class="products-grid"></div>
+    </section>
+</div>
+</main>
+
+<nav class="bottom-nav">
+    <button class="nav-item active" onclick="goHome()"><i class="fa-solid fa-store"></i><span>Shop</span></button>
+    <button class="nav-item" onclick="openCart()">
+        <div class="nav-cart-icon-wrap"><i class="fa-solid fa-cart-shopping"></i><span class="nav-cart-badge" id="cartCount">0</span></div>
+        <span>My Cart</span>
+    </button>
+    <button class="nav-item" onclick="openOrdersModal()"><i class="fa-solid fa-receipt"></i><span>My Orders</span></button>
+    <button class="nav-item" onclick="openSupportModal()"><i class="fa-solid fa-headset" style="color:var(--teal);"></i><span>Support</span></button>
+</nav>
+
+<!-- PRODUCT DETAILS MODAL -->
+<div id="productDetailModal" class="thankyou-overlay">
+    <div class="thankyou-card" style="text-align:left;">
+        <div style="width:40px; height:5px; background:#cbd5e1; border-radius:10px; margin:0 auto 12px;"></div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h2 id="modalProdName" style="font-size:17px; color:var(--teal); font-weight:900;">Product Name</h2>
+            <button onclick="closeProductModal()" style="background:#e2e8f0; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer; font-weight:bold;">✕</button>
+        </div>
+        <div style="width:100%; aspect-ratio:1/1; background:#ffffff; border-radius:16px; overflow:hidden; margin-bottom:12px; display:flex; align-items:center; justify-content:center; border:1px solid #e2e8f0;">
+            <img id="modalMainImg" src="" style="width:100%; height:100%; object-fit:contain;" alt="">
+        </div>
+        <div id="modalThumbnails" style="display:none; gap:8px; margin-bottom:12px; overflow-x:auto; padding-bottom:4px;"></div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:#f8fafc; padding:10px 12px; border-radius:12px; border:1px solid #e2e8f0;">
+            <div id="modalPriceContainer"></div>
+            <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                <span id="modalProdStock" class="stock-pill-badge stock-in">In Stock: 0 Pcs</span>
+                <span id="modalProdAge" class="age-pill-badge" style="display:none;"></span>
+            </div>
+        </div>
+        <button id="modalAddCartBtn" onclick="addModalProductToCart()" class="thankyou-btn" style="margin-bottom:12px; font-size:16px;"><i class="fa-solid fa-cart-plus"></i> কার্টে যোগ করুন</button>
+        
+        <!-- VIDEO LINK BUTTON -->
+        <div id="modalVideoLinkContainer" style="display:none; margin-bottom:14px;">
+            <a id="modalVideoAnchor" href="" target="_blank" style="display:flex; align-items:center; justify-content:center; gap:8px; background:#fee2e2; color:#dc2626; border:1.5px dashed #f87171; padding:11px; border-radius:12px; font-weight:800; font-size:14px; text-decoration:none;">
+                <i class="fa-solid fa-circle-play" style="font-size:18px;"></i> পণ্যটির ভিডিও দেখুন
+            </a>
+        </div>
+
+        <div style="border-top:1px dashed #cbd5e1; padding-top:12px;">
+            <div style="font-size:13px; font-weight:800; color:var(--teal); margin-bottom:6px;"><i class="fa-solid fa-circle-info"></i> পণ্য সম্পর্কে বিস্তারিত</div>
+            <div id="modalProdDetails" style="font-size:13px; color:#334155; line-height:1.6; background:#f8fafc; padding:12px; border-radius:12px; border:1px solid #e2e8f0; white-space:pre-line;"></div>
+        </div>
+    </div>
+</div>
+
+<!-- SUPPORT MODAL -->
+<div id="supportModal" class="thankyou-overlay">
+    <div class="thankyou-card">
+        <div class="thankyou-icon" style="background:#e0f2f1; color:var(--teal);"><i class="fa-solid fa-headset"></i></div>
+        <h2 style="font-size:18px; color:var(--text-dark); margin-bottom:6px;">Help & Support</h2>
+        <a href="https://wa.me/message/NTZHEUXXC6DTN1" target="_blank" class="support-link-card wa-card"><i class="fa-brands fa-whatsapp"></i> WhatsApp Support</a>
+        <a href="https://www.facebook.com/share/1dPRm7hNg7/" target="_blank" class="support-link-card fb-card"><i class="fa-brands fa-facebook-f"></i> Facebook Page</a>
+        <button onclick="closeSupportModal()" class="thankyou-btn" style="background:#64748b; margin-top:10px;">বন্ধ করুন</button>
+    </div>
+</div>
+
+<!-- CART OVERLAY -->
+<div id="cartOverlay" class="cart-overlay">
+<div class="cart-box">
+    <div class="cart-header"><h2>MY CART</h2><button class="close-btn" onclick="closeCart()">✕</button></div>
+    <div class="cart-body-content">
+        <div id="cartItems"></div>
+        <div class="cart-total">
+            <div class="total-row"><span>Subtotal</span><strong>৳<span id="subtotal">0</span></strong></div>
+            <div class="total-row"><span>Delivery Charge</span><strong>৳<span id="deliveryCharge">0</span></strong></div>
+            <div class="total-row grand-total"><span>Total</span><strong>৳<span id="grandTotal">0</span></strong></div>
+        </div>
+        <div class="order-form">
+            <h3>Order Information</h3>
+            <input id="customerName" type="text" placeholder="Your Name">
+            <input id="customerPhone" type="tel" placeholder="Phone Number">
+            <select id="customerDistrict" onchange="updateDelivery()">
+                <option value="">Select District</option>
+                <option>Chattogram</option><option>Dhaka</option><option>Gazipur</option><option>Sylhet</option><option>Rajshahi</option><option>Khulna</option><option>Barishal</option><option>Rangpur</option><option>Mymensingh</option><option>Comilla</option>
+            </select>
+            <textarea id="customerAddress" placeholder="Full Address" style="width:100%; padding:12px; border:1px solid #cbd5e1; border-radius:10px; margin-bottom:10px; outline:none; min-height:80px;"></textarea>
+            <button class="order-btn" onclick="placeOrder()">PLACE ORDER</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- USER ORDERS MODAL -->
+<div id="ordersModal" class="thankyou-overlay">
+    <div class="thankyou-card" style="text-align:left;">
+        <h2 style="font-size:18px; margin-bottom:15px; color:var(--teal); text-align:center;">My Orders</h2>
+        <div id="userOrdersList"></div>
+        <button onclick="closeOrdersModal()" class="thankyou-btn" style="margin-top:15px;">বন্ধ করুন</button>
+    </div>
+</div>
+
+<!-- VOUCHER MODAL -->
+<div id="voucherModal" class="voucher-modal">
+    <div class="voucher-box" id="printableVoucherBox">
+        <div class="voucher-header">
+            <div class="voucher-title">ADORE'S PET</div>
+            <div class="voucher-subtitle">Official Order Voucher</div>
+        </div>
+        <div class="voucher-info-grid" id="voucherCustomerInfo"></div>
+        <table class="voucher-table">
+            <thead><tr><th>Product Name</th><th>Qty</th><th>Price</th></tr></thead>
+            <tbody id="voucherTableBody"></tbody>
+        </table>
+        <div class="voucher-totals" id="voucherTotalsBox"></div>
+        <div class="voucher-actions no-print">
+            <button onclick="window.print()" class="thankyou-btn" style="margin:0; background:var(--teal);"><i class="fa-solid fa-print"></i> প্রিন্ট করুন</button>
+            <button onclick="closeVoucherModal()" class="thankyou-btn" style="margin:0; background:#64748b;">বন্ধ করুন</button>
+        </div>
+    </div>
+</div>
+
+<!-- SUCCESS & ALERT MODALS -->
+<div id="thankyouModal" class="thankyou-overlay">
+    <div class="thankyou-card">
+        <div class="thankyou-icon"><i class="fa-solid fa-circle-check"></i></div>
+        <h2>ধন্যবাদ!</h2>
+        <p id="successPopupText">আপনার কাজটি সফল হয়েছে।</p>
+        <button onclick="closeThankYouModal()" class="thankyou-btn" style="margin-top:15px;">ঠিক আছে</button>
+    </div>
+</div>
+
+<div id="customAlertModal" class="thankyou-overlay">
+    <div class="thankyou-card">
+        <div class="thankyou-icon" style="background:#fef3c7; color:#d97706;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <h2>সতর্কতা</h2>
+        <p id="customAlertMessage">একটি ত্রুটি ঘটেছে।</p>
+        <button onclick="closeCustomAlert()" class="thankyou-btn" style="margin-top:15px;">ঠিক আছে</button>
+    </div>
+</div>
+
+<!-- ADMIN LOGIN MODAL -->
+<div id="adminLoginModal" class="thankyou-overlay">
+    <div class="thankyou-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <h2 style="font-size:18px; color:var(--teal);">Admin Login</h2>
+            <button onclick="closeAdminLoginModal()" style="background:#e2e8f0; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer; font-weight:bold;">✕</button>
+        </div>
+        <input id="modalAdminPassword" type="password" placeholder="Enter Password" style="width:100%; padding:12px; border:1px solid #cbd5e1; border-radius:10px; margin-bottom:8px; outline:none;">
+        <div style="text-align: right; margin-bottom: 15px;">
+            <span onclick="forgotPassword()" style="font-size: 12px; color: var(--teal); cursor: pointer; font-weight: 700;">পাসওয়ার্ড ভুলে গেছেন?</span>
+        </div>
+        <button onclick="submitAdminLogin()" class="thankyou-btn">Login</button>
+    </div>
+</div>
+
+<!-- SCRIPT FILE LINK -->
+<script src="script.js"></script>
+</body>
+</html>
