@@ -1,5 +1,5 @@
 /* =====================================================
-   ADORE'S PET - CHECKOUT.JS (3-Step Checkout & Districts)
+   ADORE'S PET - CHECKOUT.JS (Fixed & Fully Integrated)
 ===================================================== */
 
 function loadDistrictsDropdown(){
@@ -73,6 +73,9 @@ function calculateDeliveryCharge(){
         } else {
             delivery = (dist === "Dhaka") ? 80 : 150;
         }
+    } else {
+        // Default delivery charge if district not selected yet
+        delivery = isLive ? 400 : 80;
     }
 
     document.getElementById("checkoutSubtotal").innerText = subtotal;
@@ -141,11 +144,21 @@ function confirmOrderSubmit(){
     });
     saveMyOrders();
 
+    // Send Email via EmailJS with product items properly included
     emailjs.send("service_5am5end", "template_45wz8f9", {
-        customer_name: name, customer_phone: phone, district: dist, address: fullAddress, order_items: itemsHtml, subtotal: sub, delivery_charge: del, total, trx_id: trxId || 'None'
+        customer_name: name, 
+        customer_phone: phone, 
+        district: dist, 
+        address: fullAddress, 
+        order_items: itemsHtml, 
+        subtotal: sub, 
+        delivery_charge: del, 
+        total: total, 
+        trx_id: trxId || 'None'
     }).catch(e => console.log(e));
 
-    const waMsg = `🛒 *New Order - ADORE'S PET*\n🆔 ${orderId}\n👤 ${name}\n📞 ${phone}\n📍 ${dist} (${thana})\n🏠 ${addr}\n💳 TrxID: ${trxId || 'N/A'}\n💰 Total: ৳${total}`;
+    // WhatsApp Notification with full product list
+    const waMsg = `🛒 *New Order - ADORE'S PET*\n🆔 ${orderId}\n👤 ${name}\n📞 ${phone}\n📍 ${dist} (${thana})\n🏠 ${addr}\n\n📦 *Products:*\n${itemsTxt}\n🚚 Delivery: ৳${del}\n💳 TrxID: ${trxId || 'N/A'}\n💰 Total: ৳${total}`;
     window.open(`https://wa.me/8801681578599?text=` + encodeURIComponent(waMsg), '_blank');
 
     cart = [];
@@ -153,5 +166,7 @@ function confirmOrderSubmit(){
     updateCartBadge();
     renderProducts();
     closeCheckoutModal();
-    showSuccessPopup("অর্ডার সফলভাবে জমা হয়েছে! ধন্যবাদ।");
+    
+    // Show Success Popup properly in the middle of the screen
+    showSuccessPopup(`আপনার অর্ডারটি সফলভাবে সম্পন্ন হয়েছে! 🎉<br><b style="color:var(--teal);">Order ID: ${orderId}</b>`);
 }
