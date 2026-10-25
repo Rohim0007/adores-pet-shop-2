@@ -24,8 +24,8 @@
         <h2 style="margin-bottom:12px; font-size:18px; color:#00897b;"><i class="fa-solid fa-image"></i> Welcome Popup Banner</h2>
         <label style="font-size:12px; font-weight:700; color:#475569;">পপআপ ছবির লিংক (Image URL)</label>
         <input id="adminWelcomePopupImg" placeholder="https://..." class="form-input" style="margin-bottom:8px;">
-        <label style="font-size:12px; font-weight:700; color:#475569;">প্রোডাক্ট আইডি দিন (যে প্রোডাক্ট পপআপে দেখাবেন)</label>
-        <input id="adminWelcomePopupLink" placeholder="যেমন: 1712345678 বা 1" class="form-input" style="margin-bottom:12px;">
+        <label style="font-size:12px; font-weight:700; color:#475569;">পপআপে ক্লিক করলে কোথায় যাবে (Link URL - অপশনাল)</label>
+        <input id="adminWelcomePopupLink" placeholder="https://..." class="form-input" style="margin-bottom:12px;">
         <button onclick="saveWelcomePopupData()" class="admin-submit-btn" style="padding:10px; font-size:13px;">পপআপ ব্যানার সেভ করুন</button>
     </div>
 
@@ -163,7 +163,7 @@
     </div>
 </div>
 
-<!-- EDIT PRODUCT MODAL -->
+<!-- EDIT PRODUCT MODAL WITH IMAGE PREVIEW -->
 <div id="editModal" class="thankyou-overlay">
     <div class="thankyou-card" style="text-align:left;">
         <h2 style="font-size:18px; margin-bottom:10px; color:#00897b; text-align:center;"><i class="fa-solid fa-pen-to-square"></i> Edit Product</h2>
@@ -173,11 +173,6 @@
         </div>
 
         <input type="hidden" id="editProductId">
-        
-        <!-- Product ID Display for Easy Copying -->
-        <label style="font-size:12px; font-weight:700; color:#00897b;">Product ID (পপআপে ব্যবহারের জন্য কপি করুন)</label>
-        <input id="editProductDisplayId" class="form-input" readonly style="background:#f1f5f9; font-weight:bold; color:#0f172a; text-align:center;">
-
         <label style="font-size:12px; font-weight:700;">Product Name</label>
         <input id="editProductName" class="form-input">
         <div style="display:flex; gap:10px;">
