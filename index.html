@@ -11,22 +11,22 @@
 <body>
 
 <!-- TOP HEADER -->
-<div class="top-header" style="background: var(--teal, #00897b); color: white; padding: 12px 16px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0, 137, 123, 0.25);">
-    <div style="max-width: 600px; margin: auto; display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-        <div class="brand-box" onclick="handleSecretClick()" style="cursor:pointer; display: flex; align-items: center; gap: 10px;" title="Admin Secret Click">
-            <img src="https://i.postimg.cc/CdyZqRY5/file-000000006ecc71f899e85a5cc31b0405.png" alt="Logo" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover; background: white; border: 2px solid white;">
-            <div>
-                <h1 style="font-size: 18px; font-weight: 900; margin: 0;">ADORE'S PET</h1>
-                <p style="font-size: 11px; color: #e0f2f1; margin: 0;">Loved by pets, trusted by owners</p>
+<div class="app-header">
+    <div class="header-inner">
+        <div class="logo-area" onclick="handleSecretClick()" title="Admin Secret Click">
+            <img src="https://i.postimg.cc/CdyZqRY5/file-000000006ecc71f899e85a5cc31b0405.png" alt="Logo" class="brand-logo-img">
+            <div class="logo-text-box">
+                <h1 class="logo-text">ADORE'S PET</h1>
+                <p class="logo-sub">Loved by pets, trusted by owners</p>
             </div>
         </div>
-        <button class="live-site-btn" onclick="openSupportModal()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-headset"></i> Support</button>
+        <button class="live-badge" onclick="openSupportModal()"><i class="fa-solid fa-headset"></i> Support</button>
     </div>
     
     <!-- SEARCH BAR -->
-    <div style="max-width: 600px; margin: auto; position: relative; display: flex; align-items: center;">
-        <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 14px; color: #94a3b8; font-size: 14px;"></i>
-        <input type="text" id="searchInput" placeholder="খাবারের নাম, খেলনা বা প্রোডাক্ট খুঁজুন..." oninput="searchProducts()" style="width: 100%; padding: 10px 14px 10px 38px; background: white; border: none; border-radius: 12px; font-size: 13.5px; outline: none; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+    <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="searchInput" placeholder="খাবারের নাম, খেলনা বা প্রোডাক্ট খুঁজুন..." oninput="searchProducts()">
     </div>
 </div>
 
@@ -36,11 +36,11 @@
 </div>
 
 <!-- MAIN CONTAINER -->
-<div class="container" style="max-width: 600px; margin: auto; padding: 16px;">
+<div class="container">
 
-    <!-- HERO BANNER -->
-    <div style="width: 100%; margin-bottom: 20px; border-radius: 18px; overflow: hidden; box-shadow: 0 6px 18px rgba(0, 137, 123, 0.12); background: #ffffff; border: 1px solid #e2e8f0;">
-        <img src="https://i.postimg.cc/CdyZqRY5/file-000000006ecc71f899e85a5cc31b0405.png" alt="Banner" style="width: 100%; height: auto; display: block; object-fit: contain;">
+    <!-- HERO BANNER (Fixed with original shop.css class) -->
+    <div class="hero-image-banner">
+        <img src="https://i.postimg.cc/CdyZqRY5/file-000000006ecc71f899e85a5cc31b0405.png" alt="Banner">
     </div>
 
     <!-- TRUST BADGES -->
@@ -61,43 +61,48 @@
     <!-- NORMAL SHOP CONTENT -->
     <div id="normalHomeContent">
         <!-- CATEGORIES CHIPS -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <h3 style="font-size: 16px; font-weight: 800; color: #1e293b;">ক্যাটাগরি সমূহ</h3>
-            <span onclick="goHome()" style="color:#00897b; font-weight:700; font-size:13px; cursor:pointer;">সব দেখুন</span>
-        </div>
-        <div class="category-chips-row" style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 20px;">
-            <button class="chip-btn" onclick="selectCategory('Rabbit', this)"><i class="fa-solid fa-paw"></i> Rabbit</button>
-            <button class="chip-btn" onclick="selectCategory('Hamster', this)"><i class="fa-solid fa-shield-dog"></i> Hamster</button>
-            <button class="chip-btn" onclick="selectCategory('Pet Food', this)"><i class="fa-solid fa-bone"></i> Pet Food</button>
-            <button class="chip-btn" onclick="selectCategory('Accessories', this)"><i class="fa-solid fa-box-archive"></i> Accessories</button>
+        <div class="category-section">
+            <div class="category-header-row">
+                <h3>ক্যাটাগরি সমূহ</h3>
+                <span class="show-all" onclick="goHome()">সব দেখুন</span>
+            </div>
+            <div class="category-chips">
+                <button class="chip-btn" onclick="selectCategory('Rabbit', this)"><i class="fa-solid fa-paw"></i> Rabbit</button>
+                <button class="chip-btn" onclick="selectCategory('Hamster', this)"><i class="fa-solid fa-shield-dog"></i> Hamster</button>
+                <button class="chip-btn" onclick="selectCategory('Pet Food', this)"><i class="fa-solid fa-bone"></i> Pet Food</button>
+                <button class="chip-btn" onclick="selectCategory('Accessories', this)"><i class="fa-solid fa-box-archive"></i> Accessories</button>
+            </div>
         </div>
 
         <!-- PRODUCTS GRID -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <h3 id="productsTitle" style="font-size: 16px; font-weight: 800; color: #1e293b;">জনপ্রিয় প্রোডাক্ট সমূহ</h3>
+        <div class="products-header-row" style="margin-top:20px;">
+            <h3 id="productsTitle">জনপ্রিয় প্রোডাক্ট সমূহ</h3>
         </div>
-        <div class="products-grid" id="productsGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px;"></div>
+        <div class="products-grid" id="productsGrid"></div>
     </div>
 </div>
 
 <!-- BOTTOM NAV -->
-<div class="bottom-nav" style="position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #e2e8f0; z-index: 1000; max-width: 600px; margin: 0 auto;">
-    <button class="bottom-nav-item active" onclick="goHome()" style="background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:3px; color:#00897b; font-size:11px; font-weight:700; cursor:pointer;"><i class="fa-solid fa-store" style="font-size:18px;"></i><span>Shop</span></button>
-    <button class="bottom-nav-item" onclick="openCartModal()" style="background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:3px; color:#64748b; font-size:11px; font-weight:700; cursor:pointer; position:relative;">
-        <i class="fa-solid fa-cart-shopping" style="font-size:18px;"></i><span>My Cart</span>
-        <span id="cartCount" class="cart-badge-dot" style="display:none; position:absolute; top:-4px; right:4px; background:#ef4444; color:white; font-size:9px; font-weight:900; width:16px; height:16px; border-radius:50%; align-items:center; justify-content:center;">0</span>
+<div class="bottom-nav">
+    <button class="nav-item active" onclick="goHome()"><i class="fa-solid fa-store"></i><span>Shop</span></button>
+    <button class="nav-item" onclick="openCartModal()">
+        <div class="nav-cart-icon-wrap" style="position:relative;">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span id="cartCount" class="nav-cart-badge">0</span>
+        </div>
+        <span>My Cart</span>
     </button>
-    <button class="bottom-nav-item" onclick="openOrdersModal()" style="background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:3px; color:#64748b; font-size:11px; font-weight:700; cursor:pointer;"><i class="fa-solid fa-receipt" style="font-size:18px;"></i><span>My Orders</span></button>
-    <button class="bottom-nav-item" onclick="openSupportModal()" style="background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:3px; color:#64748b; font-size:11px; font-weight:700; cursor:pointer;"><i class="fa-solid fa-headset" style="font-size:18px;"></i><span>Support</span></button>
+    <button class="nav-item" onclick="openOrdersModal()"><i class="fa-solid fa-receipt"></i><span>My Orders</span></button>
+    <button class="nav-item" onclick="openSupportModal()"><i class="fa-solid fa-headset"></i><span>Support</span></button>
 </div>
 
 <!-- WELCOME POPUP MODAL -->
-<div id="welcomePopupModal" class="thankyou-overlay" style="display:none; position:fixed; inset:0; background:rgba(15, 23, 42, 0.75); z-index:35000; align-items:center; justify-content:center; padding:16px;">
+<div id="welcomePopupModal" class="thankyou-overlay app-success-overlay" style="display:none; position:fixed; inset:0; background:rgba(15, 23, 42, 0.75); z-index:35000; align-items:center; justify-content:center; padding:16px;">
     <div style="background:transparent; max-width:400px; width:100%; position:relative; text-align:center;">
         <div id="welcomePopupCardWrapper" style="border-radius:20px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,0.4); background:#fff; padding-bottom:12px;">
             <img id="welcomePopupImg" src="" alt="Welcome Banner" style="width:100%; height:auto; display:block; max-height:65vh; object-fit:contain; cursor:pointer;" onclick="handlePopupImageClick()">
             <div style="padding:10px 16px 4px;">
-                <button onclick="handlePopupImageClick()" style="width:100%; background:#00897b; color:#fff; border:none; padding:12px; border-radius:12px; font-weight:900; font-size:15px; cursor:pointer; box-shadow:0 4px 12px rgba(0,137,123,0.3);">
+                <button onclick="handlePopupImageClick()" style="width:100%; background:var(--teal); color:#fff; border:none; padding:12px; border-radius:12px; font-weight:900; font-size:15px; cursor:pointer; box-shadow:0 4px 12px rgba(0,137,123,0.3);">
                     🔥 এখনই কিনুন
                 </button>
             </div>
@@ -110,7 +115,7 @@
 <div id="productDetailModal" class="thankyou-overlay">
     <div class="thankyou-card" style="text-align:left; max-width:450px; padding:20px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <h2 id="modalProdName" style="font-size:18px; font-weight:900; color:#00897b;">Product Name</h2>
+            <h2 id="modalProdName" style="font-size:18px; font-weight:900; color:var(--teal);">Product Name</h2>
             <button onclick="closeProductModal()" style="background:#e2e8f0; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer;">✕</button>
         </div>
         
@@ -137,7 +142,7 @@
         </div>
 
         <div style="display:flex; gap:10px;">
-            <button onclick="addModalProductToCart()" class="thankyou-btn" style="margin:0; flex:1; background:#00897b;">কার্টে যোগ করুন 🛒</button>
+            <button onclick="addModalProductToCart()" class="thankyou-btn" style="margin:0; flex:1; background:var(--teal);">কার্টে যোগ করুন 🛒</button>
             <button onclick="closeProductModal()" class="thankyou-btn" style="margin:0; flex:1; background:#64748b;">বন্ধ করুন</button>
         </div>
     </div>
@@ -147,7 +152,7 @@
 <div id="cartStepModal" class="thankyou-overlay">
     <div class="thankyou-card" style="text-align:left;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px dashed #cbd5e1; padding-bottom:8px;">
-            <h2 style="font-size:17px; color:#00897b; font-weight:900;"><i class="fa-solid fa-cart-shopping"></i> My Cart (Step 1/3)</h2>
+            <h2 style="font-size:17px; color:var(--teal); font-weight:900;"><i class="fa-solid fa-cart-shopping"></i> My Cart (Step 1/3)</h2>
             <button onclick="closeCartModal()" style="background:#e2e8f0; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer;">✕</button>
         </div>
         <div id="cartItemsContainer" style="max-height:50vh; overflow-y:auto;"></div>
@@ -155,7 +160,7 @@
             <span>মোট পণ্যের দাম:</span>
             <span>৳<span id="cartSubtotalText">0</span></span>
         </div>
-        <button onclick="window.location.href='checkout.html'" class="admin-submit-btn" style="margin-top:15px; background:#00897b; font-size:15px;">➔ Checkout (ডেলিভারি তথ্য দিন)</button>
+        <button onclick="window.location.href='checkout.html'" class="admin-submit-btn" style="margin-top:15px; background:var(--teal); font-size:15px;">➔ Checkout (ডেলিভারি তথ্য দিন)</button>
     </div>
 </div>
 
@@ -163,7 +168,7 @@
 <div id="ordersModal" class="thankyou-overlay">
     <div class="thankyou-card" style="text-align:left;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px dashed #cbd5e1; padding-bottom:10px;">
-            <h2 style="font-size:17px; color:#00897b; font-weight:900;"><i class="fa-solid fa-receipt"></i> আমার অর্ডারসমূহ</h2>
+            <h2 style="font-size:17px; color:var(--teal); font-weight:900;"><i class="fa-solid fa-receipt"></i> আমার অর্ডারসমূহ</h2>
             <button onclick="closeOrdersModal()" style="background:#e2e8f0; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer;">✕</button>
         </div>
         <div id="userOrdersList" style="max-height:60vh; overflow-y:auto;"></div>
@@ -175,7 +180,7 @@
 <div id="voucherModal" class="thankyou-overlay">
     <div class="thankyou-card" style="text-align:left; max-width:400px;">
         <div style="text-align:center; margin-bottom:10px;">
-            <h2 style="font-size:18px; font-weight:900; color:#00897b;">ADORE'S PET VOUCHER</h2>
+            <h2 style="font-size:18px; font-weight:900; color:var(--teal);">ADORE'S PET VOUCHER</h2>
             <p style="font-size:11.5px; color:#64748b;">Official Order Invoice</p>
         </div>
         <div id="voucherCustomerInfo" style="font-size:12px; background:#f8fafc; padding:10px; border-radius:8px; margin-bottom:10px; line-height:1.4; border:1px solid #e2e8f0;"></div>
@@ -199,12 +204,12 @@
 <!-- SUPPORT MODAL -->
 <div id="supportModal" class="thankyou-overlay">
     <div class="thankyou-card" style="text-align:center; max-width:350px;">
-        <div style="width:60px; height:60px; background:#e0f2f1; color:#00897b; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; margin:0 auto 12px;">
+        <div style="width:60px; height:60px; background:#e0f2f1; color:var(--teal); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; margin:0 auto 12px;">
             <i class="fa-solid fa-headset"></i>
         </div>
         <h2 style="font-size:18px; font-weight:900; color:#1e293b; margin-bottom:6px;">Customer Support</h2>
         <p style="font-size:13px; color:#64748b; margin-bottom:15px;">যেকোনো প্রয়োজনে আমাদের সরাসরি কল করুন বা WhatsApp করুন।</p>
-        <a href="tel:01681578599" style="display:block; background:#00897b; color:#fff; text-decoration:none; padding:10px; border-radius:10px; font-weight:800; font-size:14px; margin-bottom:8px;"><i class="fa-solid fa-phone"></i> Call: 01681578599</a>
+        <a href="tel:01681578599" style="display:block; background:var(--teal); color:#fff; text-decoration:none; padding:10px; border-radius:10px; font-weight:800; font-size:14px; margin-bottom:8px;"><i class="fa-solid fa-phone"></i> Call: 01681578599</a>
         <button onclick="closeSupportModal()" class="admin-submit-btn" style="background:#64748b;">বন্ধ করুন</button>
     </div>
 </div>
@@ -217,20 +222,20 @@
         </div>
         <h2 style="font-size:18px; color:#1e293b; margin-bottom:8px;">সফল!</h2>
         <p id="customAlertMessage" style="font-size:13.5px; color:#64748b; line-height:1.5; margin-bottom:20px;"></p>
-        <button onclick="closeCustomAlert()" class="admin-submit-btn" style="background:#00897b;">ঠিক আছে</button>
+        <button onclick="closeCustomAlert()" class="admin-submit-btn" style="background:var(--teal);">ঠিক আছে</button>
     </div>
 </div>
 
 <!-- SUCCESS THANKYOU MODAL -->
 <div id="thankyouModal" class="thankyou-overlay">
     <div class="thankyou-card" style="text-align:center;">
-        <div style="width:60px; height:60px; background:#e0f2f1; color:#00897b; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; margin:0 auto 15px;">
+        <div style="width:60px; height:60px; background:#e0f2f1; color:var(--teal); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; margin:0 auto 15px;">
             <i class="fa-solid fa-circle-check"></i>
         </div>
         <h2 style="font-size:18px; color:#1e293b; margin-bottom:8px;">অর্ডার সফল হয়েছে! 🎉</h2>
         <p id="successPopupText" style="font-size:13.5px; color:#64748b; line-height:1.5; margin-bottom:20px;"></p>
         <div style="display:flex; gap:10px;">
-            <button onclick="trackMyOrderFromSuccess()" class="thankyou-btn" style="margin:0; flex:1; background:#00897b;">অর্ডার ট্র্যাক করুন</button>
+            <button onclick="trackMyOrderFromSuccess()" class="thankyou-btn" style="margin:0; flex:1; background:var(--teal);">অর্ডার ট্র্যাক করুন</button>
             <button onclick="closeThankYouModal()" class="thankyou-btn" style="margin:0; flex:1; background:#64748b;">হোমে যান</button>
         </div>
     </div>
@@ -239,11 +244,11 @@
 <!-- ADMIN LOGIN MODAL -->
 <div id="adminLoginModal" class="thankyou-overlay">
     <div class="thankyou-card" style="text-align:left; max-width:350px;">
-        <h2 style="font-size:17px; color:#00897b; font-weight:900; margin-bottom:10px;"><i class="fa-solid fa-lock"></i> Admin Login</h2>
+        <h2 style="font-size:17px; color:var(--teal); font-weight:900; margin-bottom:10px;"><i class="fa-solid fa-lock"></i> Admin Login</h2>
         <label style="font-size:12px; font-weight:700;">Password</label>
         <input type="password" id="modalAdminPassword" placeholder="Enter password" class="form-input" style="margin-top:4px;">
         <div style="display:flex; gap:10px; margin-top:10px;">
-            <button onclick="submitAdminLogin()" class="thankyou-btn" style="margin:0; flex:1; background:#00897b;">Login</button>
+            <button onclick="submitAdminLogin()" class="thankyou-btn" style="margin:0; flex:1; background:var(--teal);">Login</button>
             <button onclick="closeAdminLoginModal()" class="thankyou-btn" style="margin:0; flex:1; background:#64748b;">Cancel</button>
         </div>
         <div style="text-align:center; margin-top:12px;">
