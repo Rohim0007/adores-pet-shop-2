@@ -1,8 +1,10 @@
 /* =====================================================
-   ADORE'S PET - SHOP.JS (Customer Shop, Cart & Track Order)
+   ADORE'S PET - SHOP.JS (Customer Portal, Cart & Alerts)
 ===================================================== */
 
-emailjs.init({ publicKey: "P7lqeBS7YKyU3Kpaq" });
+try {
+    emailjs.init({ publicKey: "P7lqeBS7YKyU3Kpaq" });
+} catch(e) {}
 
 let products = JSON.parse(localStorage.getItem("adoresProducts")) || defaultProducts;
 let cart = JSON.parse(localStorage.getItem("adoresCart")) || [];
@@ -11,6 +13,7 @@ let vacationMode = JSON.parse(localStorage.getItem("adoresVacationMode")) || fal
 let currentAdminPassword = localStorage.getItem("adoresAdminPass") || "DJ778899";
 let currentCategory = "";
 let activeSelectedProductId = null;
+let popupTargetProductId = "";
 
 function saveProducts(){
     try { localStorage.setItem("adoresProducts", JSON.stringify(products)); } 
@@ -75,24 +78,22 @@ function renderAnnouncement(){
 
 function checkWelcomePopup(){
     const popupImg = localStorage.getItem("adoresWelcomePopupImg") || "";
-    const popupLink = localStorage.getItem("adoresWelcomePopupLink") || "";
+    popupTargetProductId = localStorage.getItem("adoresWelcomePopupLink") || "";
     const modal = document.getElementById("welcomePopupModal");
     const imgEl = document.getElementById("welcomePopupImg");
-    const cardWrapper = document.getElementById("welcomePopupCardWrapper");
 
     const alreadyShown = sessionStorage.getItem("welcomePopupClosed");
 
     if(modal && imgEl && popupImg.trim() !== "" && !alreadyShown){
         imgEl.src = popupImg;
-        if(cardWrapper){
-            cardWrapper.onclick = function(){
-                if(popupLink.trim() !== ""){
-                    window.open(popupLink, '_blank');
-                }
-                closeWelcomePopup();
-            };
-        }
         modal.classList.add("show");
+    }
+}
+
+function handlePopupImageClick(){
+    closeWelcomePopup();
+    if(popupTargetProductId.trim() !== ""){
+        openProductModal(popupTargetProductId.trim());
     }
 }
 
@@ -104,11 +105,23 @@ function closeWelcomePopup(){
     }
 }
 
+/* STRICTLY SUCCESS ALERT MODAL */
 function showCustomAlert(msg){
     const alertMsg = document.getElementById("customAlertMessage");
     const alertModal = document.getElementById("customAlertModal");
+    const alertIconBox = alertModal?.querySelector(".thankyou-icon");
+    const alertTitle = alertModal?.querySelector("h2");
+    
     if(alertMsg && alertModal){
-        alertMsg.innerText = msg;
+        alertMsg.innerHTML = msg;
+        
+        if(alertIconBox) {
+            alertIconBox.style.background = "#e6f4ea";
+            alertIconBox.style.color = "#10b981";
+            alertIconBox.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+        }
+        if(alertTitle) alertTitle.innerText = "সফল!";
+        
         alertModal.classList.add("show");
     }
 }
