@@ -1,0 +1,23 @@
+:root{
+    --teal: #00897b;
+    --teal-dark: #00695c;
+    --bg-light: #f4f6f8;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+}
+*{ margin:0; padding:0; box-sizing:border-box; }
+body{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:var(--bg-light); color:var(--text-dark); }
+.admin-card{ background:white; padding:25px; border-radius:20px; border:1px solid #e2e8f0; margin-bottom: 20px; max-width: 600px; margin-left: auto; margin-right: auto; }
+.admin-submit-btn{ width: 100%; padding: 14px; border: none; border-radius: 12px; background: var(--teal); color: white; font-weight: 800; cursor: pointer; }
+.admin-product-card{ display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 10px; gap: 10px; }
+.admin-product-info{ display: flex; align-items: center; gap: 12px; }
+.admin-product-info img{ width: 50px; height: 50px; object-fit: cover; border-radius: 8px; }
+.admin-notif-box{ background: #ffffff; border: 2px solid var(--teal); border-radius: 14px; padding: 16px; margin-bottom: 20px; max-width: 600px; margin-left: auto; margin-right: auto; }
+.admin-notif-header{ display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+.notif-badge-pill{ background: #ef4444; color: white; font-size: 11px; font-weight: 900; padding: 3px 10px; border-radius: 20px; }
+.form-label { display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 4px; text-align: left; }
+.form-input { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13.5px; outline: none; margin-bottom: 10px; background: #fff; }
+.thankyou-overlay{ display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); z-index: 25000; align-items: flex-end; justify-content: center; }
+.thankyou-overlay.show{ display: flex; }
+.thankyou-card{ background: white; padding: 20px 22px 25px; border-top-left-radius: 24px; border-top-right-radius: 24px; text-align: center; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
+.thankyou-btn{ width: 100%; padding: 14px; border: none; border-radius: 12px; background: var(--teal); color: white; font-weight: 800; cursor: pointer; }
