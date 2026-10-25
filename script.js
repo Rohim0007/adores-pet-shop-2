@@ -1,3 +1,7 @@
+/* =====================================================
+   ADORE'S PET - SCRIPT.JS (UPDATED & CLEANED)
+===================================================== */
+
 emailjs.init({ publicKey: "P7lqeBS7YKyU3Kpaq" });
 
 const defaultProducts = [
@@ -64,35 +68,53 @@ function changeAdminPassword(){
 }
 
 function toggleVacationMode(){
-    vacationMode = document.getElementById("adminVacationCheckbox").checked;
-    localStorage.setItem("adoresVacationMode", JSON.stringify(vacationMode));
-    checkVacationStatus();
-    showSuccessPopup(vacationMode ? "ভ্যাকেশন মোড চালু!" : "ভ্যাকেশন মোড বন্ধ।");
+    const checkbox = document.getElementById("adminVacationCheckbox");
+    if(checkbox){
+        vacationMode = checkbox.checked;
+        localStorage.setItem("adoresVacationMode", JSON.stringify(vacationMode));
+        checkVacationStatus();
+        showSuccessPopup(vacationMode ? "ভ্যাকেশন মোড চালু করা হয়েছে!" : "ভ্যাকেশন মোড বন্ধ করা হয়েছে।");
+    }
 }
 
 function checkVacationStatus(){
     const vBox = document.getElementById("vacationBoxContainer");
     const nContent = document.getElementById("normalHomeContent");
+    const bottomNav = document.querySelector(".bottom-nav");
+    
     if(vBox && nContent){
         vBox.style.display = vacationMode ? "block" : "none";
         nContent.style.display = vacationMode ? "none" : "block";
     }
+    if(bottomNav){
+        bottomNav.style.display = vacationMode ? "none" : "flex";
+    }
 }
 
 function showCustomAlert(msg){
-    document.getElementById("customAlertMessage").innerText = msg;
-    document.getElementById("customAlertModal").classList.add("show");
+    const alertMsg = document.getElementById("customAlertMessage");
+    const alertModal = document.getElementById("customAlertModal");
+    if(alertMsg && alertModal){
+        alertMsg.innerText = msg;
+        alertModal.classList.add("show");
+    }
 }
-function closeCustomAlert(){ document.getElementById("customAlertModal").classList.remove("show"); }
+function closeCustomAlert(){ document.getElementById("customAlertModal")?.classList.remove("show"); }
+
 function showSuccessPopup(msg){
-    document.getElementById("successPopupText").innerHTML = msg;
-    document.getElementById("thankyouModal").classList.add("show");
+    const popupText = document.getElementById("successPopupText");
+    const thankyouModal = document.getElementById("thankyouModal");
+    if(popupText && thankyouModal){
+        popupText.innerHTML = msg;
+        thankyouModal.classList.add("show");
+    }
 }
-function closeThankYouModal(){ document.getElementById("thankyouModal").classList.remove("show"); }
+function closeThankYouModal(){ document.getElementById("thankyouModal")?.classList.remove("show"); }
 
 function goHome(){
     currentCategory = "";
-    document.getElementById("searchInput").value = "";
+    const searchInput = document.getElementById("searchInput");
+    if(searchInput) searchInput.value = "";
     document.querySelectorAll(".chip-btn").forEach(b => b.classList.remove("active"));
     renderProducts();
 }
@@ -101,7 +123,8 @@ function selectCategory(cat, btn){
     currentCategory = cat;
     document.querySelectorAll(".chip-btn").forEach(b => b.classList.remove("active"));
     if(btn) btn.classList.add("active");
-    document.getElementById("searchInput").value = "";
+    const searchInput = document.getElementById("searchInput");
+    if(searchInput) searchInput.value = "";
     renderProducts();
 }
 
@@ -110,18 +133,19 @@ function renderProducts(){
     const title = document.getElementById("productsTitle");
     const search = document.getElementById("searchInput")?.value.trim().toLowerCase() || "";
 
+    if(!grid) return;
+
     let filtered = products;
     if(currentCategory){
-        title.innerText = currentCategory + " Supplies";
+        if(title) title.innerText = currentCategory + " Supplies";
         filtered = filtered.filter(p => p.category.toLowerCase() === currentCategory.toLowerCase());
     } else if(search){
-        title.innerText = 'Search Results';
+        if(title) title.innerText = 'Search Results';
         filtered = filtered.filter(p => p.name.toLowerCase().includes(search));
     } else {
-        title.innerText = "Popular Pet Supplies";
+        if(title) title.innerText = "Popular Pet Supplies";
     }
 
-    if(!grid) return;
     if(filtered.length === 0){
         grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#64748b;">কোনো পণ্য পাওয়া যায়নি।</div>`;
         return;
@@ -186,28 +210,28 @@ function openProductModal(id){
     if(p.videoUrl && p.videoUrl.trim() !== ""){
         vAnchor.href = p.videoUrl.trim();
         vContainer.style.display = "block";
-    } else { vContainer.style.display = "none"; }
+    } else { if(vContainer) vContainer.style.display = "none"; }
 
     const mainImg = document.getElementById("modalMainImg");
     const thumbContainer = document.getElementById("modalThumbnails");
-    thumbContainer.innerHTML = "";
+    if(thumbContainer) thumbContainer.innerHTML = "";
     let imgs = p.images?.filter(Boolean) || ['https://i.postimg.cc/CdyZqRY5/file-000000006ecc71f899e85a5cc31b0405.png'];
     
-    thumbContainer.style.display = imgs.length > 1 ? "flex" : "none";
-    mainImg.src = imgs[0];
+    if(thumbContainer) thumbContainer.style.display = imgs.length > 1 ? "flex" : "none";
+    if(mainImg) mainImg.src = imgs[0];
 
     imgs.forEach((src, idx) => {
         const thumb = document.createElement("img");
         thumb.src = src;
         thumb.style.cssText = "width:50px; height:50px; object-fit:cover; border-radius:8px; cursor:pointer; border:2px solid " + (idx === 0 ? "var(--teal)" : "#cbd5e1");
-        thumb.onclick = () => { mainImg.src = src; };
-        thumbContainer.appendChild(thumb);
+        thumb.onclick = () => { if(mainImg) mainImg.src = src; };
+        if(thumbContainer) thumbContainer.appendChild(thumb);
     });
 
-    document.getElementById("productDetailModal").classList.add("show");
+    document.getElementById("productDetailModal")?.classList.add("show");
 }
 
-function closeProductModal(){ document.getElementById("productDetailModal").classList.remove("show"); }
+function closeProductModal(){ document.getElementById("productDetailModal")?.classList.remove("show"); }
 
 function addModalProductToCart(){
     if(vacationMode){ showCustomAlert("শপ বর্তমানে বন্ধ আছে।"); return; }
@@ -266,7 +290,8 @@ function updateCart(){
             `;
         }).join("");
     }
-    document.getElementById("subtotal").innerText = subtotal;
+    const subElem = document.getElementById("subtotal");
+    if(subElem) subElem.innerText = subtotal;
     updateDelivery();
     updateCartBadge();
 }
@@ -288,8 +313,8 @@ function removeFromCart(id){
     updateCart();
 }
 
-function openCart(){ document.getElementById("cartOverlay").classList.add("show"); updateCart(); }
-function closeCart(){ document.getElementById("cartOverlay").classList.remove("show"); }
+function openCart(){ document.getElementById("cartOverlay")?.classList.add("show"); updateCart(); }
+function closeCart(){ document.getElementById("cartOverlay")?.classList.remove("show"); }
 
 function updateDelivery(){
     const dist = document.getElementById("customerDistrict")?.value || "";
@@ -298,17 +323,19 @@ function updateDelivery(){
         delivery = (dist === "Dhaka") ? 80 : 150;
     }
     const sub = Number(document.getElementById("subtotal")?.innerText || 0);
-    document.getElementById("deliveryCharge").innerText = delivery;
-    document.getElementById("grandTotal").innerText = sub + delivery;
+    const delElem = document.getElementById("deliveryCharge");
+    const grandElem = document.getElementById("grandTotal");
+    if(delElem) delElem.innerText = delivery;
+    if(grandElem) grandElem.innerText = sub + delivery;
 }
 
 function placeOrder(){
     if(vacationMode){ showCustomAlert("শপ বন্ধ আছে।"); return; }
     if(cart.length === 0){ showCustomAlert("কার্ট খালি!"); return; }
-    const name = document.getElementById("customerName").value.trim();
-    const phone = document.getElementById("customerPhone").value.trim();
-    const dist = document.getElementById("customerDistrict").value;
-    const addr = document.getElementById("customerAddress").value.trim();
+    const name = document.getElementById("customerName")?.value.trim();
+    const phone = document.getElementById("customerPhone")?.value.trim();
+    const dist = document.getElementById("customerDistrict")?.value;
+    const addr = document.getElementById("customerAddress")?.value.trim();
 
     if(!name || !phone || !dist || !addr){ showCustomAlert("সব তথ্য পূরণ করুন।"); return; }
 
@@ -327,7 +354,7 @@ function placeOrder(){
     });
 
     saveProducts();
-    const del = Number(document.getElementById("deliveryCharge").innerText);
+    const del = Number(document.getElementById("deliveryCharge")?.innerText || 0);
     const total = sub + del;
     const orderId = 'ORD-' + Math.floor(100000 + Math.random() * 900000);
 
@@ -366,19 +393,24 @@ function openOrdersModal(){
             </div>
         `).join("");
     }
-    document.getElementById("ordersModal").classList.add("show");
+    document.getElementById("ordersModal")?.classList.add("show");
 }
-function closeOrdersModal(){ document.getElementById("ordersModal").classList.remove("show"); }
+function closeOrdersModal(){ document.getElementById("ordersModal")?.classList.remove("show"); }
 
 function openVoucher(idx){
     const o = myOrders[idx];
     if(!o) return;
-    document.getElementById("voucherCustomerInfo").innerHTML = `<strong>ID:</strong> ${o.id}<br><strong>Name:</strong> ${escapeHTML(o.name)}<br><strong>Phone:</strong> ${escapeHTML(o.phone)}`;
-    document.getElementById("voucherTableBody").innerHTML = o.tableHtml;
-    document.getElementById("voucherTotalsBox").innerHTML = `Subtotal: ৳${o.subtotal}<br>Delivery: ৳${o.delivery}<br><strong>Total: ৳${o.total}</strong>`;
-    document.getElementById("voucherModal").classList.add("show");
+    const custInfo = document.getElementById("voucherCustomerInfo");
+    const tableBody = document.getElementById("voucherTableBody");
+    const totalsBox = document.getElementById("voucherTotalsBox");
+    
+    if(custInfo) custInfo.innerHTML = `<strong>ID:</strong> ${o.id}<br><strong>Name:</strong> ${escapeHTML(o.name)}<br><strong>Phone:</strong> ${escapeHTML(o.phone)}`;
+    if(tableBody) tableBody.innerHTML = o.tableHtml;
+    if(totalsBox) totalsBox.innerHTML = `Subtotal: ৳${o.subtotal}<br>Delivery: ৳${o.delivery}<br><strong>Total: ৳${o.total}</strong>`;
+    
+    document.getElementById("voucherModal")?.classList.add("show");
 }
-function closeVoucherModal(){ document.getElementById("voucherModal").classList.remove("show"); }
+function closeVoucherModal(){ document.getElementById("voucherModal")?.classList.remove("show"); }
 
 let scCount = 0;
 function handleSecretClick(){
@@ -386,11 +418,11 @@ function handleSecretClick(){
     if(scCount === 3){ scCount = 0; openAdminLoginModal(); }
     setTimeout(() => { scCount = 0; }, 1000);
 }
-function openAdminLoginModal(){ document.getElementById("adminLoginModal").classList.add("show"); }
-function closeAdminLoginModal(){ document.getElementById("adminLoginModal").classList.remove("show"); }
+function openAdminLoginModal(){ document.getElementById("adminLoginModal")?.classList.add("show"); }
+function closeAdminLoginModal(){ document.getElementById("adminLoginModal")?.classList.remove("show"); }
 
 function submitAdminLogin(){
-    const pass = document.getElementById("modalAdminPassword").value;
+    const pass = document.getElementById("modalAdminPassword")?.value;
     if(pass === currentAdminPassword){
         window.location.href = "admin.html";
     } else { showCustomAlert("ভুল পাসওয়ার্ড!"); }
@@ -418,19 +450,19 @@ function renderAdminProducts(){
 }
 
 function addProduct(){
-    const name = document.getElementById("productName").value.trim();
-    const price = Number(document.getElementById("productPrice").value);
-    const disc = document.getElementById("productDiscountPrice").value.trim() ? Number(document.getElementById("productDiscountPrice").value) : null;
-    const stock = Number(document.getElementById("productStock").value);
-    const age = document.getElementById("productAge").value.trim();
-    const color = document.getElementById("productColor").value.trim();
-    const category = document.getElementById("productCategory").value;
-    const rating = document.getElementById("productRating").value.trim() || "4.8";
-    const desc = document.getElementById("productDesc").value.trim();
-    const u1 = document.getElementById("imageUrl1").value.trim();
-    const u2 = document.getElementById("imageUrl2").value.trim();
-    const u3 = document.getElementById("imageUrl3").value.trim();
-    const vUrl = document.getElementById("productVideoUrlInput").value.trim();
+    const name = document.getElementById("productName")?.value.trim();
+    const price = Number(document.getElementById("productPrice")?.value);
+    const disc = document.getElementById("productDiscountPrice")?.value.trim() ? Number(document.getElementById("productDiscountPrice")?.value) : null;
+    const stock = Number(document.getElementById("productStock")?.value);
+    const age = document.getElementById("productAge")?.value.trim();
+    const color = document.getElementById("productColor")?.value.trim();
+    const category = document.getElementById("productCategory")?.value;
+    const rating = document.getElementById("productRating")?.value.trim() || "4.8";
+    const desc = document.getElementById("productDesc")?.value.trim();
+    const u1 = document.getElementById("imageUrl1")?.value.trim();
+    const u2 = document.getElementById("imageUrl2")?.value.trim();
+    const u3 = document.getElementById("imageUrl3")?.value.trim();
+    const vUrl = document.getElementById("productVideoUrlInput")?.value.trim();
 
     let imgs = [u1, u2, u3].filter(Boolean);
     if(imgs.length === 0) imgs = ["https://i.postimg.cc/CdyZqRY5/file-000000006ecc71f899e85a5cc31b0405.png"];
@@ -463,23 +495,23 @@ function openEditModal(id){
     document.getElementById("editProductAge").value = p.age || "";
     document.getElementById("editProductImgUrl").value = p.images?.[0] || "";
     document.getElementById("editProductVideoUrl").value = p.videoUrl || "";
-    document.getElementById("editModal").classList.add("show");
+    document.getElementById("editModal")?.classList.add("show");
 }
 
-function closeEditModal(){ document.getElementById("editModal").classList.remove("show"); }
+function closeEditModal(){ document.getElementById("editModal")?.classList.remove("show"); }
 
 function saveEditProduct(){
-    const id = document.getElementById("editProductId").value;
+    const id = document.getElementById("editProductId")?.value;
     const p = products.find(x => String(x.id) === String(id));
     if(!p) return;
-    p.name = document.getElementById("editProductName").value.trim();
-    p.price = Number(document.getElementById("editProductPrice").value);
-    p.discountPrice = document.getElementById("editProductDiscountPrice").value.trim() ? Number(document.getElementById("editProductDiscountPrice").value) : null;
-    p.stock = Number(document.getElementById("editProductStock").value);
-    p.age = document.getElementById("editProductAge").value.trim();
-    const u = document.getElementById("editProductImgUrl").value.trim();
+    p.name = document.getElementById("editProductName")?.value.trim();
+    p.price = Number(document.getElementById("editProductPrice")?.value);
+    p.discountPrice = document.getElementById("editProductDiscountPrice")?.value.trim() ? Number(document.getElementById("editProductDiscountPrice")?.value) : null;
+    p.stock = Number(document.getElementById("editProductStock")?.value);
+    p.age = document.getElementById("editProductAge")?.value.trim();
+    const u = document.getElementById("editProductImgUrl")?.value.trim();
     if(u) p.images = [u];
-    p.videoUrl = document.getElementById("editProductVideoUrl").value.trim();
+    p.videoUrl = document.getElementById("editProductVideoUrl")?.value.trim();
 
     saveProducts();
     renderAdminProducts();
@@ -491,8 +523,12 @@ function renderAdminOrders(){
     const container = document.getElementById("adminOrdersListContainer");
     if(!container) return;
     const pending = myOrders.filter(o => !o.status || o.status === 'pending');
-    document.getElementById("countPending").innerText = pending.length;
-    document.getElementById("pendingNotifBadge").innerText = pending.length + " নতুন অর্ডার";
+    
+    const countPending = document.getElementById("countPending");
+    const pendingBadge = document.getElementById("pendingNotifBadge");
+    
+    if(countPending) countPending.innerText = pending.length;
+    if(pendingBadge) pendingBadge.innerText = pending.length + " নতুন অর্ডার";
 
     container.innerHTML = myOrders.map((o, idx) => `
         <div style="background:white; border:1px solid #cbd5e1; border-radius:10px; padding:10px; margin-bottom:10px;">
@@ -505,17 +541,18 @@ function renderAdminOrders(){
 
 function toggleAdminOrderList(){
     const panel = document.getElementById("collapsibleOrderPanel");
-    panel.style.display = panel.style.display === "none" ? "block" : "none";
+    if(panel) panel.style.display = panel.style.display === "none" ? "block" : "none";
 }
 
 function escapeHTML(str){
     return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
-/* Run initial functions */
+/* Run initial functions safely */
 updateCartBadge();
 renderProducts();
 checkVacationStatus();
+
 if(document.getElementById("adminProducts")){
     renderAdminProducts();
     renderAdminOrders();
