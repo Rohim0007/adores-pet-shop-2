@@ -219,7 +219,9 @@ function addToCart(id){
     } else { cart.push({ id: String(id), qty: 1 }); }
     saveCart();
     updateCartBadge();
-    showSuccessPopup("কার্টে যোগ করা হয়েছে!");
+    
+    // কার্টে যোগ করলে এখন শুধু সাধারণ অ্যালার্ট দেখাবে, অর্ডার সাকসেস পপআপ নয়
+    showCustomAlert("পণ্যটি সফলভাবে কার্টে যোগ করা হয়েছে! 🛒");
 }
 
 function updateCartBadge(){
