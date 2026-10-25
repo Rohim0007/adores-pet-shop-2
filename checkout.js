@@ -45,7 +45,6 @@ function goToCheckoutStep(){
     closeCartModal();
     loadDistrictsDropdown();
     
-    // Reset fields & set delivery charge to 0 until district selected
     const distSel = document.getElementById("checkoutDistrict");
     if(distSel) distSel.value = "";
     const thanaSel = document.getElementById("checkoutThana");
@@ -87,7 +86,7 @@ function calculateDeliveryCharge(){
             delivery = (dist === "Dhaka") ? 80 : 150;
         }
     } else {
-        delivery = 0; // No delivery charge calculated until district is selected
+        delivery = 0;
     }
 
     document.getElementById("checkoutSubtotal").innerText = subtotal;
