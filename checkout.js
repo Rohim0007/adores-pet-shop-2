@@ -1,165 +1,123 @@
 /* =====================================================
-   ADORE'S PET - CHECKOUT.JS (Checkout, Districts & EmailJS)
+   ADORE'S PET - CHECKOUT.JS (District/Area & Order Submission)
 ===================================================== */
 
-let currentDeliveryCharge = 0;
-
 function openCheckoutModal(){
-    if(cart.length === 0){ showCustomAlert("আপনার কার্ট খালি!"); return; }
+    if(cart.length === 0){
+        showCustomAlert("আপনার কার্ট খালি রয়েছে।");
+        return;
+    }
     closeCartModal();
-
-    let subtotal = 0;
-    cart.forEach(item => {
-        const p = products.find(x => String(x.id) === String(item.id));
-        if(p){
-            const price = (p.discountPrice && p.discountPrice > 0 && p.discountPrice < p.price) ? p.discountPrice : p.price;
-            subtotal += price * item.qty;
-        }
-    });
-
-    document.getElementById("chkSubtotal").innerText = subtotal;
-    document.getElementById("chkTotal").innerText = subtotal;
-
-    // Populate Districts
-    const distSelect = document.getElementById("checkoutDistrict");
-    if(distSelect){
-        distSelect.innerHTML = `<option value="">জেলা নির্বাচন করুন</option>` + Object.keys(bdDistrictsWithThanas).map(d => `<option value="${d}">${d}</option>`).join("");
-    }
-    const thanaSelect = document.getElementById("checkoutThana");
-    if(thanaSelect){
-        thanaSelect.innerHTML = `<option value="">প্রথমে জেলা নির্বাচন করুন</option>`;
-    }
-
-    document.getElementById("checkoutStepModal")?.classList.add("show");
+    populateDistricts();
+    document.getElementById("checkoutFormModal")?.classList.add("show");
 }
 
-function closeCheckoutModal(){ document.getElementById("checkoutStepModal")?.classList.remove("show"); }
+function closeCheckoutModal(){
+    document.getElementById("checkoutFormModal")?.classList.remove("show");
+}
+
+function populateDistricts(){
+    const distSelect = document.getElementById("checkoutDistrictSelect");
+    if(!distSelect) return;
+    
+    distSelect.innerHTML = Object.keys(bangladeshDistricts).map(d => `<option value="${d}">${d}</option>`).join("");
+    onDistrictChange();
+}
 
 function onDistrictChange(){
-    const dist = document.getElementById("checkoutDistrict").value;
-    const thanaSelect = document.getElementById("checkoutThana");
-    if(!thanaSelect) return;
+    const distSelect = document.getElementById("checkoutDistrictSelect");
+    const areaSelect = document.getElementById("checkoutAreaSelect");
+    if(!distSelect || !areaSelect) return;
 
-    if(bdDistrictsWithThanas[dist]){
-        thanaSelect.innerHTML = bdDistrictsWithThanas[dist].map(t => `<option value="${t}">${t}</option>`).join("");
-    } else {
-        thanaSelect.innerHTML = `<option value="">প্রথমে জেলা নির্বাচন করুন</option>`;
-    }
-
-    // Delivery charge calculation
-    currentDeliveryCharge = (dist === "Dhaka") ? 70 : 130;
-    updateCheckoutTotals();
+    const selectedDist = distSelect.value;
+    const areas = bangladeshDistricts[selectedDist] || [];
+    
+    areaSelect.innerHTML = areas.map(a => `<option value="${a}">${a}</option>`).join("");
 }
 
-function onThanaChange(){
-    updateCheckoutTotals();
-}
-
-function updateCheckoutTotals(){
-    let subtotal = 0;
-    cart.forEach(item => {
-        const p = products.find(x => String(x.id) === String(item.id));
-        if(p){
-            const price = (p.discountPrice && p.discountPrice > 0 && p.discountPrice < p.price) ? p.discountPrice : p.price;
-            subtotal += price * item.qty;
-        }
-    });
-    const total = subtotal + currentDeliveryCharge;
-    document.getElementById("chkSubtotal").innerText = subtotal;
-    document.getElementById("chkDelivery").innerText = currentDeliveryCharge;
-    document.getElementById("chkTotal").innerText = total;
-}
-
-function proceedToPayment(){
+function submitOrder(){
     const name = document.getElementById("checkoutName")?.value.trim();
     const phone = document.getElementById("checkoutPhone")?.value.trim();
-    const district = document.getElementById("checkoutDistrict")?.value;
-    const thana = document.getElementById("checkoutThana")?.value;
+    const district = document.getElementById("checkoutDistrictSelect")?.value;
+    const area = document.getElementById("checkoutAreaSelect")?.value;
     const address = document.getElementById("checkoutAddress")?.value.trim();
+    const trxId = document.getElementById("checkoutTrxId")?.value.trim() || "COD/Not Provided";
 
-    if(!name || !phone || !district || !thana || !address){
-        showCustomAlert("দয়া করে সমস্ত ডেলিভারি তথ্য সঠিকভাবে পূরণ করুন।");
+    if(!name || !phone || !district || !area || !address){
+        showCustomAlert("দয়া করে আপনার নাম, ফোন নম্বর এবং সম্পূর্ণ ঠিকানা দিন।");
         return;
     }
 
-    closeCheckoutModal();
-    document.getElementById("paymentStepModal")?.classList.add("show");
-}
-
-function closePaymentModal(){ document.getElementById("paymentStepModal")?.classList.remove("show"); }
-
-function finalizeOrder(){
-    const senderNum = document.getElementById("paySenderNumber")?.value.trim();
-    const trxId = document.getElementById("payTrxId")?.value.trim();
-
-    if(!senderNum || !trxId){
-        showCustomAlert("দয়া করে আপনার বিকাশ/নগদ নাম্বার এবং TrxID দিন।");
-        return;
-    }
-
-    const name = document.getElementById("checkoutName").value.trim();
-    const phone = document.getElementById("checkoutPhone").value.trim();
-    const district = document.getElementById("checkoutDistrict").value;
-    const thana = document.getElementById("checkoutThana").value;
-    const address = document.getElementById("checkoutAddress").value.trim();
-    const fullAddress = `${address}, ${thana}, ${district}`;
-
-    let subtotal = Number(document.getElementById("chkSubtotal").innerText);
-    let total = Number(document.getElementById("chkTotal").innerText);
-    let orderId = "ORD-" + Math.floor(100000 + Math.random() * 900000);
-
-    let itemsText = "";
-    let tableHtml = "";
+    let subtotal = 0;
+    let itemsTextArr = [];
+    let tableHtmlArr = [];
 
     cart.forEach(item => {
-        const p = products.find(x => String(x.id) === String(item.id));
+        let p = products.find(x => String(x.id) === String(item.id));
         if(p){
-            const price = (p.discountPrice && p.discountPrice > 0 && p.discountPrice < p.price) ? p.discountPrice : p.price;
-            itemsText += `- ${p.name} (Qty: ${item.qty}) - ৳${price * item.qty}\n`;
-            tableHtml += `<tr><td style="padding:6px; border-bottom:1px solid #eee;">${escapeHTML(p.name)}</td><td style="padding:6px; border-bottom:1px solid #eee; text-align:center;">${item.qty}</td><td style="padding:6px; border-bottom:1px solid #eee; text-align:right;">৳${price * item.qty}</td></tr>`;
-            
-            // Reduce stock
-            p.stock -= item.qty;
-            if(p.stock < 0) p.stock = 0;
+            let price = (p.discountPrice && p.discountPrice > 0 && p.discountPrice < p.price) ? p.discountPrice : p.price;
+            let itemTotal = price * item.qty;
+            subtotal += itemTotal;
+            itemsTextArr.push(`• ${p.name} (Qty: ${item.qty}) - ৳${itemTotal}`);
+            tableHtmlArr.push(`<tr><td style="padding:6px; border-bottom:1px solid #e2e8f0;">${escapeHTML(p.name)}</td><td style="padding:6px; border-bottom:1px solid #e2e8f0; text-align:center;">${item.qty}</td><td style="padding:6px; border-bottom:1px solid #e2e8f0; text-align:right;">৳${itemTotal}</td></tr>`);
         }
     });
 
-    saveProducts();
+    let deliveryCost = 100;
+    let total = subtotal + deliveryCost;
+    let orderId = "AP-" + Math.floor(100000 + Math.random() * 900000);
 
-    const newOrder = {
+    let fullAddress = `${address}, Area: ${area}, District: ${district}`;
+    let itemsTextStr = itemsTextArr.join("\n");
+    let tableHtmlStr = tableHtmlArr.join("");
+
+    let newOrder = {
         id: orderId,
-        name, phone, address: fullAddress,
-        subtotal, delivery: currentDeliveryCharge, total,
-        senderNum, trxId,
-        itemsText, tableHtml,
+        name,
+        phone,
+        address: fullAddress,
+        trxId,
+        itemsText: itemsTextStr,
+        tableHtml: tableHtmlStr,
+        subtotal,
+        delivery: deliveryCost,
+        total,
         status: 'pending',
-        cancelledByAdmin: false,
         date: new Date().toLocaleString()
     };
+
+    // Deduct stock
+    cart.forEach(item => {
+        let p = products.find(x => String(x.id) === String(item.id));
+        if(p){
+            p.stock = Math.max(0, p.stock - item.qty);
+        }
+    });
+    saveProducts();
+    renderProducts();
 
     myOrders.unshift(newOrder);
     saveMyOrders();
 
-    // Send Email via EmailJS
-    try {
-        emailjs.send("service_370p085", "template_a03d7ro", {
-            order_id: orderId,
-            customer_name: name,
-            customer_phone: phone,
-            customer_address: fullAddress,
-            order_items: itemsText,
-            subtotal: subtotal,
-            delivery: currentDeliveryCharge,
-            total_amount: total,
-            sender_number: senderNum,
-            trx_id: trxId
-        });
-    } catch(e) {}
-
+    // Clear cart
     cart = [];
     saveCart();
     updateCartBadge();
 
-    closePaymentModal();
-    showSuccessPopup(`আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে!<br><b>Order ID:</b> ${orderId}`);
+    closeCheckoutModal();
+
+    // Send via EmailJS if configured
+    try {
+        emailjs.send("service_default", "template_default", {
+            order_id: orderId,
+            customer_name: name,
+            customer_phone: phone,
+            customer_address: fullAddress,
+            order_items: itemsTextStr,
+            total_amount: total,
+            trx_id: trxId
+        }).catch(err => console.log("EmailJS send err:", err));
+    } catch(e) {}
+
+    showSuccessPopup(`আপনার অর্ডারটি সফলভাবে প্লেস করা হয়েছে!<br><b>অর্ডার আইডি:</b> ${orderId}<br>খুব শীঘ্রই আমরা আপনার সাথে যোগাযোগ করব।`);
 }
