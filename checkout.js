@@ -1,177 +1,165 @@
 /* =====================================================
-   ADORE'S PET - CHECKOUT.JS (3-Step Checkout & Districts)
+   ADORE'S PET - CHECKOUT.JS (Checkout, Districts & EmailJS)
 ===================================================== */
 
-function loadDistrictsDropdown(){
-    const distSelect = document.getElementById("checkoutDistrict");
-    if(!distSelect) return;
-    let options = `<option value="">জেলা নির্বাচন করুন</option>`;
-    const allDistricts = [
-        "Dhaka", "Chattogram", "Gazipur", "Sylhet", "Rajshahi", "Khulna", "Barishal", "Rangpur", "Mymensingh", "Comilla",
-        "Faridpur", "Cox's Bazar", "Narayanganj", "Tangail", "Kishoreganj", "Manikganj", "Munshiganj", "Narsingdi", "Netrokona",
-        "Sherpur", "Jamalpur", "Brahmanbaria", "Chandpur", "Noakhali", "Feni", "Lakshmipur", "Bagerhat", "Chuadanga", "Jashore",
-        "Jhenaidah", "Kushtia", "Magura", "Meherpur", "Narail", "Satkhira", "Barguna", "Bhola", "Jhalokati", "Patuakhali", "Pirojpur",
-        "Bandarban", "Khagrachhari", "Rangamati", "Dinajpur", "Gaibandha", "Kurigram", "Lalmonirhat", "Nilphamari", "Panchagarh",
-        "Thakurgaon", "Habiganj", "Moulvibazar", "Sunamganj", "Bogra", "Joypurhat", "Naogaon", "Natore", "Pabna", "Sirajganj"
-    ];
-    allDistricts.sort().forEach(d => {
-        options += `<option value="${d}">${d}</option>`;
+let currentDeliveryCharge = 0;
+
+function openCheckoutModal(){
+    if(cart.length === 0){ showCustomAlert("আপনার কার্ট খালি!"); return; }
+    closeCartModal();
+
+    let subtotal = 0;
+    cart.forEach(item => {
+        const p = products.find(x => String(x.id) === String(item.id));
+        if(p){
+            const price = (p.discountPrice && p.discountPrice > 0 && p.discountPrice < p.price) ? p.discountPrice : p.price;
+            subtotal += price * item.qty;
+        }
     });
-    distSelect.innerHTML = options;
+
+    document.getElementById("chkSubtotal").innerText = subtotal;
+    document.getElementById("chkTotal").innerText = subtotal;
+
+    // Populate Districts
+    const distSelect = document.getElementById("checkoutDistrict");
+    if(distSelect){
+        distSelect.innerHTML = `<option value="">জেলা নির্বাচন করুন</option>` + Object.keys(bdDistrictsWithThanas).map(d => `<option value="${d}">${d}</option>`).join("");
+    }
+    const thanaSelect = document.getElementById("checkoutThana");
+    if(thanaSelect){
+        thanaSelect.innerHTML = `<option value="">প্রথমে জেলা নির্বাচন করুন</option>`;
+    }
+
+    document.getElementById("checkoutStepModal")?.classList.add("show");
 }
+
+function closeCheckoutModal(){ document.getElementById("checkoutStepModal")?.classList.remove("show"); }
 
 function onDistrictChange(){
     const dist = document.getElementById("checkoutDistrict").value;
     const thanaSelect = document.getElementById("checkoutThana");
     if(!thanaSelect) return;
 
-    if(!dist){
-        thanaSelect.innerHTML = `<option value="">আগে জেলা বাছুন</option>`;
-        calculateDeliveryCharge();
-        return;
+    if(bdDistrictsWithThanas[dist]){
+        thanaSelect.innerHTML = bdDistrictsWithThanas[dist].map(t => `<option value="${t}">${t}</option>`).join("");
+    } else {
+        thanaSelect.innerHTML = `<option value="">প্রথমে জেলা নির্বাচন করুন</option>`;
     }
 
-    let thanas = bdDistrictsWithThanas[dist] || ["সদর থানা", "অন্যান্য এলাকা"];
-    let html = `<option value="">থানা/এলাকা বাছুন</option>`;
-    thanas.forEach(t => {
-        html += `<option value="${t}">${t}</option>`;
-    });
-    thanaSelect.innerHTML = html;
-    calculateDeliveryCharge();
+    // Delivery charge calculation
+    currentDeliveryCharge = (dist === "Dhaka") ? 70 : 130;
+    updateCheckoutTotals();
 }
 
-function goToCheckoutStep(){
-    if(cart.length === 0){ showCustomAlert("আপনার কার্ট খালি!"); return; }
-    closeCartModal();
-    loadDistrictsDropdown();
-    
-    const distSel = document.getElementById("checkoutDistrict");
-    if(distSel) distSel.value = "";
-    const thanaSel = document.getElementById("checkoutThana");
-    if(thanaSel) thanaSel.innerHTML = `<option value="">আগে জেলা বাছুন</option>`;
-    
-    calculateDeliveryCharge();
-    document.getElementById("checkoutStepModal")?.classList.add("show");
+function onThanaChange(){
+    updateCheckoutTotals();
 }
 
-function closeCheckoutModal(){ document.getElementById("checkoutStepModal")?.classList.remove("show"); }
-
-function hasLiveAnimals(){
-    return cart.some(item => {
-        const p = products.find(x => String(x.id) === String(item.id));
-        if(!p) return false;
-        const cat = p.category.toLowerCase();
-        return cat.includes("rabbit") || cat.includes("hamster");
-    });
-}
-
-function calculateDeliveryCharge(){
-    const dist = document.getElementById("checkoutDistrict")?.value || "";
+function updateCheckoutTotals(){
     let subtotal = 0;
     cart.forEach(item => {
         const p = products.find(x => String(x.id) === String(item.id));
         if(p){
-            const pr = (p.discountPrice && p.discountPrice > 0 && p.discountPrice < p.price) ? p.discountPrice : p.price;
-            subtotal += pr * item.qty;
+            const price = (p.discountPrice && p.discountPrice > 0 && p.discountPrice < p.price) ? p.discountPrice : p.price;
+            subtotal += price * item.qty;
         }
     });
-
-    let delivery = 0;
-    const isLive = hasLiveAnimals();
-
-    if(dist !== ""){
-        if(isLive){
-            delivery = (dist === "Dhaka") ? 400 : 500;
-        } else {
-            delivery = (dist === "Dhaka") ? 80 : 150;
-        }
-    } else {
-        delivery = 0;
-    }
-
-    document.getElementById("checkoutSubtotal").innerText = subtotal;
-    document.getElementById("checkoutDeliveryCharge").innerText = delivery;
-    document.getElementById("checkoutGrandTotal").innerText = subtotal + delivery;
-
-    const noticeBox = document.getElementById("advanceNoticeBox");
-    const noticeTitle = document.getElementById("paymentNoticeTitle");
-    const noticeDesc = document.getElementById("paymentNoticeDesc");
-    const trxLabel = document.getElementById("trxIdLabel");
-
-    if(dist === ""){
-        noticeBox.style.display = "block";
-        noticeTitle.innerText = "ℹ️ ডেলিভারি চার্জ হিসাবের নির্দেশনা";
-        noticeDesc.innerHTML = `সঠিক ডেলিভারি চার্জ দেখার জন্য ওপর থেকে আপনার <b>জেলা নির্বাচন করুন</b>।`;
-        trxLabel.innerHTML = "ট্রানজেকশন আইডি (TrxID) / বিকাশ নাম্বার";
-    } else if(isLive){
-        noticeBox.style.display = "block";
-        noticeTitle.innerText = "⚠️ পশুপাখির জন্য অগ্রিম ডেলিভারি চার্জ বাধ্যতামূলক!";
-        noticeDesc.innerHTML = `খরগোশ বা হ্যামস্টার অর্ডারের জন্য ডেলিভারি চার্জ (<b>৳${delivery}</b>) অগ্রিম বিকাশ/নগদে পাঠিয়ে ট্রানজেকশন আইডি দিন।`;
-        trxLabel.innerHTML = "ট্রানজেকশন আইডি (TrxID) / বিকাশ নাম্বার * (বাধ্যতামূলক)";
-    } else {
-        noticeBox.style.display = "block";
-        noticeTitle.innerText = "ℹ️ পেমেন্ট অপশন (ক্যাশ অন ডেলিভারি)";
-        noticeDesc.innerHTML = `খাবার বা এক্সেসরিজের ক্ষেত্রে ক্যাশ অন ডেলিভারি প্রযোজ্য। চাইলে ডেলিভারি চার্জ অগ্রিম দিতে পারেন।`;
-        trxLabel.innerHTML = "ট্রানজেকশন আইডি (TrxID) / বিকাশ নাম্বার (অপশনাল)";
-    }
+    const total = subtotal + currentDeliveryCharge;
+    document.getElementById("chkSubtotal").innerText = subtotal;
+    document.getElementById("chkDelivery").innerText = currentDeliveryCharge;
+    document.getElementById("chkTotal").innerText = total;
 }
 
-function confirmOrderSubmit(){
+function proceedToPayment(){
     const name = document.getElementById("checkoutName")?.value.trim();
     const phone = document.getElementById("checkoutPhone")?.value.trim();
-    const dist = document.getElementById("checkoutDistrict")?.value;
+    const district = document.getElementById("checkoutDistrict")?.value;
     const thana = document.getElementById("checkoutThana")?.value;
-    const addr = document.getElementById("checkoutAddress")?.value.trim();
-    const trxId = document.getElementById("checkoutTrxId")?.value.trim();
+    const address = document.getElementById("checkoutAddress")?.value.trim();
 
-    if(!name || !phone || !dist || !thana || !addr){
-        showCustomAlert("দয়া করে নাম, ফোন, জেলা, থানা এবং সম্পূর্ণ ঠিকানা পূরণ করুন।");
+    if(!name || !phone || !district || !thana || !address){
+        showCustomAlert("দয়া করে সমস্ত ডেলিভারি তথ্য সঠিকভাবে পূরণ করুন।");
         return;
     }
 
-    if(hasLiveAnimals() && !trxId){
-        showCustomAlert("পশুপাখির অর্ডারের জন্য অবশ্যই ডেলিভারি চার্জ পাঠিয়ে TrxID বা বিকাশ নাম্বারটি লিখুন।");
+    closeCheckoutModal();
+    document.getElementById("paymentStepModal")?.classList.add("show");
+}
+
+function closePaymentModal(){ document.getElementById("paymentStepModal")?.classList.remove("show"); }
+
+function finalizeOrder(){
+    const senderNum = document.getElementById("paySenderNumber")?.value.trim();
+    const trxId = document.getElementById("payTrxId")?.value.trim();
+
+    if(!senderNum || !trxId){
+        showCustomAlert("দয়া করে আপনার বিকাশ/নগদ নাম্বার এবং TrxID দিন।");
         return;
     }
 
-    let sub = 0, itemsHtml = "", itemsTxt = "", tableHtml = "";
+    const name = document.getElementById("checkoutName").value.trim();
+    const phone = document.getElementById("checkoutPhone").value.trim();
+    const district = document.getElementById("checkoutDistrict").value;
+    const thana = document.getElementById("checkoutThana").value;
+    const address = document.getElementById("checkoutAddress").value.trim();
+    const fullAddress = `${address}, ${thana}, ${district}`;
+
+    let subtotal = Number(document.getElementById("chkSubtotal").innerText);
+    let total = Number(document.getElementById("chkTotal").innerText);
+    let orderId = "ORD-" + Math.floor(100000 + Math.random() * 900000);
+
+    let itemsText = "";
+    let tableHtml = "";
+
     cart.forEach(item => {
         const p = products.find(x => String(x.id) === String(item.id));
-        if(!p) return;
-        const pr = (p.discountPrice && p.discountPrice > 0 && p.discountPrice < p.price) ? p.discountPrice : p.price;
-        const tot = pr * item.qty;
-        sub += tot;
-        itemsHtml += `• ${p.name} (${item.qty}টি) - ৳${tot}<br>`;
-        itemsTxt += `• ${p.name} (${item.qty}টি) - ৳${tot}\n`;
-        tableHtml += `<tr><td>${escapeHTML(p.name)}</td><td>${item.qty}</td><td>৳${tot}</td></tr>`;
-        p.stock -= item.qty;
-        if(p.stock < 0) p.stock = 0;
+        if(p){
+            const price = (p.discountPrice && p.discountPrice > 0 && p.discountPrice < p.price) ? p.discountPrice : p.price;
+            itemsText += `- ${p.name} (Qty: ${item.qty}) - ৳${price * item.qty}\n`;
+            tableHtml += `<tr><td style="padding:6px; border-bottom:1px solid #eee;">${escapeHTML(p.name)}</td><td style="padding:6px; border-bottom:1px solid #eee; text-align:center;">${item.qty}</td><td style="padding:6px; border-bottom:1px solid #eee; text-align:right;">৳${price * item.qty}</td></tr>`;
+            
+            // Reduce stock
+            p.stock -= item.qty;
+            if(p.stock < 0) p.stock = 0;
+        }
     });
 
     saveProducts();
-    const del = Number(document.getElementById("checkoutDeliveryCharge")?.innerText || 0);
-    const total = sub + del;
-    const orderId = 'ORD-' + Math.floor(100000 + Math.random() * 900000);
-    const fullAddress = `${addr}, থানা/এলাকা: ${thana}, জেলা: ${dist}`;
 
-    myOrders.unshift({
-        id: orderId, date: new Date().toLocaleDateString('bn-BD'),
-        name, phone, district: dist, thana, address: fullAddress, trxId: trxId || 'N/A', itemsText: itemsTxt, tableHtml, subtotal: sub, delivery: del, total, status: 'pending'
-    });
+    const newOrder = {
+        id: orderId,
+        name, phone, address: fullAddress,
+        subtotal, delivery: currentDeliveryCharge, total,
+        senderNum, trxId,
+        itemsText, tableHtml,
+        status: 'pending',
+        cancelledByAdmin: false,
+        date: new Date().toLocaleString()
+    };
+
+    myOrders.unshift(newOrder);
     saveMyOrders();
 
-    emailjs.send("service_5am5end", "template_45wz8f9", {
-        customer_name: name, customer_phone: phone, district: dist, address: fullAddress, order_items: itemsHtml, subtotal: sub, delivery_charge: del, total: total, trx_id: trxId || 'None'
-    }).catch(e => console.log(e));
-
-    const waMsg = `🛒 *New Order - ADORE'S PET*\n🆔 ${orderId}\n👤 ${name}\n📞 ${phone}\n📍 ${dist} (${thana})\n🏠 ${addr}\n\n📦 *Products:*\n${itemsTxt}\n🚚 Delivery: ৳${del}\n💳 TrxID: ${trxId || 'N/A'}\n💰 Total: ৳${total}`;
-    window.open(`https://wa.me/8801681578599?text=` + encodeURIComponent(waMsg), '_blank');
+    // Send Email via EmailJS
+    try {
+        emailjs.send("service_370p085", "template_a03d7ro", {
+            order_id: orderId,
+            customer_name: name,
+            customer_phone: phone,
+            customer_address: fullAddress,
+            order_items: itemsText,
+            subtotal: subtotal,
+            delivery: currentDeliveryCharge,
+            total_amount: total,
+            sender_number: senderNum,
+            trx_id: trxId
+        });
+    } catch(e) {}
 
     cart = [];
     saveCart();
     updateCartBadge();
-    renderProducts();
-    closeCheckoutModal();
-    
-    showSuccessPopup(`আপনার অর্ডারটি সফলভাবে সম্পন্ন হয়েছে! 🎉<br><b style="color:var(--teal);">Order ID: ${orderId}</b>`);
+
+    closePaymentModal();
+    showSuccessPopup(`আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে!<br><b>Order ID:</b> ${orderId}`);
 }
