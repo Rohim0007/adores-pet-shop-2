@@ -25,6 +25,12 @@ function onDistrictChange(){
     const thanaSelect = document.getElementById("checkoutThana");
     if(!thanaSelect) return;
 
+    if(!dist){
+        thanaSelect.innerHTML = `<option value="">আগে জেলা বাছুন</option>`;
+        calculateDeliveryCharge();
+        return;
+    }
+
     let thanas = bdDistrictsWithThanas[dist] || ["সদর থানা", "অন্যান্য এলাকা"];
     let html = `<option value="">থানা/এলাকা বাছুন</option>`;
     thanas.forEach(t => {
@@ -38,6 +44,13 @@ function goToCheckoutStep(){
     if(cart.length === 0){ showCustomAlert("আপনার কার্ট খালি!"); return; }
     closeCartModal();
     loadDistrictsDropdown();
+    
+    // Reset fields & set delivery charge to 0 until district selected
+    const distSel = document.getElementById("checkoutDistrict");
+    if(distSel) distSel.value = "";
+    const thanaSel = document.getElementById("checkoutThana");
+    if(thanaSel) thanaSel.innerHTML = `<option value="">আগে জেলা বাছুন</option>`;
+    
     calculateDeliveryCharge();
     document.getElementById("checkoutStepModal")?.classList.add("show");
 }
@@ -74,7 +87,7 @@ function calculateDeliveryCharge(){
             delivery = (dist === "Dhaka") ? 80 : 150;
         }
     } else {
-        delivery = isLive ? 400 : 80;
+        delivery = 0; // No delivery charge calculated until district is selected
     }
 
     document.getElementById("checkoutSubtotal").innerText = subtotal;
@@ -86,7 +99,12 @@ function calculateDeliveryCharge(){
     const noticeDesc = document.getElementById("paymentNoticeDesc");
     const trxLabel = document.getElementById("trxIdLabel");
 
-    if(isLive){
+    if(dist === ""){
+        noticeBox.style.display = "block";
+        noticeTitle.innerText = "ℹ️ ডেলিভারি চার্জ হিসাবের নির্দেশনা";
+        noticeDesc.innerHTML = `সঠিক ডেলিভারি চার্জ দেখার জন্য ওপর থেকে আপনার <b>জেলা নির্বাচন করুন</b>।`;
+        trxLabel.innerHTML = "ট্রানজেকশন আইডি (TrxID) / বিকাশ নাম্বার";
+    } else if(isLive){
         noticeBox.style.display = "block";
         noticeTitle.innerText = "⚠️ পশুপাখির জন্য অগ্রিম ডেলিভারি চার্জ বাধ্যতামূলক!";
         noticeDesc.innerHTML = `খরগোশ বা হ্যামস্টার অর্ডারের জন্য ডেলিভারি চার্জ (<b>৳${delivery}</b>) অগ্রিম বিকাশ/নগদে পাঠিয়ে ট্রানজেকশন আইডি দিন।`;
