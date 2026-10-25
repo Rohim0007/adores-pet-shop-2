@@ -1,32 +1,22 @@
-:root{
+:root {
     --teal: #00897b;
-    --teal-dark: #00695c;
-    --bg-light: #f4f6f8;
-    --text-dark: #1e293b;
-    --text-muted: #64748b;
+    --bg-light: #f8fafc;
+    --text-main: #1e293b;
 }
-*{ margin:0; padding:0; box-sizing:border-box; }
-body{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:var(--bg-light); color:var(--text-dark); padding: 20px 16px; }
-
-.admin-card{ background:white; padding:20px; border-radius:20px; border:1px solid #e2e8f0; margin-bottom: 20px; max-width: 600px; margin-left: auto; margin-right: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
-.admin-submit-btn{ width: 100%; padding: 14px; border: none; border-radius: 12px; background: var(--teal); color: white; font-weight: 800; cursor: pointer; }
-
-/* Product Item Card Fix */
-.admin-product-card{ display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #f8fafc; border-radius: 14px; border: 1px solid #e2e8f0; margin-bottom: 12px; gap: 10px; }
-.admin-product-info{ display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
-.admin-product-info img{ width: 55px; height: 55px; object-fit: cover; border-radius: 10px; border: 1px solid #cbd5e1; flex-shrink: 0; }
-.admin-product-actions{ display: flex; gap: 6px; flex-shrink: 0; }
-.admin-product-actions button{ width: 36px; height: 36px; border-radius: 10px; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; color: white; }
-
-/* Admin Order Tabs & Buttons */
-.admin-tabs-row{ display: flex; gap: 8px; margin-bottom: 15px; }
-.admin-tab-btn{ flex: 1; padding: 10px 8px; border-radius: 12px; border: 1.5px solid #cbd5e1; background: #f8fafc; font-weight: 800; font-size: 12px; cursor: pointer; color: #475569; text-align: center; transition: all 0.2s; }
-.admin-tab-btn.active{ background: var(--teal); color: white; border-color: var(--teal); }
-
-.form-label { display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 4px; text-align: left; }
-.form-input { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13.5px; outline: none; margin-bottom: 10px; background: #fff; }
-
-.thankyou-overlay{ display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); z-index: 25000; align-items: flex-end; justify-content: center; }
-.thankyou-overlay.show{ display: flex !important; }
-.thankyou-card{ background: white; padding: 20px 22px 25px; border-top-left-radius: 24px; border-top-right-radius: 24px; text-align: center; width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto; }
-.thankyou-btn{ width: 100%; padding: 14px; border: none; border-radius: 12px; background: var(--teal); color: white; font-weight: 800; cursor: pointer; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background: var(--bg-light); color: var(--text-main); padding: 16px; }
+.admin-card { background: white; border-radius: 16px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; }
+.form-input { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 13px; outline: none; margin-bottom: 10px; }
+.form-input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(0,137,123,0.15); }
+.admin-submit-btn { width: 100%; background: var(--teal); color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 900; font-size: 13.5px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,137,123,0.25); }
+.admin-tabs-row { display: flex; gap: 8px; }
+.admin-tab-btn { flex: 1; padding: 10px; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 12px; font-weight: 800; cursor: pointer; color: var(--text-main); }
+.admin-tab-btn.active { background: var(--teal); color: white; border-color: var(--teal); }
+.admin-product-card { display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 8px 12px; margin-bottom: 8px; }
+.admin-product-info { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
+.admin-product-info img { width: 45px; height: 45px; object-fit: cover; border-radius: 8px; }
+.admin-product-actions { display: flex; gap: 6px; }
+.admin-product-actions button { border: none; width: 32px; height: 32px; border-radius: 8px; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.thankyou-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 40000; padding: 16px; }
+.thankyou-overlay.show { display: flex; }
+.thankyou-card { background: white; width: 100%; max-width: 400px; border-radius: 20px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
