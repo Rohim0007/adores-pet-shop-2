@@ -2,9 +2,7 @@
    ADORE'S PET - ADMIN.JS (Custom Modal Alerts & Management)
 ===================================================== */
 
-try {
-    emailjs.init({ publicKey: "P7lqeBS7YKyU3Kpaq" });
-} catch(e) {}
+emailjs.init({ publicKey: "P7lqeBS7YKyU3Kpaq" });
 
 let products = JSON.parse(localStorage.getItem("adoresProducts")) || defaultProducts;
 let myOrders = JSON.parse(localStorage.getItem("adoresMyOrders")) || [];
@@ -23,8 +21,6 @@ function showAdminAlert(msg){
     if(txt && modal){
         txt.innerHTML = msg;
         modal.classList.add("show");
-    } else {
-        alert(msg);
     }
 }
 function closeAdminAlert(){
@@ -32,31 +28,23 @@ function closeAdminAlert(){
 }
 
 function saveWelcomePopupData(){
-    try {
-        const popupImg = document.getElementById("adminWelcomePopupImg")?.value.trim() || "";
-        const popupLink = document.getElementById("adminWelcomePopupLink")?.value.trim() || "";
-        
-        localStorage.setItem("adoresWelcomePopupImg", popupImg);
-        localStorage.setItem("adoresWelcomePopupLink", popupLink);
-        
-        showAdminAlert("ওয়েলকাম পপআপ ব্যানার সফলভাবে সেভ করা হয়েছে! 🖼️");
-    } catch(e) {
-        showAdminAlert("সেভ করতে সমস্যা হয়েছে: " + e.message);
-    }
+    const popupImg = document.getElementById("adminWelcomePopupImg")?.value.trim() || "";
+    const popupLink = document.getElementById("adminWelcomePopupLink")?.value.trim() || "";
+    
+    localStorage.setItem("adoresWelcomePopupImg", popupImg);
+    localStorage.setItem("adoresWelcomePopupLink", popupLink);
+    
+    showAdminAlert("ওয়েলকাম পপআপ ব্যানার সফলভাবে সেভ করা হয়েছে! 🖼️");
 }
 
 function saveAnnouncementData(){
-    try {
-        const noticeText = document.getElementById("adminNoticeInput")?.value.trim() || "";
-        const ytLink = document.getElementById("adminYoutubeInput")?.value.trim() || "";
-        
-        localStorage.setItem("adoresNoticeText", noticeText);
-        localStorage.setItem("adoresYoutubeLink", ytLink);
-        
-        showAdminAlert("নোটিশ এবং ইউটিউব লিংক সফলভাবে আপডেট করা হয়েছে! 📢");
-    } catch(e) {
-        showAdminAlert("সেভ করতে সমস্যা হয়েছে: " + e.message);
-    }
+    const noticeText = document.getElementById("adminNoticeInput")?.value.trim() || "";
+    const ytLink = document.getElementById("adminYoutubeInput")?.value.trim() || "";
+    
+    localStorage.setItem("adoresNoticeText", noticeText);
+    localStorage.setItem("adoresYoutubeLink", ytLink);
+    
+    showAdminAlert("নোটিশ এবং ইউটিউব লিংক সফলভাবে আপডেট করা হয়েছে! 📢");
 }
 
 function toggleVacationMode(){
@@ -268,21 +256,17 @@ function escapeHTML(str){
 }
 
 /* Run initial admin functions */
-try {
-    renderAdminProducts();
-    updateOrderCounts();
-    const cb = document.getElementById("adminVacationCheckbox");
-    if(cb) cb.checked = vacationMode;
+renderAdminProducts();
+updateOrderCounts();
+const cb = document.getElementById("adminVacationCheckbox");
+if(cb) cb.checked = vacationMode;
 
-    const savedNotice = localStorage.getItem("adoresNoticeText") || "";
-    const savedYt = localStorage.getItem("adoresYoutubeLink") || "";
-    if(document.getElementById("adminNoticeInput")) document.getElementById("adminNoticeInput").value = savedNotice;
-    if(document.getElementById("adminYoutubeInput")) document.getElementById("adminYoutubeInput").value = savedYt;
+const savedNotice = localStorage.getItem("adoresNoticeText") || "";
+const savedYt = localStorage.getItem("adoresYoutubeLink") || "";
+if(document.getElementById("adminNoticeInput")) document.getElementById("adminNoticeInput").value = savedNotice;
+if(document.getElementById("adminYoutubeInput")) document.getElementById("adminYoutubeInput").value = savedYt;
 
-    const savedPopupImg = localStorage.getItem("adoresWelcomePopupImg") || "";
-    const savedPopupLink = localStorage.getItem("adoresWelcomePopupLink") || "";
-    if(document.getElementById("adminWelcomePopupImg")) document.getElementById("adminWelcomePopupImg").value = savedPopupImg;
-    if(document.getElementById("adminWelcomePopupLink")) document.getElementById("adminWelcomePopupLink").value = savedPopupLink;
-} catch(e) {
-    console.error(e);
-}
+const savedPopupImg = localStorage.getItem("adoresWelcomePopupImg") || "";
+const savedPopupLink = localStorage.getItem("adoresWelcomePopupLink") || "";
+if(document.getElementById("adminWelcomePopupImg")) document.getElementById("adminWelcomePopupImg").value = savedPopupImg;
+if(document.getElementById("adminWelcomePopupLink")) document.getElementById("adminWelcomePopupLink").value = savedPopupLink;
