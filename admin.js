@@ -1,5 +1,5 @@
 /* =====================================================
-   ADORE'S PET - ADMIN.JS (Tabs, Popups & Product Fixes)
+   ADORE'S PET - ADMIN.JS (Custom Modal Alerts & Fixes)
 ===================================================== */
 
 emailjs.init({ publicKey: "P7lqeBS7YKyU3Kpaq" });
@@ -11,26 +11,38 @@ let currentAdminPassword = localStorage.getItem("adoresAdminPass") || "DJ778899"
 
 function saveProducts(){
     try { localStorage.setItem("adoresProducts", JSON.stringify(products)); } 
-    catch(e){ alert("মেমরি ফুল!"); }
+    catch(e){ showAdminAlert("মেমরি ফুল!"); }
 }
 function saveMyOrders(){ localStorage.setItem("adoresMyOrders", JSON.stringify(myOrders)); }
+
+function showAdminAlert(msg){
+    const txt = document.getElementById("adminAlertText");
+    const modal = document.getElementById("adminCustomAlert");
+    if(txt && modal){
+        txt.innerHTML = msg;
+        modal.classList.add("show");
+    }
+}
+function closeAdminAlert(){
+    document.getElementById("adminCustomAlert")?.classList.remove("show");
+}
 
 function toggleVacationMode(){
     const checkbox = document.getElementById("adminVacationCheckbox");
     if(checkbox){
         vacationMode = checkbox.checked;
         localStorage.setItem("adoresVacationMode", JSON.stringify(vacationMode));
-        alert(vacationMode ? "ভ্যাকেশন মোড চালু করা হয়েছে!" : "ভ্যাকেশন মোড বন্ধ করা হয়েছে।");
+        showAdminAlert(vacationMode ? "ভ্যাকেশন মোড সফলভাবে চালু করা হয়েছে! 🌴" : "ভ্যাকেশন মোড বন্ধ করা হয়েছে।");
     }
 }
 
 function changeAdminPassword(){
     const newPass = document.getElementById("newAdminPasswordInput")?.value.trim();
-    if(!newPass){ alert("নতুন পাসওয়ার্ড লিখুন।"); return; }
+    if(!newPass){ showAdminAlert("নতুন পাসওয়ার্ড লিখুন।"); return; }
     localStorage.setItem("adoresAdminPass", newPass);
     currentAdminPassword = newPass;
     document.getElementById("newAdminPasswordInput").value = "";
-    alert("পাসওয়ার্ড সফলভাবে পরিবর্তিত হয়েছে!");
+    showAdminAlert("পাসওয়ার্ড সফলভাবে পরিবর্তিত হয়েছে! 🔒");
 }
 
 function renderAdminProducts(){
@@ -72,7 +84,7 @@ function addProduct(){
     let imgs = [u1, u2, u3].filter(Boolean);
     if(imgs.length === 0) imgs = ["https://i.postimg.cc/CdyZqRY5/file-000000006ecc71f899e85a5cc31b0405.png"];
 
-    if(!name || price <= 0){ alert("সঠিক নাম ও দাম দিন।"); return; }
+    if(!name || price <= 0){ showAdminAlert("সঠিক নাম ও দাম দিন।"); return; }
 
     products.unshift({
         id: String(Date.now()), name, price, discountPrice: disc, stock, age, color, category, rating, desc, images: imgs, videoUrl: vUrl
@@ -80,13 +92,14 @@ function addProduct(){
 
     saveProducts();
     renderAdminProducts();
-    alert("পণ্য সফলভাবে যোগ করা হয়েছে!");
+    showAdminAlert("পণ্য সফলভাবে যোগ করা হয়েছে! 🎉");
 }
 
 function deleteProduct(id){
     products = products.filter(x => String(x.id) !== String(id));
     saveProducts();
     renderAdminProducts();
+    showAdminAlert("পণ্যটি সফলভাবে মুছে ফেলা হয়েছে।");
 }
 
 function openEditModal(id){
@@ -121,7 +134,7 @@ function saveEditProduct(){
     saveProducts();
     renderAdminProducts();
     closeEditModal();
-    alert("সংশোধন সফল হয়েছে!");
+    showAdminAlert("পণ্যটি সফলভাবে সংশোধন করা হয়েছে! ✨");
 }
 
 /* ORDER TABS & POPUP MANAGEMENT */
@@ -140,7 +153,6 @@ function openOrderModal(status){
     const title = document.getElementById("modalOrderTitle");
     if(!container) return;
 
-    // Highlight active tab
     ['pending', 'completed', 'cancelled'].forEach(s => {
         const btn = document.getElementById("tabBtn" + s.charAt(0).toUpperCase() + s.slice(1));
         if(btn) btn.classList.toggle("active", s === status);
@@ -193,7 +205,7 @@ function updateOrderStatus(orderId, newStatus){
         order.status = newStatus;
         localStorage.setItem("adoresMyOrders", JSON.stringify(myOrders));
         updateOrderCounts();
-        openOrderModal(newStatus); // Refresh current modal view
+        openOrderModal(newStatus);
     }
 }
 
