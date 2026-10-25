@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Dashboard - ADORE'S PET</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
@@ -38,7 +38,7 @@
     <div class="admin-card">
         <h2 style="margin-bottom:12px; font-size:18px; color:var(--teal);">Change Admin Password</h2>
         <label style="font-size:12px; font-weight:700;">New Password</label>
-        <input id="newAdminPasswordInput" type="password" placeholder="Enter new password">
+        <input id="newAdminPasswordInput" type="password" placeholder="Enter new password" class="form-input">
         <button onclick="changeAdminPassword()" class="admin-submit-btn" style="padding:10px; font-size:13px;">পাসওয়ার্ড আপডেট করুন</button>
     </div>
 
@@ -55,11 +55,6 @@
             </div>
         </div>
         <div id="collapsibleOrderPanel" style="display:block; margin-top:15px; border-top:1px dashed #cbd5e1; padding-top:12px;">
-            <div class="admin-order-tabs">
-                <button class="order-tab-btn active" id="tabPending" onclick="switchOrderTab('pending')">পেন্ডিং (<span id="countPending">0</span>)</button>
-                <button class="order-tab-btn" id="tabCompleted" onclick="switchOrderTab('completed')">কমপ্লিট (<span id="countCompleted">0</span>)</button>
-                <button class="order-tab-btn" id="tabCancelled" onclick="switchOrderTab('cancelled')">বাতিল (<span id="countCancelled">0</span>)</button>
-            </div>
             <div id="adminOrdersListContainer" style="max-height:350px; overflow-y:auto;"></div>
         </div>
     </div>
@@ -69,38 +64,38 @@
         <h2 style="margin-bottom:15px; font-size:18px; color:var(--teal);"><i class="fa-solid fa-circle-plus"></i> Add New Product</h2>
         
         <label style="font-size:13px; font-weight:700; color:#475569;">Product Name</label>
-        <input id="productName" placeholder="e.g. Dwarf Rabbit">
+        <input id="productName" placeholder="e.g. Dwarf Rabbit" class="form-input">
 
         <div style="display:flex; gap:10px;">
             <div style="flex:1;">
                 <label style="font-size:13px; font-weight:700; color:#475569;">Regular Price (৳)</label>
-                <input id="productPrice" type="number" placeholder="1000">
+                <input id="productPrice" type="number" placeholder="1000" class="form-input">
             </div>
             <div style="flex:1;">
                 <label style="font-size:13px; font-weight:700; color:#ef4444;">Discount Price (৳)</label>
-                <input id="productDiscountPrice" type="number" placeholder="850">
+                <input id="productDiscountPrice" type="number" placeholder="850" class="form-input">
             </div>
         </div>
 
         <div style="display:flex; gap:10px;">
             <div style="flex:1;">
                 <label style="font-size:13px; font-weight:700; color:#475569;">Stock Quantity</label>
-                <input id="productStock" type="number" placeholder="10">
+                <input id="productStock" type="number" placeholder="10" class="form-input">
             </div>
             <div style="flex:1;">
                 <label style="font-size:13px; font-weight:700; color:#0284c7;">Age / বয়স (Option)</label>
-                <input id="productAge" placeholder="e.g. 2 Months">
+                <input id="productAge" placeholder="e.g. 2 Months" class="form-input">
             </div>
         </div>
 
         <div style="display:flex; gap:10px;">
             <div style="flex:1;">
                 <label style="font-size:13px; font-weight:700; color:#475569;">Color (Option)</label>
-                <input id="productColor" placeholder="e.g. White">
+                <input id="productColor" placeholder="e.g. White" class="form-input">
             </div>
             <div style="flex:1;">
                 <label style="font-size:13px; font-weight:700; color:#475569;">Category</label>
-                <select id="productCategory">
+                <select id="productCategory" class="form-input">
                     <option>Rabbit</option>
                     <option>Hamster</option>
                     <option>Pet Food</option>
@@ -110,19 +105,19 @@
         </div>
 
         <label style="font-size:13px; font-weight:700; color:#475569;">Rating (e.g. 4.8)</label>
-        <input id="productRating" type="text" placeholder="4.8">
+        <input id="productRating" type="text" placeholder="4.8" class="form-input">
 
         <label style="font-size:13px; font-weight:700; color:#475569;">Full Product Details</label>
-        <textarea id="productDesc" placeholder="Description..." style="height:80px; width:100%; padding:12px; border:1px solid #cbd5e1; border-radius:12px; outline:none; margin-bottom:14px;"></textarea>
+        <textarea id="productDesc" placeholder="Description..." class="form-input" style="height:80px;"></textarea>
 
         <div style="background:#e0f2f1; padding:12px; border-radius:12px; border:1px solid var(--teal); margin-bottom:14px;">
             <label style="font-size:13px; font-weight:800; color:var(--teal);">🔗 ছবির লিংক দিন (Image URL)</label>
-            <input id="imageUrl1" placeholder="Image 1 Link (https://...)" style="margin-bottom:6px;">
-            <input id="imageUrl2" placeholder="Image 2 Link (Optional)" style="margin-bottom:6px;">
-            <input id="imageUrl3" placeholder="Image 3 Link (Optional)" style="margin-bottom:10px;">
+            <input id="imageUrl1" placeholder="Image 1 Link (https://...)" class="form-input" style="margin-bottom:6px;">
+            <input id="imageUrl2" placeholder="Image 2 Link (Optional)" class="form-input" style="margin-bottom:6px;">
+            <input id="imageUrl3" placeholder="Image 3 Link (Optional)" class="form-input" style="margin-bottom:10px;">
 
             <label style="font-size:13px; font-weight:800; color:#dc2626;">🎥 ভিডিওর লিংক দিন (YouTube / FB Video URL)</label>
-            <input id="productVideoUrlInput" placeholder="https://youtube.com/..." style="margin-bottom:0;">
+            <input id="productVideoUrlInput" placeholder="https://youtube.com/..." class="form-input" style="margin-bottom:0;">
         </div>
 
         <button onclick="addProduct()" class="admin-submit-btn">Add Product</button>
@@ -139,20 +134,20 @@
     <div class="thankyou-card" style="text-align:left;">
         <h2 style="font-size:18px; margin-bottom:10px; color:var(--teal); text-align:center;"><i class="fa-solid fa-pen-to-square"></i> Edit Product</h2>
         <input type="hidden" id="editProductId">
-        <label style="font-size:12px; font-weight:700; color:#475569;">Product Name</label>
-        <input id="editProductName" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:10px; margin-top:4px; margin-bottom:10px; outline:none;">
+        <label style="font-size:12px; font-weight:700;">Product Name</label>
+        <input id="editProductName" class="form-input">
         <div style="display:flex; gap:10px;">
-            <div style="flex:1;"><label style="font-size:12px; font-weight:700;">Price (৳)</label><input id="editProductPrice" type="number" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:10px; margin-top:4px; margin-bottom:10px; outline:none;"></div>
-            <div style="flex:1;"><label style="font-size:12px; font-weight:700; color:#ef4444;">Discount (৳)</label><input id="editProductDiscountPrice" type="number" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:10px; margin-top:4px; margin-bottom:10px; outline:none;"></div>
+            <div style="flex:1;"><label style="font-size:12px; font-weight:700;">Price (৳)</label><input id="editProductPrice" type="number" class="form-input"></div>
+            <div style="flex:1;"><label style="font-size:12px; font-weight:700; color:#ef4444;">Discount (৳)</label><input id="editProductDiscountPrice" type="number" class="form-input"></div>
         </div>
         <div style="display:flex; gap:10px;">
-            <div style="flex:1;"><label style="font-size:12px; font-weight:700;">Stock</label><input id="editProductStock" type="number" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:10px; margin-top:4px; margin-bottom:10px; outline:none;"></div>
-            <div style="flex:1;"><label style="font-size:12px; font-weight:700;">Age</label><input id="editProductAge" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:10px; margin-top:4px; margin-bottom:10px; outline:none;"></div>
+            <div style="flex:1;"><label style="font-size:12px; font-weight:700;">Stock</label><input id="editProductStock" type="number" class="form-input"></div>
+            <div style="flex:1;"><label style="font-size:12px; font-weight:700;">Age</label><input id="editProductAge" class="form-input"></div>
         </div>
         <label style="font-size:12px; font-weight:700;">Image URL</label>
-        <input id="editProductImgUrl" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:10px; margin-top:4px; margin-bottom:10px; outline:none;">
+        <input id="editProductImgUrl" class="form-input">
         <label style="font-size:12px; font-weight:700; color:#dc2626;">Video URL</label>
-        <input id="editProductVideoUrl" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:10px; margin-top:4px; margin-bottom:12px; outline:none;">
+        <input id="editProductVideoUrl" class="form-input">
         <div style="display:flex; gap:10px;">
             <button onclick="saveEditProduct()" class="thankyou-btn" style="margin:0; flex:1;">Save Changes</button>
             <button onclick="closeEditModal()" class="thankyou-btn" style="margin:0; flex:1; background:#64748b;">Cancel</button>
@@ -160,6 +155,7 @@
     </div>
 </div>
 
-<script src="script.js"></script>
+<!-- JS SCRIPTS -->
+<script src="js/admin.js"></script>
 </body>
 </html>
