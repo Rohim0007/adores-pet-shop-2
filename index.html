@@ -3,300 +3,314 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ADORE'S PET - Online Shop</title>
+<title>ADORE'S PET - Loved by pets, trusted by owners</title>
 <link rel="stylesheet" href="shop.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 
-<!-- WELCOME POPUP MODAL (DARAZ STYLE) -->
+<!-- TOP HEADER -->
+<header class="main-header">
+    <div class="header-container">
+        <div class="logo-area" onclick="handleSecretClick()" style="cursor:pointer;" title="অ্যাডমিন প্যানেলে যেতে ৩ বার ক্লিক করুন">
+            <img src="https://i.postimg.cc/CdyZqRY5/file-000000006ecc71f899e85a5cc31b0405.png" alt="Logo">
+            <div>
+                <h1>ADORE'S PET</h1>
+                <p>Loved by pets, trusted by owners</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="live-site-btn" onclick="openSupportModal()"><i class="fa-solid fa-headset"></i> Support</button>
+        </div>
+    </div>
+</header>
+
+<!-- SEARCH BAR -->
+<div class="search-container">
+    <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="খাবারের নাম, খেলনা বা প্রোডাক্ট খুঁজুন..." oninput="searchProducts()">
+    </div>
+</div>
+
+<!-- HERO BANNER -->
+<section class="hero-section">
+    <div class="hero-slider">
+        <div class="hero-slide active">
+            <img src="https://i.postimg.cc/hGyVG8y6/file-000000006f14720b98a7a5a54d184cb0.png" alt="Banner">
+            <div class="hero-content">
+                <span class="badge">Trusted Breeder & Pet Shop</span>
+                <h2>আপনার প্রিয় পোষা প্রাণীর বিশ্বস্ত ঠিকানা ❤️</h2>
+                <p>Rabbit | Hamster | Pet Food | Accessories</p>
+                <button onclick="goHome()" class="hero-btn">Shop Now ></button>
+            </div>
+        </div>
+    </div>
+    <div class="hero-features">
+        <div><i class="fa-solid fa-shield-cat"></i> স্বাস্থ্যকর ও ভ্যাকসিন প্রাপ্ত</div>
+        <div><i class="fa-solid fa-truck-fast"></i> সমগ্র বাংলাদেশে ডেলিভারি সুবিধা</div>
+        <div><i class="fa-solid fa-hand-holding-heart"></i> নিরাপদ ও প্রাকৃতিক খাদ্য</div>
+        <div><i class="fa-solid fa-headset"></i> বিশ্বস্ত কাস্টমার সাপোর্ট</div>
+    </div>
+</section>
+
+<!-- ANNOUNCEMENT BANNER (Dynamic) -->
+<div id="announcementBannerBox" style="display:none; background:linear-gradient(135deg, #00897b, #004d40); color:white; padding:12px 16px; margin:12px 16px; border-radius:14px; text-align:center; font-weight:700; box-shadow:0 4px 15px rgba(0,137,123,0.3); flex-direction:column; gap:6px;">
+    <div id="announcementText" style="font-size:13.5px; line-height:1.5;"></div>
+</div>
+
+<!-- VACATION MODE NOTIFICATION BOX -->
+<div id="vacationBoxContainer" style="display:none; padding:40px 20px; text-align:center;">
+    <div style="background:#fff3cd; border:2px dashed #ffecb5; border-radius:20px; padding:30px 20px; max-width:500px; margin:0 auto; box-shadow:0 10px 30px rgba(0,0,0,0.05);">
+        <div style="font-size:45px; margin-bottom:12px;">🌴</div>
+        <h2 style="color:#856404; font-size:20px; font-weight:900; margin-bottom:10px;">সাময়িক বিরতি / ভ্যাকেশন মোড চালু আছে</h2>
+        <p style="color:#664d03; font-size:14px; line-height:1.6; margin-bottom:20px;">আমাদের শপ ও ফার্ম বর্তমানে সাময়িক বিরতিতে রয়েছে। এই সময়ে নতুন কোনো অর্ডার গ্রহণ করা হচ্ছে না। খুব শীঘ্রই আমরা নতুন পোষা প্রাণী ও পণ্য নিয়ে ফিরে আসছি!</p>
+        <div style="font-weight:700; color:#856404; font-size:13px;">জরুরি প্রয়োজনে আমাদের সাপোর্ট নাম্বারে যোগাযোগ করতে পারেন।</div>
+    </div>
+</div>
+
+<!-- NORMAL HOME CONTENT -->
+<div id="normalHomeContent">
+    <!-- CATEGORIES -->
+    <section class="categories-section">
+        <div class="section-header">
+            <h3>ক্যাটাগরি সমুহ</h3>
+            <span onclick="goHome()" style="color:var(--teal); font-weight:800; cursor:pointer; font-size:13px;">সব দেখুন</span>
+        </div>
+        <div class="category-chips">
+            <button class="chip-btn" onclick="selectCategory('Rabbit', this)"><i class="fa-solid fa-paw"></i> Rabbit</button>
+            <button class="chip-btn" onclick="selectCategory('Hamster', this)"><i class="fa-solid fa-cat"></i> Hamster</button>
+            <button class="chip-btn" onclick="selectCategory('Pet Food', this)"><i class="fa-solid fa-bone"></i> Pet Food</button>
+            <button class="chip-btn" onclick="selectCategory('Accessories', this)"><i class="fa-solid fa-basket-shopping"></i> Accessories</button>
+        </div>
+    </section>
+
+    <!-- PRODUCTS GRID -->
+    <section class="products-section">
+        <div class="section-header">
+            <h3 id="productsTitle">জনপ্রিয় প্রোডাক্ট সমূহ</h3>
+        </div>
+        <div class="products-grid" id="productsGrid"></div>
+    </section>
+</div>
+
+<!-- BOTTOM NAVIGATION BAR -->
+<nav class="bottom-nav">
+    <a href="#" class="nav-item active" onclick="goHome()">
+        <i class="fa-solid fa-store"></i>
+        <span>Shop</span>
+    </a>
+    <a href="#" class="nav-item" onclick="openCartModal()">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span>My Cart</span>
+        <div class="badge-count" id="cartCount" style="display:none;">0</div>
+    </a>
+    <a href="#" class="nav-item" onclick="openOrdersModal()">
+        <i class="fa-solid fa-receipt"></i>
+        <span>My Orders</span>
+    </a>
+    <a href="#" class="nav-item" onclick="openSupportModal()">
+        <i class="fa-solid fa-headset"></i>
+        <span>Support</span>
+    </a>
+</nav>
+
+<!-- WELCOME POPUP MODAL -->
 <div id="welcomePopupModal" class="thankyou-overlay" style="align-items:center; justify-content:center; padding:16px; z-index:35000;">
     <div style="background:transparent; max-width:400px; width:100%; position:relative; text-align:center;">
-        <div id="welcomePopupCardWrapper" style="cursor:pointer; border-radius:20px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,0.4); background:#fff;">
-            <img id="welcomePopupImg" src="" alt="Welcome Banner" style="width:100%; height:auto; display:block; max-height:75vh; object-fit:contain;">
+        <div id="welcomePopupCardWrapper" style="border-radius:20px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,0.4); background:#fff; padding-bottom:12px;">
+            <img id="welcomePopupImg" src="" alt="Welcome Banner" style="width:100%; height:auto; display:block; max-height:65vh; object-fit:contain; cursor:pointer;" onclick="handlePopupImageClick()">
+            <div style="padding:10px 16px 4px;">
+                <button onclick="handlePopupImageClick()" style="width:100%; background:#00897b; color:#fff; border:none; padding:12px; border-radius:12px; font-weight:900; font-size:15px; cursor:pointer; box-shadow:0 4px 12px rgba(0,137,123,0.3);">
+                    🔥 এখনই কিনুন
+                </button>
+            </div>
         </div>
         <button onclick="closeWelcomePopup()" style="position:absolute; top:-15px; right:-15px; background:#ffffff; color:#1e293b; border:2px solid #cbd5e1; width:36px; height:36px; border-radius:50%; font-size:16px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 10px rgba(0,0,0,0.2);">✕</button>
     </div>
 </div>
 
-<header class="app-header">
-    <div class="header-inner">
-        <div class="logo-area" onclick="goHome()">
-            <img src="https://i.postimg.cc/TyKwf7KS/20261008-191945.png" alt="Logo" class="brand-logo-img">
-            <div class="logo-text-box">
-                <span class="logo-text">ADORE'S PET</span>
-                <span class="logo-sub">Loved by pets, trusted by owners</span>
-            </div>
-        </div>
-        <span class="live-badge" onclick="handleSecretClick()"><span class="live-dot"></span> Live Site</span>
-    </div>
-    <div class="search-box">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input id="searchInput" type="text" placeholder="খাবারের নাম, খেলনা বা প্রোডাক্ট খুঁজুন..." oninput="searchProducts()">
-    </div>
-</header>
-
-<main class="container">
-    <!-- VACATION MODE BOX -->
-    <div id="vacationBoxContainer" style="display:none; background:white; border-radius:24px; padding:32px 24px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.08); margin-top:20px; border:2px dashed #ef4444;">
-        <div style="width:75px; height:75px; background:#fef2f2; color:#ef4444; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; margin:0 auto 18px;">
-            <i class="fa-solid fa-mug-hot"></i>
-        </div>
-        <h2 style="font-size:20px; font-weight:900; color:#1e293b; margin-bottom:8px;">সাময়িক বিরতিতে আছি! 🌴</h2>
-        <p style="font-size:13.5px; color:#64748b; line-height:1.6; margin-bottom:24px;">আমরা বর্তমানে কিছুদিনের জন্য বাইরে আছি। খুব শীঘ্রই নতুন স্টক নিয়ে ফিরে আসবো!</p>
-    </div>
-
-    <div id="normalHomeContent">
-        <!-- ADMIN CONTROLLED ANNOUNCEMENT & YOUTUBE NOTICE BANNER -->
-        <div id="announcementBannerBox" style="display:none; background:linear-gradient(135deg, #00897b, #00695c); color:white; padding:12px 16px; border-radius:14px; margin-bottom:16px; box-shadow:0 4px 12px rgba(0,137,123,0.15); align-items:center; gap:12px;">
-            <div style="width:34px; height:34px; background:rgba(255,255,255,0.2); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:15px; color:#ffd54f;">
-                <i class="fa-solid fa-bullhorn"></i>
-            </div>
-            <div id="announcementText" style="font-size:13.5px; font-weight:700; flex:1; line-height:1.4;"></div>
-        </div>
-
-        <div class="hero-image-banner">
-            <img src="https://i.postimg.cc/JzmwDZBp/file-000000004a4482438eebd37b7fd9db5f.png" alt="Banner">
-        </div>
-
-        <section class="category-section">
-            <div class="category-header-row">
-                <h3>ক্যাটাগরি সমূহ</h3>
-                <span class="show-all" onclick="goHome()">সব দেখুন</span>
-            </div>
-            <div class="category-chips">
-                <button class="chip-btn" onclick="selectCategory('Rabbit',this)">Rabbit</button>
-                <button class="chip-btn" onclick="selectCategory('Hamster',this)">Hamster</button>
-                <button class="chip-btn" onclick="selectCategory('Pet Food',this)">Pet Food</button>
-                <button class="chip-btn" onclick="selectCategory('Accessories',this)">Accessories</button>
-            </div>
-        </section>
-
-        <section class="products-section">
-            <div class="products-header-row">
-                <h3 id="productsTitle">জনপ্রিয় প্রোডাক্ট সমূহ</h3>
-            </div>
-            <div id="productsGrid" class="products-grid"></div>
-        </section>
-    </div>
-</main>
-
-<nav class="bottom-nav">
-    <button class="nav-item active" onclick="goHome()"><i class="fa-solid fa-store"></i><span>Shop</span></button>
-    <button class="nav-item" onclick="openCartModal()">
-        <div class="nav-cart-icon-wrap"><i class="fa-solid fa-cart-shopping"></i><span class="nav-cart-badge" id="cartCount">0</span></div>
-        <span>My Cart</span>
-    </button>
-    <button class="nav-item" onclick="openOrdersModal()"><i class="fa-solid fa-receipt"></i><span>My Orders</span></button>
-    <button class="nav-item" onclick="openSupportModal()"><i class="fa-solid fa-headset" style="color:var(--teal);"></i><span>Support</span></button>
-</nav>
-
-<!-- PRODUCT DETAILS MODAL -->
+<!-- PRODUCT DETAIL MODAL -->
 <div id="productDetailModal" class="thankyou-overlay">
-    <div class="thankyou-card" style="text-align:left;">
-        <div style="width:40px; height:5px; background:#cbd5e1; border-radius:10px; margin:0 auto 12px;"></div>
+    <div class="thankyou-card" style="text-align:left; max-width:450px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-            <h2 id="modalProdName" style="font-size:17px; color:var(--teal); font-weight:900;">Product Name</h2>
-            <button onclick="closeProductModal()" style="background:#e2e8f0; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer; font-weight:bold;">✕</button>
+            <h2 id="modalProdName" style="font-size:18px; color:#00897b; font-weight:900;"></h2>
+            <button onclick="closeProductModal()" style="background:#e2e8f0; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer;">✕</button>
         </div>
-        <div style="width:100%; aspect-ratio:1/1; background:#ffffff; border-radius:16px; overflow:hidden; margin-bottom:12px; display:flex; align-items:center; justify-content:center; border:1px solid #e2e8f0;">
-            <img id="modalMainImg" src="" style="width:100%; height:100%; object-fit:contain;" alt="">
+        <div style="text-align:center; margin-bottom:12px;">
+            <img id="modalMainImg" src="" style="width:100%; max-height:220px; object-fit:cover; border-radius:14px; background:#f8fafc;" alt="">
+            <div id="modalThumbnails" style="display:flex; gap:8px; justify-content:center; margin-top:8px; overflow-x:auto;"></div>
         </div>
-        <div id="modalThumbnails" style="display:none; gap:8px; margin-bottom:12px; overflow-x:auto; padding-bottom:4px;"></div>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:#f8fafc; padding:10px 12px; border-radius:12px; border:1px solid #e2e8f0;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <div id="modalPriceContainer"></div>
-            <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
-                <span id="modalProdStock" class="stock-pill-badge stock-in">In Stock: 0 Pcs</span>
-                <span id="modalProdAge" class="age-pill-badge" style="display:none;"></span>
+            <div style="display:flex; gap:6px;">
+                <span id="modalProdStock" class="stock-pill-badge"></span>
+                <span id="modalProdAge" class="stock-pill-badge stock-in" style="display:none;"></span>
             </div>
         </div>
-        <button id="modalAddCartBtn" onclick="addModalProductToCart()" class="thankyou-btn" style="margin-bottom:12px; font-size:16px;"><i class="fa-solid fa-cart-plus"></i> কার্টে যোগ করুন</button>
-        
-        <div id="modalVideoLinkContainer" style="display:none; margin-bottom:14px;">
-            <a id="modalVideoAnchor" href="" target="_blank" style="display:flex; align-items:center; justify-content:center; gap:8px; background:#fee2e2; color:#dc2626; border:1.5px dashed #f87171; padding:11px; border-radius:12px; font-weight:800; font-size:14px; text-decoration:none;">
-                <i class="fa-solid fa-circle-play" style="font-size:18px;"></i> পণ্যটির ভিডিও দেখুন
-            </a>
+        <div id="modalVideoLinkContainer" style="display:none; margin-bottom:10px;">
+            <a id="modalVideoAnchor" href="#" target="_blank" style="display:block; background:#fee2e2; color:#dc2626; text-align:center; padding:8px; border-radius:8px; font-weight:800; font-size:12.5px; text-decoration:none;"><i class="fa-solid fa-video"></i> এই প্রাণীর ভিডিও দেখুন</a>
         </div>
-
-        <div style="border-top:1px dashed #cbd5e1; padding-top:12px;">
-            <div style="font-size:13px; font-weight:800; color:var(--teal); margin-bottom:6px;"><i class="fa-solid fa-circle-info"></i> পণ্য সম্পর্কে বিস্তারিত</div>
-            <div id="modalProdDetails" style="font-size:13px; color:#334155; line-height:1.6; background:#f8fafc; padding:12px; border-radius:12px; border:1px solid #e2e8f0; white-space:pre-line;"></div>
-        </div>
+        <p id="modalProdDetails" style="font-size:13px; color:#475569; line-height:1.6; max-height:120px; overflow-y:auto; margin-bottom:15px; background:#f8fafc; padding:10px; border-radius:8px;"></p>
+        <button onclick="addModalProductToCart()" class="admin-submit-btn" style="background:#00897b;"><i class="fa-solid fa-cart-plus"></i> কার্টে যোগ করুন</button>
     </div>
 </div>
 
-<!-- STEP 1: CART MODAL -->
+<!-- CART MODAL (Step 1/3) -->
 <div id="cartStepModal" class="thankyou-overlay">
     <div class="thankyou-card" style="text-align:left;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px dashed #cbd5e1; padding-bottom:10px;">
-            <h2 style="font-size:18px; color:var(--teal); font-weight:900;"><i class="fa-solid fa-cart-shopping"></i> My Cart (Step 1/3)</h2>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px dashed #cbd5e1; padding-bottom:10px;">
+            <h2 style="font-size:17px; color:#00897b; font-weight:900;"><i class="fa-solid fa-cart-shopping"></i> My Cart (Step 1/3)</h2>
             <button onclick="closeCartModal()" style="background:#e2e8f0; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer;">✕</button>
         </div>
-        <div id="cartItemsContainer" style="max-height:280px; overflow-y:auto; margin-bottom:15px;"></div>
-        <div style="background:#f8fafc; padding:12px; border-radius:12px; margin-bottom:15px; border:1px solid #e2e8f0;">
-            <div style="display:flex; justify-content:space-between; font-weight:800; font-size:16px; color:var(--text-dark);">
-                <span>মোট পন্যের দাম:</span>
-                <span style="color:var(--teal);">৳<span id="cartSubtotalText">0</span></span>
-            </div>
+        <div id="cartItemsContainer" style="max-height:50vh; overflow-y:auto; padding-right:4px;"></div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; padding-top:10px; border-top:1px solid #e2e8f0; font-weight:800;">
+            <span>মোট পণ্যের দাম:</span>
+            <span style="color:var(--teal); font-size:18px;">৳<span id="cartSubtotalText">0</span></span>
         </div>
-        <button onclick="goToCheckoutStep()" class="thankyou-btn" style="font-size:16px;"><i class="fa-solid fa-arrow-right"></i> Checkout (ডেলিভারি তথ্য দিন)</button>
+        <button onclick="openCheckoutModal()" class="admin-submit-btn" style="margin-top:15px;">Checkout (ডেলিভারি তথ্য দিন) ></button>
     </div>
 </div>
 
-<!-- STEP 2: CHECKOUT MODAL (BOX BY BOX CLEAN UI) -->
+<!-- CHECKOUT MODAL (Step 2/3) -->
 <div id="checkoutStepModal" class="thankyou-overlay">
-    <div class="thankyou-card" style="text-align:left; background:#f8fafc;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; background:#fff; padding:14px 16px; border-radius:14px; box-shadow:0 2px 5px rgba(0,0,0,0.03);">
-            <h2 style="font-size:16px; color:var(--teal); font-weight:900;"><i class="fa-solid fa-truck-fast"></i> Checkout Details (Step 2/3)</h2>
-            <button onclick="closeCheckoutModal()" style="background:#f1f5f9; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer; color:#64748b; font-weight:bold;">✕</button>
+    <div class="thankyou-card" style="text-align:left;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:1px dashed #cbd5e1; padding-bottom:8px;">
+            <h2 style="font-size:17px; color:#00897b; font-weight:900;"><i class="fa-solid fa-truck"></i> Checkout (Step 2/3)</h2>
+            <button onclick="closeCheckoutModal()" style="background:#e2e8f0; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer;">✕</button>
         </div>
-
-        <div style="max-height:72vh; overflow-y:auto; padding-right:2px;">
-            
-            <div class="checkout-section-box">
-                <div class="checkout-box-title"><i class="fa-solid fa-user"></i> ১. ব্যক্তিগত তথ্য</div>
-                <label class="form-label">আপনার নাম *</label>
-                <input id="checkoutName" type="text" placeholder="সম্পূর্ণ নাম লিখুন" class="form-input">
-
-                <label class="form-label">মোবাইল নাম্বার *</label>
-                <input id="checkoutPhone" type="tel" placeholder="০1XXXXXXXXX" class="form-input" style="margin-bottom:0;">
+        <label style="font-size:12px; font-weight:700;">আপনার নাম</label>
+        <input id="checkoutName" placeholder="আপনার সম্পূর্ণ নাম" class="form-input">
+        <label style="font-size:12px; font-weight:700;">মোবাইল নাম্বার</label>
+        <input id="checkoutPhone" placeholder="017xxxxxxxx" class="form-input">
+        <div style="display:flex; gap:10px;">
+            <div style="flex:1;">
+                <label style="font-size:12px; font-weight:700;">জেলা (District)</label>
+                <select id="checkoutDistrict" class="form-input" onchange="onDistrictChange()"></select>
             </div>
-
-            <div class="checkout-section-box">
-                <div class="checkout-box-title"><i class="fa-solid fa-location-dot"></i> ২. ডেলিভারি ঠিকানা</div>
-                <div style="display:flex; gap:10px;">
-                    <div style="flex:1;">
-                        <label class="form-label">জেলা নির্বাচন করুন *</label>
-                        <select id="checkoutDistrict" class="form-input" onchange="onDistrictChange()">
-                            <option value="">জেলা বাছুন</option>
-                        </select>
-                    </div>
-                    <div style="flex:1;">
-                        <label class="form-label">থানা / এলাকা *</label>
-                        <select id="checkoutThana" class="form-input" onchange="calculateDeliveryCharge()">
-                            <option value="">আগে জেলা বাছুন</option>
-                        </select>
-                    </div>
-                </div>
-
-                <label class="form-label">সম্পূর্ণ ঠিকানা (বাসা/রোড/পাড়া) *</label>
-                <textarea id="checkoutAddress" placeholder="যেমন: হাউজ ১০, রোড ৫, ব্লক বি..." class="form-input" style="height:65px; min-height:65px; margin-bottom:0;"></textarea>
+            <div style="flex:1;">
+                <label style="font-size:12px; font-weight:700;">এলাকা / থানা</label>
+                <select id="checkoutThana" class="form-input" onchange="onThanaChange()"></select>
             </div>
+        </div>
+        <label style="font-size:12px; font-weight:700;">পূর্ণাঙ্গ ঠিকানা (House / Road / Village)</label>
+        <textarea id="checkoutAddress" placeholder="বাসা নং, রোড বা গ্রামের নাম..." class="form-input" style="height:50px;"></textarea>
+        
+        <div style="background:#f1f5f9; padding:10px; border-radius:10px; font-size:13px; margin-bottom:12px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>সাবটোটাল:</span> <span>৳<span id="chkSubtotal">0</span></span></div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>ডেলিভারি চার্জ:</span> <span>৳<span id="chkDelivery">0</span></span></div>
+            <div style="display:flex; justify-content:space-between; font-weight:900; color:var(--teal); border-top:1px solid #cbd5e1; padding-top:4px;"><span>সর্বমোট (Total):</span> <span>৳<span id="chkTotal">0</span></span></div>
+        </div>
+        <button onclick="proceedToPayment()" class="admin-submit-btn">পেমেন্ট ধাপে যান (Step 3) ></button>
+    </div>
+</div>
 
-            <div class="checkout-section-box" style="background:#ffffff;">
-                <div class="checkout-box-title" style="color:#0f172a;"><i class="fa-solid fa-receipt"></i> ৩. বিলের বিবরণ</div>
-                <div style="display:flex; justify-content:space-between; font-size:13.5px; margin-bottom:6px;">
-                    <span style="color:#64748b;">সাবটোটাল:</span><strong style="color:#1e293b;">৳<span id="checkoutSubtotal">0</span></strong>
-                </div>
-                <div style="display:flex; justify-content:space-between; font-size:13.5px; margin-bottom:8px;">
-                    <span style="color:#64748b;">ডেলিভারি চার্জ:</span><strong style="color:#0284c7;">৳<span id="checkoutDeliveryCharge">0</span></strong>
-                </div>
-                <div style="display:flex; justify-content:space-between; font-size:16px; font-weight:900; color:var(--teal); border-top:1px dashed #cbd5e1; padding-top:8px; margin-top:4px;">
-                    <span>সর্বমোট পরিশোধ:</span><strong>৳<span id="checkoutGrandTotal">0</span></strong>
-                </div>
-            </div>
+<!-- PAYMENT MODAL (Step 3/3) -->
+<div id="paymentStepModal" class="thankyou-overlay">
+    <div class="thankyou-card" style="text-align:left;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:1px dashed #cbd5e1; padding-bottom:8px;">
+            <h2 style="font-size:17px; color:#00897b; font-weight:900;"><i class="fa-solid fa-wallet"></i> Payment (Step 3/3)</h2>
+            <button onclick="closePaymentModal()" style="background:#e2e8f0; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer;">✕</button>
+        </div>
+        <div style="background:#e0f2f1; padding:12px; border-radius:10px; font-size:13px; color:#004d40; margin-bottom:12px; line-height:1.5;">
+            <b>বিকাশ / নগদ (Personal):</b> <span style="font-weight:900; font-size:14px;">01681-578599</span><br>
+            প্রথমে এই নাম্বারে মোট টাকা **Send Money** করুন। এরপর নিচের ঘরে আপনার বিকাশ/নগদ নাম্বার এবং TrxID লিখে অর্ডার কনফার্ম করুন।
+        </div>
+        <label style="font-size:12px; font-weight:700;">যে নাম্বার থেকে টাকা পাঠিয়েছেন (Sender Number)</label>
+        <input id="paySenderNumber" placeholder="018xxxxxxxx" class="form-input">
+        <label style="font-size:12px; font-weight:700;">ট্রানজাকশন আইডি (TrxID)</label>
+        <input id="payTrxId" placeholder="যেমন: 9H76K3L2..." class="form-input">
+        <button onclick="finalizeOrder()" class="admin-submit-btn" style="background:#10b981;">অর্ডার কনফার্ম করুন 🎉</button>
+    </div>
+</div>
 
-            <div id="advanceNoticeBox" class="checkout-section-box" style="background:#fff7ed; border-color:#fed7aa;">
-                <div style="font-weight:800; font-size:13.5px; color:#c2410c; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
-                    <i class="fa-solid fa-shield-halved"></i> <span id="paymentNoticeTitle">পেমেন্ট নির্দেশনা</span>
-                </div>
-                <p id="paymentNoticeDesc" style="font-size:12.5px; color:#475569; line-height:1.5; margin-bottom:10px;">
-                    দয়া করে আপনার জেলা নির্বাচন করুন, এরপর ডেলিভারি চার্জ হিসাব করা হবে।
-                </p>
-                <div style="background:#ffffff; padding:9px 12px; border-radius:10px; border:1px solid #ffedd5; font-size:12.5px; font-weight:800; color:#1e293b; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
-                    <span>bKash / Nagad (Personal):</span>
-                    <span style="color:var(--teal); font-size:14px;">01681578599</span>
-                </div>
-
-                <label class="form-label" id="trxIdLabel" style="color:#9a3412;">ট্রানজেকশন আইডি (TrxID) / বিকাশ নাম্বার</label>
-                <input id="checkoutTrxId" type="text" placeholder="যেমন: 9J87KXX12 (অপশনাল)" class="form-input" style="margin-bottom:0; background:#fff; border-color:#fdba74;">
-            </div>
-
-            <button onclick="confirmOrderSubmit()" class="thankyou-btn" style="font-size:16px; margin-top:8px; box-shadow:0 4px 15px rgba(0,137,123,0.3);">
-                <i class="fa-solid fa-circle-check"></i> অর্ডার কনফার্ম করুন
-            </button>
+<!-- SUCCESS / THANK YOU MODAL -->
+<div id="thankyouModal" class="thankyou-overlay">
+    <div class="thankyou-card" style="text-align:center;">
+        <div style="width:65px; height:65px; background:#e6f4ea; color:#10b981; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; margin:0 auto 15px;">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h2 style="font-size:19px; color:#1e293b; margin-bottom:8px;">অর্ডার সফল হয়েছে!</h2>
+        <p id="successPopupText" style="font-size:13.5px; color:#64748b; line-height:1.5; margin-bottom:20px;"></p>
+        <div style="display:flex; gap:10px;">
+            <button onclick="trackMyOrderFromSuccess()" class="admin-submit-btn" style="margin:0; flex:1; background:#00897b;">অর্ডার ট্র্যাক করুন</button>
+            <button onclick="closeThankYouModal()" class="admin-submit-btn" style="margin:0; flex:1; background:#64748b;">হোমে যান</button>
         </div>
     </div>
 </div>
 
-<!-- STEP 3: APP STYLE SUCCESS POPUP -->
-<div id="thankyouModal" class="thankyou-overlay app-success-overlay">
-    <div class="thankyou-card app-success-card">
-        <div class="app-success-icon-box">
-            <i class="fa-solid fa-check"></i>
+<!-- MY ORDERS MODAL -->
+<div id="ordersModal" class="thankyou-overlay">
+    <div class="thankyou-card" style="text-align:left;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px dashed #cbd5e1; padding-bottom:10px;">
+            <h2 style="font-size:17px; color:#00897b; font-weight:900;"><i class="fa-solid fa-receipt"></i> আমার অর্ডারসমূহ</h2>
+            <button onclick="closeOrdersModal()" style="background:#e2e8f0; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer;">✕</button>
         </div>
-        <h2 style="font-size:20px; font-weight:900; color:#1e293b; margin-bottom:6px;">Order Successfully Placed!</h2>
-        <p id="successPopupText" style="font-size:13.5px; color:#64748b; line-height:1.5; margin-bottom:20px;">
-            আপনার অর্ডারটি সফলভাবে সম্পন্ন হয়েছে! 🎉
-        </p>
-        <button onclick="trackMyOrderFromSuccess()" class="thankyou-btn" style="margin-bottom:10px;"><i class="fa-solid fa-box"></i> Track My Order</button>
-        <button onclick="closeThankYouModal(); goHome();" class="thankyou-btn" style="background:#e2e8f0; color:#334155;">Go Back / হোম পেজ</button>
+        <div id="userOrdersList" style="max-height:60vh; overflow-y:auto; padding-right:4px;"></div>
+        <button onclick="closeOrdersModal()" class="admin-submit-btn" style="margin-top:15px; background:#64748b;">বন্ধ করুন</button>
+    </div>
+</div>
+
+<!-- ORDER VOUCHER MODAL -->
+<div id="voucherModal" class="thankyou-overlay">
+    <div class="thankyou-card" style="text-align:left; max-width:400px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:2px solid #00897b; padding-bottom:8px;">
+            <h2 style="font-size:16px; color:#00897b; font-weight:900;">ADORE'S PET - ভাউচার</h2>
+            <button onclick="closeVoucherModal()" style="background:#e2e8f0; border:none; width:26px; height:26px; border-radius:50%; cursor:pointer;">✕</button>
+        </div>
+        <div id="voucherCustomerInfo" style="font-size:12px; color:#334155; margin-bottom:10px; line-height:1.5; background:#f8fafc; padding:8px; border-radius:8px;"></div>
+        <table style="width:100%; font-size:12px; border-collapse:collapse; margin-bottom:10px;">
+            <thead>
+                <tr style="background:#00897b; color:white;">
+                    <th style="padding:6px; text-align:left;">পণ্য</th>
+                    <th style="padding:6px; text-align:center;">পরিমাণ</th>
+                    <th style="padding:6px; text-align:right;">দাম</th>
+                </tr>
+            </thead>
+            <tbody id="voucherTableBody"></tbody>
+        </table>
+        <div id="voucherTotalsBox" style="font-size:12.5px; text-align:right; border-top:1px dashed #cbd5e1; padding-top:6px; line-height:1.5;"></div>
+        <button onclick="closeVoucherModal()" class="admin-submit-btn" style="margin-top:12px; background:#64748b; padding:8px;">বন্ধ করুন</button>
     </div>
 </div>
 
 <!-- SUPPORT MODAL -->
 <div id="supportModal" class="thankyou-overlay">
-    <div class="thankyou-card">
-        <div class="thankyou-icon" style="background:#e0f2f1; color:var(--teal);"><i class="fa-solid fa-headset"></i></div>
-        <h2 style="font-size:18px; color:var(--text-dark); margin-bottom:6px;">Help & Support</h2>
-        <a href="https://wa.me/message/NTZHEUXXC6DTN1" target="_blank" class="support-link-card wa-card"><i class="fa-brands fa-whatsapp"></i> WhatsApp Support</a>
-        <a href="https://www.facebook.com/share/1dPRm7hNg7/" target="_blank" class="support-link-card fb-card"><i class="fa-brands fa-facebook-f"></i> Facebook Page</a>
-        <button onclick="closeSupportModal()" class="thankyou-btn" style="background:#64748b; margin-top:10px;">বন্ধ করুন</button>
-    </div>
-</div>
-
-<!-- USER ORDERS MODAL -->
-<div id="ordersModal" class="thankyou-overlay">
-    <div class="thankyou-card" style="text-align:left;">
-        <h2 style="font-size:18px; margin-bottom:15px; color:var(--teal); text-align:center;">আমার অর্ডার সমূহ</h2>
-        <div id="userOrdersList"></div>
-        <button onclick="closeOrdersModal()" class="thankyou-btn" style="margin-top:15px; background:#64748b;">বন্ধ করুন</button>
-    </div>
-</div>
-
-<!-- VOUCHER MODAL -->
-<div id="voucherModal" class="voucher-modal">
-    <div class="voucher-box" id="printableVoucherBox">
-        <div class="voucher-header">
-            <div class="voucher-title">ADORE'S PET</div>
-            <div class="voucher-subtitle">Official Order Cash Memo</div>
+    <div class="thankyou-card" style="text-align:center;">
+        <div style="width:60px; height:60px; background:#e0f2f1; color:#00897b; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; margin:0 auto 15px;">
+            <i class="fa-solid fa-headset"></i>
         </div>
-        <div class="voucher-info-grid" id="voucherCustomerInfo"></div>
-        <table class="voucher-table">
-            <thead><tr><th>পণ্য</th><th>পরিমাণ</th><th>মূল্য</th></tr></thead>
-            <tbody id="voucherTableBody"></tbody>
-        </table>
-        <div class="voucher-totals" id="voucherTotalsBox"></div>
-        <div class="voucher-actions no-print">
-            <button onclick="window.print()" class="thankyou-btn" style="margin:0; background:var(--teal);"><i class="fa-solid fa-print"></i> প্রিন্ট ভাউচার</button>
-            <button onclick="closeVoucherModal()" class="thankyou-btn" style="margin:0; background:#64748b;">বন্ধ করুন</button>
-        </div>
-    </div>
-</div>
-
-<!-- CUSTOM ALERT MODAL -->
-<div id="customAlertModal" class="thankyou-overlay">
-    <div class="thankyou-card" style="max-width:380px; margin:auto;">
-        <div class="thankyou-icon" style="background:#fef3c7; color:#d97706;"><i class="fa-solid fa-triangle-exclamation"></i></div>
-        <h2>সতর্কতা</h2>
-        <p id="customAlertMessage">একটি ত্রুটি ঘটেছে।</p>
-        <button onclick="closeCustomAlert()" class="thankyou-btn" style="margin-top:15px;">ঠিক আছে</button>
+        <h2 style="font-size:18px; color:#1e293b; margin-bottom:8px;">কাস্টমার সাপোর্ট</h2>
+        <p style="font-size:13px; color:#64748b; line-height:1.5; margin-bottom:15px;">যেকোনো প্রয়োজনে সরাসরি কল করুন অথবা হোয়াটসঅ্যাপে মেসেজ পাঠান:</p>
+        <div style="background:#f1f5f9; padding:10px; border-radius:10px; font-weight:900; color:#00897b; font-size:15px; margin-bottom:15px;">📞 01681-578599</div>
+        <button onclick="closeSupportModal()" class="admin-submit-btn">ঠিক আছে</button>
     </div>
 </div>
 
 <!-- ADMIN LOGIN MODAL -->
 <div id="adminLoginModal" class="thankyou-overlay">
-    <div class="thankyou-card" style="max-width:380px; margin:auto;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-            <h2 style="font-size:18px; color:var(--teal);">Admin Login</h2>
-            <button onclick="closeAdminLoginModal()" style="background:#e2e8f0; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer;">✕</button>
+    <div class="thankyou-card" style="text-align:center; max-width:350px; margin:auto;">
+        <div style="width:60px; height:60px; background:#fee2e2; color:#ef4444; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 15px;">
+            <i class="fa-solid fa-lock"></i>
         </div>
-        <input id="modalAdminPassword" type="password" placeholder="Enter Password" class="form-input">
-        <div style="text-align: right; margin-bottom: 15px;">
-            <span onclick="forgotPassword()" style="font-size: 12px; color: var(--teal); cursor: pointer; font-weight: 700;">পাসওয়ার্ড ভুলে গেছেন?</span>
+        <h2 style="font-size:18px; color:#1e293b; margin-bottom:8px;">অ্যাডমিন লগইন</h2>
+        <input id="modalAdminPassword" type="password" placeholder="পাসওয়ার্ড দিন" class="form-input" style="text-align:center; margin-bottom:12px;">
+        <button onclick="submitAdminLogin()" class="admin-submit-btn" style="background:#ef4444; margin-bottom:8px;">লগইন করুন</button>
+        <button onclick="forgotPassword()" style="background:none; border:none; color:#0284c7; font-size:11.5px; cursor:pointer; font-weight:700;">পাসওয়ার্ড ভুলে গেছেন?</button>
+        <button onclick="closeAdminLoginModal()" class="admin-submit-btn" style="background:#64748b; margin-top:10px;">বাতিল</button>
+    </div>
+</div>
+
+<!-- CUSTOM PRETTY ALERT MODAL (Fixed without warning icon) -->
+<div id="customAlertModal" class="thankyou-overlay">
+    <div class="thankyou-card" style="text-align:center; max-width:380px; margin:auto;">
+        <div class="thankyou-icon" style="width:55px; height:55px; background:#e6f4ea; color:#10b981; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 12px;">
+            <i class="fa-solid fa-circle-check"></i>
         </div>
-        <button onclick="submitAdminLogin()" class="thankyou-btn">Login</button>
+        <h2 style="font-size:17px; color:#1e293b; margin-bottom:6px;">সফল!</h2>
+        <p id="customAlertMessage" style="font-size:13px; color:#64748b; line-height:1.5; margin-bottom:18px;"></p>
+        <button onclick="closeCustomAlert()" class="admin-submit-btn" style="padding:8px 20px;">ঠিক আছে</button>
     </div>
 </div>
 
