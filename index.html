@@ -28,6 +28,7 @@
 </header>
 
 <main class="container">
+    <!-- VACATION MODE BOX -->
     <div id="vacationBoxContainer" style="display:none; background:white; border-radius:24px; padding:32px 24px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.08); margin-top:20px; border:2px dashed #ef4444;">
         <div style="width:75px; height:75px; background:#fef2f2; color:#ef4444; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; margin:0 auto 18px;">
             <i class="fa-solid fa-mug-hot"></i>
@@ -37,6 +38,14 @@
     </div>
 
     <div id="normalHomeContent">
+        <!-- ADMIN CONTROLLED ANNOUNCEMENT BANNER -->
+        <div id="announcementBannerBox" style="display:none; background:linear-gradient(135deg, #00897b, #00695c); color:white; padding:12px 16px; border-radius:14px; margin-bottom:16px; box-shadow:0 4px 12px rgba(0,137,123,0.15); align-items:center; gap:12px;">
+            <div style="width:34px; height:34px; background:rgba(255,255,255,0.2); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:15px; color:#ffd54f;">
+                <i class="fa-solid fa-bullhorn"></i>
+            </div>
+            <div id="announcementText" style="font-size:13.5px; font-weight:700; flex:1; line-height:1.4;"></div>
+        </div>
+
         <div class="hero-image-banner">
             <img src="https://i.postimg.cc/JzmwDZBp/file-000000004a4482438eebd37b7fd9db5f.png" alt="Banner">
         </div>
@@ -125,7 +134,7 @@
     </div>
 </div>
 
-<!-- STEP 2: CHECKOUT MODAL (BOX BY BOX UI) -->
+<!-- STEP 2: CHECKOUT MODAL (BOX BY BOX CLEAN UI) -->
 <div id="checkoutStepModal" class="thankyou-overlay">
     <div class="thankyou-card" style="text-align:left; background:#f8fafc;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; background:#fff; padding:14px 16px; border-radius:14px; box-shadow:0 2px 5px rgba(0,0,0,0.03);">
@@ -148,9 +157,9 @@
                 <div class="checkout-box-title"><i class="fa-solid fa-location-dot"></i> ২. ডেলিভারি ঠিকানা</div>
                 <div style="display:flex; gap:10px;">
                     <div style="flex:1;">
-                        <label class="form-label">জেলা *</label>
+                        <label class="form-label">জেলা নির্বাচন করুন *</label>
                         <select id="checkoutDistrict" class="form-input" onchange="onDistrictChange()">
-                            <option value="">জেলা নির্বাচন করুন</option>
+                            <option value="">জেলা বাছুন</option>
                         </select>
                     </div>
                     <div style="flex:1;">
@@ -183,7 +192,7 @@
                     <i class="fa-solid fa-shield-halved"></i> <span id="paymentNoticeTitle">পেমেন্ট নির্দেশনা</span>
                 </div>
                 <p id="paymentNoticeDesc" style="font-size:12.5px; color:#475569; line-height:1.5; margin-bottom:10px;">
-                    খরগোশ/হ্যামস্টার অর্ডারের জন্য ডেলিভারি চার্জ বিকাশ/নগদে অগ্রিম পাঠাতে হবে।
+                    দয়া করে আপনার জেলা নির্বাচন করুন, এরপর ডেলিভারি চার্জ হিসাব করা হবে।
                 </p>
                 <div style="background:#ffffff; padding:9px 12px; border-radius:10px; border:1px solid #ffedd5; font-size:12.5px; font-weight:800; color:#1e293b; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
                     <span>bKash / Nagad (Personal):</span>
@@ -227,7 +236,7 @@
     </div>
 </div>
 
-<!-- USER ORDERS MODAL -->
+<!-- USER ORDERS MODAL (WITH CANCEL BUTTON) -->
 <div id="ordersModal" class="thankyou-overlay">
     <div class="thankyou-card" style="text-align:left;">
         <h2 style="font-size:18px; margin-bottom:15px; color:var(--teal); text-align:center;">আমার অর্ডার সমূহ</h2>
