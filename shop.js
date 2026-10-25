@@ -50,11 +50,9 @@ function renderAnnouncement(){
     if(annBox && annTxt){
         if(noticeText !== "" || ytLink !== ""){
             let htmlContent = "";
-            
             if(noticeText !== ""){
                 htmlContent += `<div>${escapeHTML(noticeText)}</div>`;
             }
-            
             if(ytLink !== ""){
                 htmlContent += `
                     <div style="margin-top:${noticeText !== '' ? '6px' : '0'};">
@@ -64,7 +62,6 @@ function renderAnnouncement(){
                     </div>
                 `;
             }
-            
             annTxt.innerHTML = htmlContent;
             annBox.style.display = "flex";
         } else {
@@ -75,24 +72,25 @@ function renderAnnouncement(){
 
 function checkWelcomePopup(){
     const popupImg = localStorage.getItem("adoresWelcomePopupImg") || "";
-    const popupLink = localStorage.getItem("adoresWelcomePopupLink") || "";
     const modal = document.getElementById("welcomePopupModal");
     const imgEl = document.getElementById("welcomePopupImg");
-    const cardWrapper = document.getElementById("welcomePopupCardWrapper");
-
     const alreadyShown = sessionStorage.getItem("welcomePopupClosed");
 
     if(modal && imgEl && popupImg.trim() !== "" && !alreadyShown){
         imgEl.src = popupImg;
-        if(cardWrapper){
-            cardWrapper.onclick = function(){
-                if(popupLink.trim() !== ""){
-                    window.open(popupLink, '_blank');
-                }
-                closeWelcomePopup();
-            };
-        }
         modal.classList.add("show");
+    }
+}
+
+let popupTargetProductId = "";
+function checkWelcomePopupData(){
+    popupTargetProductId = localStorage.getItem("adoresWelcomePopupLink") || "";
+}
+
+function handlePopupImageClick(){
+    closeWelcomePopup();
+    if(popupTargetProductId.trim() !== ""){
+        openProductModal(popupTargetProductId.trim());
     }
 }
 
@@ -107,8 +105,17 @@ function closeWelcomePopup(){
 function showCustomAlert(msg){
     const alertMsg = document.getElementById("customAlertMessage");
     const alertModal = document.getElementById("customAlertModal");
+    const alertIconBox = alertModal?.querySelector(".thankyou-icon");
+    const alertTitle = alertModal?.querySelector("h2");
+    
     if(alertMsg && alertModal){
         alertMsg.innerText = msg;
+        if(alertIconBox) {
+            alertIconBox.style.background = "#e6f4ea";
+            alertIconBox.style.color = "#10b981";
+            alertIconBox.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+        }
+        if(alertTitle) alertTitle.innerText = "সফল!";
         alertModal.classList.add("show");
     }
 }
@@ -270,7 +277,7 @@ function addToCart(id){
     saveCart();
     updateCartBadge();
     
-    showCustomAlert("পণ্যটি সফলভাবে কার্টে যোগ করা হয়েছে! 🛒");
+    showCustomAlert("আপনার প্রোডাক্টটি কার্টের মধ্যে সফলভাবে অ্যাড করা হয়েছে। 🛒");
 }
 
 function updateCartBadge(){
@@ -421,7 +428,7 @@ function closeAdminLoginModal(){ document.getElementById("adminLoginModal")?.cla
 function submitAdminLogin(){
     const pass = document.getElementById("modalAdminPassword")?.value;
     if(pass === currentAdminPassword){
-        window.location.href = "admin.html";
+        window.location.replace("admin.html");
     } else { showCustomAlert("ভুল পাসওয়ার্ড!"); }
 }
 
@@ -434,4 +441,5 @@ updateCartBadge();
 renderProducts();
 checkVacationStatus();
 renderAnnouncement();
+checkWelcomePopupData();
 checkWelcomePopup();
