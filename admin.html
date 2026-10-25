@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
-<body style="background:#f4f6f8; padding:20px 16px;">
+<body>
 
 <div style="max-width:600px; margin:0 auto; padding-bottom:40px;">
     <div style="display:flex; justify-content:space-between; align-items:center; background:#00897b; padding:16px 20px; border-radius:16px; color:white; margin-bottom:20px; box-shadow:0 4px 15px rgba(0,137,123,0.2);">
@@ -42,20 +42,13 @@
         <button onclick="changeAdminPassword()" class="admin-submit-btn" style="padding:10px; font-size:13px;">পাসওয়ার্ড আপডেট করুন</button>
     </div>
 
-    <!-- ORDERS NOTIFICATION BOX -->
-    <div class="admin-notif-box">
-        <div class="admin-notif-header" onclick="toggleAdminOrderList()">
-            <div style="display:flex; align-items:center; gap:8px;">
-                <i class="fa-solid fa-bell" style="color:#00897b; font-size:18px;"></i>
-                <span style="font-weight:800; font-size:15px; color:#1e293b;">নতুন অর্ডার নোটিফিকেশন</span>
-            </div>
-            <div style="display:flex; align-items:center; gap:8px;">
-                <span class="notif-badge-pill" id="pendingNotifBadge">0 নতুন অর্ডার</span>
-                <i class="fa-solid fa-chevron-down" id="notifArrow" style="color:#64748b; transition:transform 0.3s; transform: rotate(180deg);"></i>
-            </div>
-        </div>
-        <div id="collapsibleOrderPanel" style="display:block; margin-top:15px; border-top:1px dashed #cbd5e1; padding-top:12px;">
-            <div id="adminOrdersListContainer" style="max-height:350px; overflow-y:auto;"></div>
+    <!-- ORDER MANAGEMENT TABS (Pending, Completed, Cancelled) -->
+    <div class="admin-card">
+        <h2 style="margin-bottom:12px; font-size:18px; color:#00897b;"><i class="fa-solid fa-receipt"></i> অর্ডার ম্যানেজমেন্ট</h2>
+        <div class="admin-tabs-row">
+            <button class="admin-tab-btn active" onclick="openOrderModal('pending')" id="tabBtnPending">⏳ পেন্ডিং (<span id="countPending">0</span>)</button>
+            <button class="admin-tab-btn" onclick="openOrderModal('completed')" id="tabBtnCompleted">✅ কমপ্লিট (<span id="countCompleted">0</span>)</button>
+            <button class="admin-tab-btn" onclick="openOrderModal('cancelled')" id="tabBtnCancelled">❌ ক্যানসেল (<span id="countCancelled">0</span>)</button>
         </div>
     </div>
     
@@ -129,6 +122,18 @@
     </div>
 </div>
 
+<!-- ORDER LIST POPUP MODAL -->
+<div id="adminOrderModal" class="thankyou-overlay">
+    <div class="thankyou-card" style="text-align:left;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px dashed #cbd5e1; padding-bottom:10px;">
+            <h2 id="modalOrderTitle" style="font-size:17px; color:#00897b; font-weight:900;">অর্ডার লিস্ট</h2>
+            <button onclick="closeOrderModal()" style="background:#e2e8f0; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer;">✕</button>
+        </div>
+        <div id="adminModalOrdersContainer" style="max-height:60vh; overflow-y:auto; padding-right:4px;"></div>
+        <button onclick="closeOrderModal()" class="admin-submit-btn" style="margin-top:15px; background:#64748b;">বন্ধ করুন</button>
+    </div>
+</div>
+
 <!-- EDIT PRODUCT MODAL -->
 <div id="editModal" class="thankyou-overlay">
     <div class="thankyou-card" style="text-align:left;">
@@ -155,7 +160,6 @@
     </div>
 </div>
 
-<!-- SCRIPTS (Root path) -->
 <script src="data.js"></script>
 <script src="admin.js"></script>
 </body>
