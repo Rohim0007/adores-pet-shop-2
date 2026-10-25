@@ -1,5 +1,5 @@
 /* =====================================================
-   ADORE'S PET - SHOP.JS (Customer Shop & Cart Logic)
+   ADORE'S PET - SHOP.JS (Customer Shop, Cart & Track Order)
 ===================================================== */
 
 emailjs.init({ publicKey: "P7lqeBS7YKyU3Kpaq" });
@@ -59,6 +59,11 @@ function showSuccessPopup(msg){
     }
 }
 function closeThankYouModal(){ document.getElementById("thankyouModal")?.classList.remove("show"); }
+
+function trackMyOrderFromSuccess(){
+    closeThankYouModal();
+    openOrdersModal();
+}
 
 function goHome(){
     currentCategory = "";
@@ -209,7 +214,6 @@ function updateCartBadge(){
     if(badge){ badge.innerText = count; badge.style.display = count > 0 ? "flex" : "none"; }
 }
 
-// CART MODAL (Step 1)
 function openCartModal(){
     const container = document.getElementById("cartItemsContainer");
     let subtotal = 0;
