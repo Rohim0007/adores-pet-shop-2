@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ADORE'S PET - Online Shop</title>
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/shop.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
@@ -125,7 +125,7 @@
     </div>
 </div>
 
-<!-- STEP 2: CHECKOUT MODAL (Districts, Thanas & Advance Payment Logic) -->
+<!-- STEP 2: CHECKOUT MODAL -->
 <div id="checkoutStepModal" class="thankyou-overlay">
     <div class="thankyou-card" style="text-align:left;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px dashed #cbd5e1; padding-bottom:10px;">
@@ -158,7 +158,6 @@
             <label class="form-label">সম্পূর্ণ ঠিকানা (বাসা/রোড/পাড়া) *</label>
             <textarea id="checkoutAddress" placeholder="যেমন: হাউজ ১০, রোড ৫, ব্লক বি..." class="form-input" style="height:60px; min-height:60px;"></textarea>
 
-            <!-- DELIVERY & PAYMENT SUMMARY -->
             <div style="background:#f0fdf4; padding:12px; border-radius:12px; border:1px solid #bbf7d0; margin-bottom:12px;">
                 <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
                     <span>সাবটোটাল:</span><strong>৳<span id="checkoutSubtotal">0</span></strong>
@@ -171,7 +170,6 @@
                 </div>
             </div>
 
-            <!-- PAYMENT TYPE & TRX ID BOX -->
             <div id="advanceNoticeBox" style="background:#fff7ed; padding:12px; border-radius:12px; border:1px solid #fed7aa; margin-bottom:12px;">
                 <div style="font-weight:800; font-size:13px; color:#c2410c; margin-bottom:6px;">
                     <i class="fa-solid fa-circle-exclamation"></i> <span id="paymentNoticeTitle">পেমেন্ট নির্দেশনা</span>
@@ -271,7 +269,9 @@
     </div>
 </div>
 
-<!-- JS SCRIPTS -->
+<!-- SCRIPT FILES LINKED -->
+<script src="js/data.js"></script>
 <script src="js/shop.js"></script>
+<script src="js/checkout.js"></script>
 </body>
 </html>
