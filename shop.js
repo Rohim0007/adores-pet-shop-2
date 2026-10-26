@@ -105,7 +105,6 @@ function closeWelcomePopup(){
     }
 }
 
-/* STRICTLY SUCCESS ALERT MODAL */
 function showCustomAlert(msg){
     const alertMsg = document.getElementById("customAlertMessage");
     const alertModal = document.getElementById("customAlertModal");
