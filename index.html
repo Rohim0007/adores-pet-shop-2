@@ -148,7 +148,7 @@
     </div>
 </div>
 
-<!-- EXACT MATCHED CART & CHECKOUT MODAL (STEP 1/3) -->
+<!-- CART & CHECKOUT MODAL (STEP 1/3) -->
 <div id="cartStepModal" class="thankyou-overlay">
     <div class="thankyou-card" style="text-align:left; max-width:480px; max-height:90vh; overflow-y:auto; padding:20px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #e2e8f0; padding-bottom:10px;">
@@ -158,7 +158,6 @@
         
         <div id="cartItemsContainer" style="max-height:45vh; overflow-y:auto; padding-right:4px; margin-bottom:15px;"></div>
 
-        <!-- TOTAL PRICE SUMMARY BOX -->
         <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:12px; padding:12px; margin-bottom:15px; font-size:14px; color:#334155;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <span style="font-weight:900; color:#1e293b;">মোট পণ্যের দাম:</span>
@@ -170,11 +169,11 @@
     </div>
 </div>
 
-<!-- CHECKOUT DETAILS MODAL -->
+<!-- CHECKOUT DETAILS MODAL (STEP 2/3) -->
 <div id="checkoutFormModal" class="thankyou-overlay">
     <div class="thankyou-card" style="text-align:left; max-width:480px; max-height:90vh; overflow-y:auto; padding:20px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #e2e8f0; padding-bottom:10px;">
-            <h2 style="font-size:16px; color:#00897b; font-weight:900;"><i class="fa-solid fa-truck-fast"></i> Checkout (অর্ডার কনফার্ম করুন)</h2>
+            <h2 style="font-size:16px; color:#00897b; font-weight:900;"><i class="fa-solid fa-truck-fast"></i> Checkout (ডেলিভারি তথ্য দিন)</h2>
             <button onclick="closeCheckoutModal()" style="background:#f1f5f9; border:none; width:32px; height:32px; border-radius:50%; cursor:pointer; font-weight:bold; color:#475569;">✕</button>
         </div>
         
@@ -213,7 +212,6 @@
         <label style="font-size:12.5px; font-weight:700; color:#334155; display:block; margin-bottom:4px;">বিকাশ/নগদ ট্রানজেকশন আইডি (TrxID)</label>
         <input id="checkoutTrxId" placeholder="যেমন: 9J87H6G5F4" class="form-input" style="margin-bottom:14px;">
 
-        <!-- BILL SUMMARY BOX -->
         <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:12px; padding:12px; margin-bottom:15px; font-size:13px; color:#334155;">
             <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
                 <span>পণ্যের মূল্য:</span>
